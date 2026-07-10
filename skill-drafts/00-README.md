@@ -1,6 +1,6 @@
 # Skill Drafts — 합의용 초안
 
-실 스킬 파일로 재작성하기 전, **어떤 내용이 어떻게 들어가는지 합의하기 위한** 초안. 확정되면 `~/.claude/skills/<name>/SKILL.md`로 재작성하고 이 폴더의 해당 초안은 삭제한다.
+실 스킬 파일로 재작성하기 전, **어떤 내용이 어떻게 들어가는지 합의하기 위한** 초안. 확정되면 이 레포의 `skills/<name>/SKILL.md`로 재작성하고 이 폴더의 해당 초안은 삭제한다. 설치는 `scripts/link-skills.sh`가 `~/.claude/skills/<name>` symlink로 처리한다 — 레포가 source of truth고 `git pull`이 곧 업데이트다 (mattpocock/skills 관례. git 밖 보관은 유실로 이어진다는 프로토콜 원칙의 적용이기도 하다).
 
 ## 주석 태그
 
@@ -34,3 +34,4 @@ park·mark는 스킬이 아니라 AGENTS.md 규칙 (상시 행동 규칙은 스�
 ## 동기화 이력
 
 - 2026-07-10 | 프로토콜 개정(결정 ID 규약·이슈 트래커 경계·reference 문서 기준)을 align 출구·kickoff 1/4단계·promote 1/3단계에 반영. ai-tab 적용 세션(PR #33)의 저작 패턴(Current Decision↔히스토리 중복 금지)도 promote에 수록. align의 구 "트래커 불채택" 기각 기록은 뒤집힘 표시.
+- 2026-07-10 | 전면 리뷰 반영: promote 1단계에서 `Completed (recent)` 기록 제거(완료 이력은 merge 커밋이 담당), promote 검토점 1(merge 순서) 해소 표시, 중복 금지·이슈 닫기의 프로토콜(§4·§6) 편입 표시, research 착지 관례에서 `Created`·`Last Updated` 폐지(Update History로 일원화). 확정 스킬 착지가 `~/.claude/skills` 직접 재작성 → 레포 `skills/` + symlink 설치로 변경.

@@ -1,12 +1,12 @@
 # Agent Workflow Protocol
 
-이 문서는 AI agent와 함께 서비스를 개발해갈 때의 작업 워크플로우와 프로젝트 문서 운영 규칙을 정의한다. 기존 타 워크 플로우 방식들이 문서를 너무 많이 생성하여 문서들조차 파악하기 어려운 문제, 특히 문서와 코드 간 불일치 문제 를 줄이고자 하는데서 시작했다.
+이 문서는 AI agent와 함께 서비스를 개발해갈 때의 작업 워크플로우와 프로젝트 문서 운영 규칙을 정의한다. 기존 타 워크플로우 방식들이 문서를 너무 많이 생성하여 문서들조차 파악하기 어려운 문제, 특히 문서와 코드 간 불일치 문제를 줄이고자 하는 데서 시작했다.
 
 ## Principles
 
 - Documentation의 1차 목적은 코드만으로는 알 수 없는 정보 중에서 본 프로젝트를 개발/유지해나가는데 꼭 필요한 정보를 기록하는데 있다. 따라서 코드 및 스키마는 특별한 사유가 없는 한 문서에 포함하지 않는다. 
 - 단 코드를 통해 파악할 수 있는 정보일지라도, 이를 위해 agent가 봐야하는 코드의 범위나 드는 시간이 상당히 높거나, 관리자인 사람이 앞으로 본 프로젝트를 발전시켜나가는데 효용이 높은 정보는 문서화한다.
-- 작업중 필요한 정보는 일시적으로 한 곳에 저장했다가 작업 완료 후에도 보존해야 할 정보만 적절한 기준 문서로 승격하고 나머지는 삭제한다. 이를 통해 작업중에는 별도의 handoff 과정 필요 없이 언제든 새로운 세션으로 시작할 수 있도록 돕고, 작업 후에는 코드를 source of true로 하고 문서와의 괴리를 원천 차단한다.
+- 작업중 필요한 정보는 일시적으로 한 곳에 저장했다가 작업 완료 후에도 보존해야 할 정보만 적절한 기준 문서로 승격하고 나머지는 삭제한다. 이를 통해 작업중에는 별도의 handoff 과정 필요 없이 언제든 새로운 세션으로 시작할 수 있도록 돕고, 작업 후에는 코드를 source of truth로 하고 문서와의 괴리를 원천 차단한다.
 - 문서가 담을 지식과 프로세스가 담당할 지식을 구분한다. 지식 4분면 중 문서는 "알고 있음을 아는 것" 가운데 장기 보존 가치가 있는 것만 담는다. 암묵지(알지만 당연해서 적지 않는 것)는 grill로 꺼내고, 인지된 무지는 리서치로 해소하고, 인지 못한 무지는 수직 슬라이스·해결책 공간 리서치·전제 도전으로 드러낸다. 문서 하나로 네 분면을 모두 커버하려는 시도가 spec 문서 부패의 근본 원인이다.
 - git 추적 여부는 문서의 주제가 아니라 두 질문으로 정한다: ① 코드와 원자적으로 동기화되어야 하는가 (같은 커밋에 담는 것이 유일하게 강제력 있는 싱크 수단이다. 문서를 git 밖으로 빼는 것은 싱크 부담을 줄이는 게 아니라 싱크 깨짐을 안 보이게 만드는 것이다) ② 협업자(사람·agent)가 공유해야 할 진실인가. 하나라도 참이면 git 안에 둔다. 리서치 raw 정보도 기본은 git 안이다 — 리서치의 협업자는 미래의 나와 에이전트이고, git 밖 보관은 유실로 이어진다(§Research Documents).
 
@@ -18,21 +18,22 @@ repo/
 ├── CLAUDE.md
 ├── docs/
 │   ├── VISION.md
-│   ├── ARCHITECTURE.md
 │   ├── GLOSSARY.md
+│   ├── ARCHITECTURE.md
 │   ├── PROJECT_STATE.md
-│   ├── LEARNINGS.md
+│   ├── workstreams/
+│   │   ├── payment-webhook-retry.md
+│   │   └── auth-session-cleanup.md
 │   ├── decision-logs/
 │   │   ├── authentication.md
 │   │   ├── payment-processing.md
 │   │   └── agent-memory.md
+│   ├── BACKLOG.md
+│   ├── LEARNINGS.md
 │   ├── features/
 │   │   ├── payment-webhook-retry.md
 │   │   └── team-permissions.md
-│   ├── workstreams/
-│   │   ├── payment-webhook-retry.md
-│   │   └── auth-session-cleanup.md
-│   ├── BACKLOG.md
+│   ├── stripe-sandbox-quirks.md
 │   └── _research/
 │       ├── 2026-05-15-stripe-webhook-retry-strategies.md
 │       └── 2026-05-19-agent-memory-systems-survey.md
@@ -46,30 +47,33 @@ repo/
 
 - 위 트리는 전체 lifecycle을 한 번에 보여주기 위한 예시다. 실제 운영에서는 `docs/workstreams/payment-webhook-retry.md`가 merge 후 승격되면 삭제되고, 필요할 때만 `docs/features/payment-webhook-retry.md`가 남는다.
 - `docs/decision-logs/agent-memory.md`는 "repo 밖 memory를 기준으로 볼 것인가" 같은 장기 결정 주제의 예시다.
+- `docs/stripe-sandbox-quirks.md`는 소문자 reference 문서의 예시다 — 소스 오브 트루스가 코드가 아닌 외부 시스템 실측(Document Index의 reference 행 참고).
 - `CLAUDE.md`는 보통 아래처럼 `AGENTS.md`만 가리키는 얇은 포인터로 둔다:
   `See [AGENTS.md](./AGENTS.md) for canonical repository instructions.`
 
 ## Document Index
 
+행 순서는 Sample Repo 트리와 같고, 상단 8행(`AGENTS.md`~`decision-logs`)은 §5 Resume의 읽기 순서와 일치한다 — 포인터(`CLAUDE.md`)와 선택 문서(`GLOSSARY.md`)가 사이에 낀다. 그 아래는 필요할 때만 읽는 문서들이다.
+
 | 문서                                    | 역할                                                                                                                  | 살아있는 기간                            | 넣지 말 것                                                          |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | --------------------------------------------------------------- |
 | `AGENTS.md`                           | 작업 규칙의 기준이다. `CLAUDE.md`는 이 파일을 가리키는 포인터만 둔다.                                                                       | 장기                                 | 현재 진행 상태, 브랜치별 메모                                               |
 | `CLAUDE.md`                           | `AGENTS.md`를 가리키는 호환용 포인터다. 추가 규칙은 두지 않는다.                                                                          | 장기                                 | Claude 전용 별도 규칙, 현재 진행 상태                                       |
-| `docs/GLOSSARY.md` (선택)               | 도메인 용어집(ubiquitous language). 같은 개념에 어떤 단어를 쓰는지만 정의한다.                                                              | 장기                                 | 구현 스펙, 결정 rationale                                             |
 | `docs/VISION.md`                      | 서비스 목적, 타겟, 제품 방향을 담는다.                                                                                             | 장기                                 | sprint 계획, 구현 메모                                                |
+| `docs/GLOSSARY.md` (선택)               | 도메인 용어집(ubiquitous language). 같은 개념에 어떤 단어를 쓰는지만 정의한다.                                                              | 장기                                 | 구현 스펙, 결정 rationale                                             |
+| `docs/ARCHITECTURE.md`                | 현재 구조, 경계, 흐름 같은 사실 정보를 담는다.                                                                                        | 장기                                 | 세션 로그, 긴 rationale                                              |
+| `docs/PROJECT_STATE.md`               | active workstream의 인덱스와 우선순위를 보여준다.                                                                                 | 장기, 항목은 휘발성                        | branch별 상세 재개 메모                                                |
+| `docs/workstreams/<slug>.md`          | 특정 작업의 상세 상태와 handoff 역할을 맡는다. 현재 작업의 `Next Step`도 여기에 둔다.                                                          | branch/worktree 수명 동안              | repo-wide 우선순위, 장기 구조 설명                                        |
+| `docs/decision-logs/<topic>.md`       | 중요한 결정의 이유와 변경 이력을 담는다. rationale은 여기 둔다. 히스토리 항목은 레포 전역 연번 ID를 갖는다(§4 결정 ID 규약).                                   | 장기                                 | 사소한 임시 결정                                                       |
 | `docs/BACKLOG.md`                     | 아직 시작하지 않은 작업 목록을 관리한다. 이슈 트래커를 쓰는 레포에서는 fog·장기 후보의 권위만 맡는다(표 아래 참고).                                               | 장기, 항목은 휘발성                        | 현재 진행 상태, 세션 메모                                                 |
 | `docs/LEARNINGS.md`                   | 1회성 교훈의 중간 버퍼다. 반복 확인된 항목만 `AGENTS.md`로 승격하고 제거한다.                                                                  | 장기, 항목은 휘발성                        | 진행 상태, 결정 rationale                                             |
-| `docs/PROJECT_STATE.md`               | active workstream의 인덱스와 우선순위를 보여준다.                                                                                 | 개발 중                               | branch별 상세 재개 메모                                                |
-| `docs/workstreams/<slug>.md`          | 특정 작업의 상세 상태와 handoff 역할을 맡는다. 현재 작업의 `Next Step`도 여기에 둔다.                                                          | branch/worktree 수명 동안              | repo-wide 우선순위, 장기 구조 설명                                        |
-| `docs/ARCHITECTURE.md`                | 현재 구조, 경계, 흐름 같은 사실 정보를 담는다.                                                                                        | 장기                                 | 세션 로그, 긴 rationale                                              |
-| `docs/decision-logs/<topic>.md`       | 중요한 결정의 이유와 변경 이력을 담는다. rationale은 여기 둔다. 히스토리 항목은 레포 전역 연번 ID를 갖는다(§4 결정 ID 규약).                                   | 장기                                 | 사소한 임시 결정                                                       |
 | `docs/features/<feature>.md`          | 완료 후에도 설명 가치가 있는 기능만 남긴다.                                                                                           | 선택적 장기                             | 개발 중 진행 상태                                                      |
 | `docs/<reference>.md`                 | 소스 오브 트루스가 코드가 아닌 장기 사실만 담는 reference — 외부 시스템 실측(OS·서드파티 API 동작), 수동 절차(QA 매트릭스·운영 가이드) 등. 같은 소스를 다루는 문서는 하나로 합친다. | 장기                                 | 코드가 소스인 사실 (`ARCHITECTURE.md`나 코드 주석으로), 미래 설계 노트 (BACKLOG·이슈로) |
 | `docs/_research/YYYY-MM-DD-<slug>.md` | 광범위한 외부 정보를 raw 형태로 보존하는 저장소. 비기준 문서라(`_` 접두가 그 표시) 다른 문서와 링크로 연결하지 않는다. 기본 git 추적, 예외는 §Research Documents.        | 장기, stale 무방 (업데이트 시 파일명·본문 일시 갱신) | 진행 중 작업 상태, 다른 문서에서 링크·참조되어야 하는 정보                              |
 
 이슈 트래커(GitHub Issues 등)를 쓰는 레포에서는 백로그 권위를 둘로 가른다: **셰이핑이 끝나 수용 기준이 선 작업 = 이슈 트래커**, **아직 질문이 날카롭지 않은 fog·장기 후보 = `docs/BACKLOG.md`**. BACKLOG에는 열린 이슈의 한 줄 인덱스만 남겨도 된다. 항목이 Align을 통과하면 이슈로 승격하고 BACKLOG에서 제거한다.
 
-**파일명 관례**: 대문자 = 코어 권위 문서(워크플로우가 상시 읽고 쓰는 층), 소문자 = 해당 브랜치 작업 중 일시적으로 생성되는 파일이거나, 주제별 reference(필요할 때만 읽는 자료)
+**파일명 관례**: 대문자 = 레포당 하나뿐인 고정 역할 문서(전부 읽는 층), 소문자 = 주제·작업 단위로 늘어나는 문서(`workstreams/`, `decision-logs/`, `features/`, reference, `_research/` — 관련된 것만 골라 읽는 층)
 
 ## Workflow
 
@@ -93,6 +97,8 @@ BACKLOG의 항목을 실제 작업으로 전환하기 전, grill 세션으로 �
 - 사용자의 선호·권한에 속하면 → 사용자에게 묻는다.
 - 외부 세계의 사실이면 → 리서치로 핸드오프한다.
 - 보거나 만져야 답할 수 있으면(고충실도) → 프로토타입으로 핸드오프한다.
+
+프로토타입 핸드오프의 산출물은 일회성 코드다. 착지 지점은 문서가 아니라 mark다 — 발견이 결정을 좌우하면 workstream 합의부나 `docs/decision-logs/`에 반영하고, 코드 자체는 폐기하거나 branch로 남긴다.
 
 **리서치 핸드오프.** 다음 중 하나라도 참이면 grill을 멈추고 리서치를 발주한다:
 
@@ -175,6 +181,7 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 **결정 ID 규약.** mark로 `docs/decision-logs/`에 기록할 때:
 
 - 결정마다 레포 전역 연번 ID를 부여하고 히스토리 항목 제목에 박는다: `### D-0012 — <제목> (YYYY-MM-DD)`. 네임스페이스는 레포당 하나다 — 신규 레포는 `D-0001`부터, 구 ADR 체계에서 전환한 레포는 `ADR-` 연번을 그대로 이어간다. 항목을 추가하면 같은 파일의 `Current Decision`을 함께 갱신한다.
+- 결정 실질은 `Current Decision`에만 둔다. 히스토리 항목에는 그 시점의 배경(Why)과 supersede 사실만 적는다 — 같은 실질을 두 곳에 쓰면 다음 갱신 때 한쪽이 낡는다.
 - 코드 주석·이슈·다른 문서는 결정을 파일 경로가 아니라 ID로 인용한다. ID → 파일 해소는 grep이 맡는다.
 - 주제 파일은 ID들의 뷰다. 분류가 어색해지면 히스토리 항목을 ID째 다른 파일로 옮긴다 — ID 인용은 깨지지 않는다. 한 결정이 두 주제에 걸치면 본문은 한 곳에만 두고 다른 파일에서는 ID로 링크한다.
 - 주제는 기능이 아니라 도메인 축(모듈·관심사) 단위로 자른다. 기능 단위 주제는 다른 주제에 흡수되며 소멸해 재편 비용을 만든다.
@@ -182,17 +189,7 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 작업 중 얻은 교훈 — agent가 반복할 만한 실수 패턴, 이 repo 특유의 함정 — 은 workstream 문서의 `Learnings`에 한 줄로 적는다. Promote 때 `docs/LEARNINGS.md`로 옮겨진다.
 
-예:
-
-- 현재 구현 상태
-- blocker
-- behavior notes
-- 다음 액션
-- 읽어야 할 파일
-- 다시 실행할 명령
-- 검증 상태
-
-`docs/PROJECT_STATE.md`에는 이 작업이 active라는 사실과 간단한 요약만 남긴다.
+`docs/PROJECT_STATE.md`에는 이 작업이 active라는 사실(이름·상태·owner·상세 링크)만 남긴다.
 
 피해야 할 것:
 
@@ -207,10 +204,11 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 1. `AGENTS.md`
 2. `docs/VISION.md`
-3. `docs/ARCHITECTURE.md`
-4. `docs/PROJECT_STATE.md`
-5. 관련 `docs/workstreams/<slug>.md`
-6. 관련 `docs/decision-logs/*.md`의 `Current Decision` 섹션 — **필수**. 조용한 재론을 막는 것이 decision log의 존재 이유다. `Decision History`는 배경이 필요할 때만 읽는다.
+3. `docs/GLOSSARY.md` (있으면)
+4. `docs/ARCHITECTURE.md`
+5. `docs/PROJECT_STATE.md`
+6. 관련 `docs/workstreams/<slug>.md`
+7. 관련 `docs/decision-logs/*.md`의 `Current Decision` 섹션 — **필수**. 조용한 재론을 막는 것이 decision log의 존재 이유다. `Decision History`는 배경이 필요할 때만 읽는다.
 
 별도의 handoff 파일은 두지 않는다. 그 역할은 `docs/workstreams/<slug>.md`가 맡는다.
 아직 시작하지 않은 신규 후보를 다시 검토하는 경우에만 `docs/BACKLOG.md`를 추가로 읽는다.
@@ -219,9 +217,9 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 전제: workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 주장보다 증거다.
 
-작업이 끝나면 아래 순서로 정리한다.
+작업이 끝나면 아래 순서로 정리한다. 이 정리는 merge 후 main에서 수행한다 — `PROJECT_STATE.md`·`BACKLOG.md`가 main 전용이기 때문이다(§Parallel Workstreams).
 
-1. `docs/PROJECT_STATE.md`에서 active 상태를 제거하고 `Completed (recent)`에 짧게 남긴다.
+1. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. 이슈 트래커에서 온 작업이면 이슈를 닫는다.
 2. 현재 구조가 바뀌었으면 `docs/ARCHITECTURE.md`를 갱신한다.
 3. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다.
 4. 설명서 가치가 있는 기능이면 `docs/features/<feature>.md`를 생성하거나 갱신한다.
@@ -281,7 +279,7 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 - 경로: `docs/_research/YYYY-MM-DD-<slug>.md`
 - 날짜는 **마지막으로 본문을 갱신한 날**이다.
-- 같은 주제를 다시 다듬을 때는 새 파일을 만들지 말고 기존 파일을 새 날짜로 rename하면서 본문의 `Last Updated`와 `Update History`도 함께 갱신한다.
+- 같은 주제를 다시 다듬을 때는 새 파일을 만들지 말고 기존 파일을 새 날짜로 rename하면서 본문의 `Update History`에 항목을 추가한다. 본문의 날짜 기록은 `Update History`가 유일하다 — 동기화 지점은 파일명과의 2중뿐이다.
 
 ### git 추적 정책
 
@@ -309,17 +307,12 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 ## Recommended Shapes
 
+`BACKLOG.md`·`LEARNINGS.md`에는 권장 형태가 없다 — 한 줄 항목의 목록이며, 형식보다 항목의 휘발(승격·제거)이 본질이다. 갱신 날짜류 메타데이터는 어느 문서에도 두지 않는다 — git log가 안다.
+
 ### `docs/PROJECT_STATE.md`
 
 ```md
 # Project State
-
-Last Updated: 2026-05-18
-
-## Current Summary
-- 인증 플로우는 동작 중
-- 결제 webhook 안정화 작업 진행 중
-- admin analytics는 아직 착수 전
 
 ## Active Workstreams
 
@@ -332,9 +325,6 @@ Detail: docs/workstreams/payment-webhook-retry.md
 Status: BLOCKED
 Owner: link
 Detail: docs/workstreams/auth-session-cleanup.md
-
-## Completed (recent)
-- 2026-05-17 | signup-rate-limit | DONE | 로그인 rate limit 1차 적용 완료
 
 ## Repo-Wide Risks
 - 결제와 인증 쪽 테스트 픽스처가 제각각이라 회귀 테스트 신뢰도가 낮음
@@ -369,12 +359,13 @@ Behavior Notes:
 Out of Scope:
 - 관리자 수동 재전송 UI
 
-<!-- 상태부: 개발 중 수시로 변한다. -->
+<!-- 상태부: 개발 중 수시로 변한다. Current State는 커밋 로그를 재서술하지 않는다 —
+     로그가 못 담는 판정(슬라이스별 완료/미완, 1차/우회 같은 해석)만 적는다. -->
 
 Current State:
-- duplicate guard 구현 완료
-- retry backoff 1차 구현 완료
-- dead-letter 처리는 미완료
+- duplicate guard: 완료
+- retry backoff: 1차 구현 (backoff 상한 재검토 필요)
+- failure logging: 미착수
 
 Blockers:
 - sandbox 재전송 검증 제한
@@ -405,7 +396,7 @@ Verification:
 # Authentication Decision Log
 
 ## Current Decision
-JWT + refresh token rotation을 사용한다.
+JWT + refresh token rotation을 사용한다(D-0001). refresh 재발급 시 rotation을 강제한다(D-0004).
 
 ## Why This Is Current
 - 모바일/웹 공통 처리 단순화
@@ -415,27 +406,22 @@ JWT + refresh token rotation을 사용한다.
 
 ### D-0001 — 서버 세션 대신 JWT + refresh rotation (2026-05-03)
 Status: Accepted
-Decision:
-- 서버 세션 기반 인증 대신 JWT + refresh token rotation으로 전환
 Why:
 - 다중 클라이언트 환경에서 세션 공유 부담이 큼
 - 인증 인프라 단순화가 필요했음
 
 ### D-0004 — refresh 재발급 시 rotation 강제 (2026-05-12)
-Status: Updated (D-0001 보강)
-Decision:
-- refresh token 재발급 시 rotation을 강제
+Status: Accepted (D-0001 보강)
 Why:
 - 탈취 시 피해 반경 축소 필요
 ```
+
+결정 실질은 `Current Decision`에만 있다(§4 결정 ID 규약). 히스토리 항목은 제목 + 그 시점의 Why + supersede 사실만 갖는다.
 
 ### `docs/_research/YYYY-MM-DD-<slug>.md`
 
 ```md
 # Stripe Webhook Retry Strategies
-
-Created: 2026-05-08
-Last Updated: 2026-05-15 by codex
 
 ## Topic
 Stripe webhook 재전송 전략 비교.
@@ -461,3 +447,6 @@ Stripe webhook 재전송 전략 비교.
 | 2026-07-10 | 리서치 git 추적 기본값 반전 — 기본 추적, 공개 레포·민감 정보 레포만 `.gitignore` 예외. 링크 금지·stale-OK·`_` 접두(비기준 표시)·파일명 규칙은 유지                                                                                                                                                                                        | git 밖 보관물의 유실 실증(ai-tab: gstack 산출물·구 와이어프레임 소실 vs git 안 리서치는 방치돼도 생존) + 에이전트 재사용 가치(clone만으로 grep) + 낮은 레포 비용. 유일한 반대 논거(민감 메모의 히스토리 잔존)는 전면 금지가 아니라 예외 조건으로 처리                                                                                                                                                                                                       |
 | 2026-07-10 | 파일명 `AGENTS_DOC_PROTOCOL.md` → `AGENT_WORKFLOW_PROTOCOL.md`, 제목 「Agent Workflow Protocol」로 개정. `protocol-skill-guide.md` 폐기 — 스킬 초안·관계도는 `skill-drafts/`, 레포별 스킬 매핑은 각 레포 AGENTS.md Skill routing이 승계                                                                                       | "DOC"이 내용의 절반(Align 4수·park/mark·병렬 운용 등 작업 흐름)을 대표하지 못하고, `AGENTS_DOC`이 "AGENTS.md에 관한 문서"로 오독될 여지(이 프로토콜이 AGENTS.md라는 파일을 정의하므로 혼동 실재). skill-guide는 "스킬 없음 칸의 반복 감지 → 스킬 후보 발굴"이 존재 이유였는데 skill-drafts 탄생으로 완료 — 무착지 항목 2건(격주 정비 패스, grill 전 스코프 쪼개기)은 friction log에 park                                                                                           |
 | 2026-07-10 | 파일명 관례 신설(대문자 = 코어 권위 문서, 소문자 = 주제별 reference) + 하드코딩 스킬용 1줄 포인터 패턴. `GLOSSARY.md` 행 신설(도메인 용어집 — `CONTEXT.md`라는 이름 불채택), reference 행에서 용어집 제거·"같은 소스 문서는 하나로 합친다"·"미래 설계 노트 금지" 보강                                                                                                         | ai-tab 문서 다이어트 리뷰에서 확정. `CONTEXT.md`는 mattpocock domain-modeling의 DDD Bounded Context 유래(CONTEXT-MAP + 컨텍스트별 CONTEXT.md 구조) — single-context 레포에서 의미가 소멸하고 파일명이 중의적("It is a glossary and nothing else"가 원문 정의). 단 그 스킬이 파일명을 하드코딩하고 없으면 lazy 생성하므로 포인터로 갈라짐 차단. 다이어트 사례: 미래 설계 노트(window-slot-migration)·코드 중복 스키마 나열(behavioral-data-strategy)이 reference 자격 미달로 확인됨 |
+| 2026-07-10 | 합치 정정 — §4 상태부 예시 리스트 삭제, 결정 ID 규약에 실질 중복 금지 신설(실질은 `Current Decision`에만, 히스토리는 Why·supersede 사실만 — shape에도 반영), PROJECT_STATE 수명 "장기, 항목은 휘발성"으로 정정, 파일명 관례 재정의(대문자 = 레포당 하나뿐인 고정 역할·전부 읽는 층 / 소문자 = 주제·작업 단위·골라 읽는 층), §6에 수행 시점(merge 후 main)·이슈 닫기 명시, 프로토타입 산출물 착지(mark) 규칙 1줄, Resume에 GLOSSARY(있으면) 삽입 | 전면 합치 리뷰. §4 예시 리스트의 behavior notes가 합의부/상태부 분리와 모순(오정보), 중복 금지 패턴이 promote 초안에만 있어 "불변식은 프로토콜에" 규율 위반, 종전 관례가 decision-logs(소문자 권위 문서)를 설명 못함, 이슈 경계 규칙에 종료 전이 부재 |
+| 2026-07-10 | 제시 순서 통일 — Sample Repo 트리·Document Index를 §5 Resume 읽기 순서로 재배열(VISION→GLOSSARY→ARCHITECTURE→PROJECT_STATE→workstreams→decision-logs, 이후 BACKLOG→LEARNINGS→features→reference→_research), 트리에 reference 예시(`stripe-sandbox-quirks.md`) 추가 | 세 곳(트리·인덱스·Resume)이 세 가지 순서를 쓰고 있었음. agent가 실제로 실행하는 유일한 순서(Resume)로 통일 — "인덱스 순서 = 읽기 순서" 한 규칙만 기억하면 됨 |
+| 2026-07-10 | git 중복 제거 — PROJECT_STATE shape에서 `Last Updated`·`Current Summary`·`Completed (recent)` 삭제(§6 1단계 함께 개정), workstream `Current State`에 커밋 로그 재서술 금지(로그가 못 담는 판정만) 가이드, `_research`에서 `Created`·`Last Updated` 삭제(`Update History`로 일원화). features→reference 통합은 기각 | 원칙(git이 아는 정보 재기록 금지) 적용: 날짜는 git log가, 완료 이력은 merge 커밋이 진실 — 수동 사본은 갱신 누락 시 거짓이 됨. 단 `_research`의 `Update History`(gitignore 예외 레포 존재 + rename이 추적을 끊음)와 decision-log 제목 날짜(히스토리 항목이 파일 간 ID째 이동 가능)는 git 위임 불가라 유지. features 통합은 사용자 기각 — 기능 설명서 카테고리의 자명성 유지 |

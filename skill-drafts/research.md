@@ -25,7 +25,7 @@ background agent의 임무:
 
 > `[가져옴 · mattpocock research]` 1·2번 거의 원문 번역. 원문 3번("repo 관례에 맞는 위치에 저장")은 아래 우리 관례로 구체화하며 대체.
 
-3. `docs/_research/YYYY-MM-DD-<slug>.md`로 저장하라. 날짜는 오늘이다. 같은 주제의 기존 파일이 있으면 새 파일을 만들지 말고 본문을 갱신한 뒤 새 날짜로 rename하고, `Last Updated`와 `Update History`에 항목을 추가하라.
+3. `docs/_research/YYYY-MM-DD-<slug>.md`로 저장하라. 날짜는 오늘이다. 같은 주제의 기존 파일이 있으면 새 파일을 만들지 말고 본문을 갱신한 뒤 새 날짜로 rename하고, `Update History`에 항목을 추가하라 (`Created`·`Last Updated` 헤더는 두지 않는다 — 2026-07-10 전면 리뷰에서 Update History로 일원화).
 4. 파일 끝에 `## Implications` 섹션으로 "이 발견이 브리프의 결정에 주는 함의"를 3~5줄로 정리하라.
 
 > `[신규 · 프로토콜 Research Documents]` 착지 관례 — 파일명 날짜 규칙, rename+본문 동시 갱신, Update History.
