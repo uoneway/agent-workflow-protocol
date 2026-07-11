@@ -48,8 +48,37 @@ repo/
 - 위 트리는 전체 lifecycle을 한 번에 보여주기 위한 예시다. 실제 운영에서는 `docs/workstreams/payment-webhook-retry.md`가 merge 후 승격되면 삭제되고, 필요할 때만 `docs/features/payment-webhook-retry.md`가 남는다.
 - `docs/decision-logs/agent-memory.md`는 "repo 밖 memory를 기준으로 볼 것인가" 같은 장기 결정 주제의 예시다.
 - `docs/stripe-sandbox-quirks.md`는 소문자 reference 문서의 예시다 — 소스 오브 트루스가 코드가 아닌 외부 시스템 실측(Document Index의 reference 행 참고).
-- `CLAUDE.md`는 보통 아래처럼 `AGENTS.md`만 가리키는 얇은 포인터로 둔다:
-  `See [AGENTS.md](./AGENTS.md) for canonical repository instructions.`
+- `CLAUDE.md`는 보통 아래처럼 `AGENTS.md`를 `@` import로 로드하는 얇은 포인터로 둔다:
+  `@AGENTS.md`
+  마크다운 링크(`[AGENTS.md](./AGENTS.md)`)는 세션 시작 시 컨텍스트에 자동 로드되지 않는다 — `@` import만 그렇다(Claude Code 공식 문서, Import additional files). Claude 전용 규칙이 꼭 필요하면 import 아래에 이어 쓴다: `@AGENTS.md` 다음 줄에 `## Claude Code` 같은 섹션을 추가하는 형태(Claude Code 공식 문서의 AGENTS.md 절 예시).
+
+## AGENTS.md 가이드
+
+AGENTS.md는 OpenAI Codex가 주도하고 Anthropic·Google 등이 채택해 현재 Agentic AI Foundation(Linux Foundation 산하)이 관리하는 공개 표준이다. Claude Code는 `AGENTS.md`를 직접 읽지 않고 `CLAUDE.md`의 `@AGENTS.md` import로 읽는다(위 참고 항목). 아래는 agents.md 표준, OpenAI Codex 공식 가이드, Claude Code 공식 문서(Write effective instructions)가 공통으로 제시하는 기준이다.
+
+**원칙**
+
+- 필수 필드는 없다 — 이 레포에 실제로 필요한 섹션만 채운다.
+- 200줄 미만을 목표로 한다. 길어질수록 컨텍스트 소비가 늘고 준수율이 떨어진다 — 넘치면 경로별 규칙(`.claude/rules/`)이나 스킬로 쪼갠다.
+- 검증 가능한 구체성으로 쓴다: "포맷을 잘 맞춰라"가 아니라 "2-space indentation을 쓴다", "커밋 전 테스트하라"가 아니라 "커밋 전 `npm test`를 실행한다".
+- 처음부터 완성하지 않는다. agent가 같은 실수를 반복하는 지점을 관찰할 때마다 그 항목만 추가한다(OpenAI Codex 가이드의 명시적 권고) — 이 레포 §6 Promote의 승격 기준과 같은 사상이다.
+- 모노레포에서는 하위 디렉터리별 `AGENTS.md`로 지역 규칙을 나눌 수 있다. 가장 가까운 파일이 우선한다.
+
+**포함할 것 (예시)**
+
+- 빌드·테스트·린트 실행 명령어 — agent가 그대로 실행 가능한 형태로 (`pnpm test`, `make lint`)
+- 코드 스타일 규칙 (예: "TypeScript strict mode, single quotes, no semicolons")
+- 커밋 메시지·PR 형식 규칙
+- 의존성 추가·프로덕션 변경 시 승인/검토 프로세스
+- 보안·자격증명 관련 주의사항
+- agent가 이 레포에서 반복적으로 틀리는 패턴 (§6 Promote 예시와 동일 기준)
+
+**넣지 말 것**
+
+- 코드·스키마로 파악 가능한 정보 (§Principles와 동일 원칙)
+- 현재 진행 상태, 브랜치별 임시 메모 (Document Index `AGENTS.md` 행 참고)
+- 수정 불가능한 스펙 문서, 바이너리·코드 원문 그대로 붙여넣기
+- 빈 섹션 — 일부 agent(Codex 등)는 빈 파일·섹션을 무시한다
 
 ## Document Index
 
@@ -58,7 +87,7 @@ repo/
 | 문서                                    | 역할                                                                                                                  | 살아있는 기간                            | 넣지 말 것                                                          |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | --------------------------------------------------------------- |
 | `AGENTS.md`                           | 작업 규칙의 기준이다. `CLAUDE.md`는 이 파일을 가리키는 포인터만 둔다.                                                                       | 장기                                 | 현재 진행 상태, 브랜치별 메모                                               |
-| `CLAUDE.md`                           | `AGENTS.md`를 가리키는 호환용 포인터다. 추가 규칙은 두지 않는다.                                                                          | 장기                                 | Claude 전용 별도 규칙, 현재 진행 상태                                       |
+| `CLAUDE.md`                           | `@AGENTS.md` import로 `AGENTS.md`를 자동 로드하는 호환용 포인터다(마크다운 링크는 자동 로드되지 않음). 추가 규칙은 두지 않는다.                              | 장기                                 | Claude 전용 별도 규칙, 현재 진행 상태                                       |
 | `docs/VISION.md`                      | 서비스 목적, 타겟, 제품 방향을 담는다.                                                                                             | 장기                                 | sprint 계획, 구현 메모                                                |
 | `docs/GLOSSARY.md` (선택)               | 도메인 용어집(ubiquitous language). 같은 개념에 어떤 단어를 쓰는지만 정의한다.                                                              | 장기                                 | 구현 스펙, 결정 rationale                                             |
 | `docs/ARCHITECTURE.md`                | 현재 구조, 경계, 흐름 같은 사실 정보를 담는다.                                                                                        | 장기                                 | 세션 로그, 긴 rationale                                              |
@@ -450,3 +479,4 @@ Stripe webhook 재전송 전략 비교.
 | 2026-07-10 | 합치 정정 — §4 상태부 예시 리스트 삭제, 결정 ID 규약에 실질 중복 금지 신설(실질은 `Current Decision`에만, 히스토리는 Why·supersede 사실만 — shape에도 반영), PROJECT_STATE 수명 "장기, 항목은 휘발성"으로 정정, 파일명 관례 재정의(대문자 = 레포당 하나뿐인 고정 역할·전부 읽는 층 / 소문자 = 주제·작업 단위·골라 읽는 층), §6에 수행 시점(merge 후 main)·이슈 닫기 명시, 프로토타입 산출물 착지(mark) 규칙 1줄, Resume에 GLOSSARY(있으면) 삽입 | 전면 합치 리뷰. §4 예시 리스트의 behavior notes가 합의부/상태부 분리와 모순(오정보), 중복 금지 패턴이 promote 초안에만 있어 "불변식은 프로토콜에" 규율 위반, 종전 관례가 decision-logs(소문자 권위 문서)를 설명 못함, 이슈 경계 규칙에 종료 전이 부재 |
 | 2026-07-10 | 제시 순서 통일 — Sample Repo 트리·Document Index를 §5 Resume 읽기 순서로 재배열(VISION→GLOSSARY→ARCHITECTURE→PROJECT_STATE→workstreams→decision-logs, 이후 BACKLOG→LEARNINGS→features→reference→_research), 트리에 reference 예시(`stripe-sandbox-quirks.md`) 추가 | 세 곳(트리·인덱스·Resume)이 세 가지 순서를 쓰고 있었음. agent가 실제로 실행하는 유일한 순서(Resume)로 통일 — "인덱스 순서 = 읽기 순서" 한 규칙만 기억하면 됨 |
 | 2026-07-10 | git 중복 제거 — PROJECT_STATE shape에서 `Last Updated`·`Current Summary`·`Completed (recent)` 삭제(§6 1단계 함께 개정), workstream `Current State`에 커밋 로그 재서술 금지(로그가 못 담는 판정만) 가이드, `_research`에서 `Created`·`Last Updated` 삭제(`Update History`로 일원화). features→reference 통합은 기각 | 원칙(git이 아는 정보 재기록 금지) 적용: 날짜는 git log가, 완료 이력은 merge 커밋이 진실 — 수동 사본은 갱신 누락 시 거짓이 됨. 단 `_research`의 `Update History`(gitignore 예외 레포 존재 + rename이 추적을 끊음)와 decision-log 제목 날짜(히스토리 항목이 파일 간 ID째 이동 가능)는 git 위임 불가라 유지. features 통합은 사용자 기각 — 기능 설명서 카테고리의 자명성 유지 |
+| 2026-07-12 | CLAUDE.md 포인터 예시를 마크다운 링크에서 `@AGENTS.md` import로 정정(Sample Repo 참고 항목·Document Index `CLAUDE.md` 행). AGENTS.md 가이드 섹션 신설(원칙·포함할 것·넣지 말 것) | 실제 `CLAUDE.md`를 마크다운 링크 → `@AGENTS.md`로 바꾼 뒤에야 AGENTS.md 규칙이 세션 컨텍스트에 실제로 로드됨을 확인(마크다운 링크는 자동 로드되지 않음, Claude Code 공식 문서). 프로토콜이 AGENTS.md라는 파일의 존재는 규정하면서 내용 기준은 없어 매 레포마다 임의로 채워지던 공백을, agents.md 표준·OpenAI Codex 공식 가이드·Claude Code 공식 문서 교차 확인으로 메움 |
