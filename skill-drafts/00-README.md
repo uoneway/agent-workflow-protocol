@@ -20,10 +20,11 @@
 ## 스킬 관계도
 
 ```
+setup (user-invoked, 이식 진입점 — 레포당 1회 + 갱신)
 align (user-invoked, 척추)
  ├─ 조건부 위성: research (외부 사실)
  ├─ 조건부 위성: prototype (고충실도 — mattpocock 플러그인 기존 것 그대로, 초안 없음)
- └─ 조건부 위성: cold-read (초안 감사)
+ └─ 조건부 위성: cold-read (초안 감사 — setup ⑤도 재사용)
 kickoff (user-invoked)  ← align의 "지금 시작" 출구
 promote (user-invoked)  ← 작업 완료 시
 upstream-scout (user-invoked, 메타 루프 — 워크플로우 밖)
@@ -35,3 +36,4 @@ park·mark는 스킬이 아니라 AGENTS.md 규칙 (상시 행동 규칙은 스�
 
 - 2026-07-10 | 프로토콜 개정(결정 ID 규약·이슈 트래커 경계·reference 문서 기준)을 align 출구·kickoff 1/4단계·promote 1/3단계에 반영. ai-tab 적용 세션(PR #33)의 저작 패턴(Current Decision↔히스토리 중복 금지)도 promote에 수록. align의 구 "트래커 불채택" 기각 기록은 뒤집힘 표시.
 - 2026-07-10 | 전면 리뷰 반영: promote 1단계에서 `Completed (recent)` 기록 제거(완료 이력은 merge 커밋이 담당), promote 검토점 1(merge 순서) 해소 표시, 중복 금지·이슈 닫기의 프로토콜(§4·§6) 편입 표시, research 착지 관례에서 `Created`·`Last Updated` 폐지(Update History로 일원화). 확정 스킬 착지가 `~/.claude/skills` 직접 재작성 → 레포 `skills/` + symlink 설치로 변경.
+- 2026-07-12 | setup 초안 신설 — 레포 이식 진입점(레포 각인: AGENTS.md 마커 블록·docs/ 최소 골격·레포별 설정 + 갱신 모드). 근거: 이식 메커니즘 서베이(`digests/2026-07-12-setup-transplant-survey.md`, spec-kit·Agent OS·BMAD·GSD·superpowers·mattpocock·gstack). link-workflow의 목적을 "스킬 배포"가 아니라 "워크플로우 이식"으로 리프레이밍(사용자 방향).

@@ -1,6 +1,8 @@
 # link-workflow
 
-AI agent와 함께 개발할 때의 작업 워크플로우 프로토콜과, 그것을 실행하는 스킬을 관리하는 레포.
+AI agent와 함께 개발하는 워크플로우 프로토콜을 정의하고, 그것을 **임의의 git 레포에 이식·운영**하기 위한 스킬을 관리하는 레포. 스킬 배포 자체가 목적이 아니라 워크플로우의 이식이 목적이다.
+
+이식은 2층으로 나뉜다: 스킬(절차)은 유저 레벨 symlink로 모든 레포에서 쓰이고, 레포 각인(AGENTS.md 마커 블록 + docs/ 골격 + 레포별 설정)은 setup 스킬(초안: `skill-drafts/setup.md`)이 담당한다.
 
 ## 구성
 
@@ -12,7 +14,7 @@ AI agent와 함께 개발할 때의 작업 워크플로우 프로토콜과, 그�
 | `skills/` | 확정 스킬 실체 — 레포가 source of truth, `git pull`이 곧 업데이트 |
 | `scripts/link-skills.sh` | `skills/`를 `~/.claude/skills`에 symlink로 설치 |
 | `upstream-sources.md` | upstream-scout의 추적 대상과 마지막 리뷰 지점 |
-| `digests/` | upstream-scout 다이제스트 착지점 (첫 실행 시 생성) |
+| `digests/` | 워크플로우 자체에 대한 리서치·업스트림 다이제스트 착지점 |
 
 ## 루프
 
