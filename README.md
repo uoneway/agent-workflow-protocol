@@ -2,7 +2,7 @@
 
 AI agent와 함께 개발하는 워크플로우 프로토콜을 정의하고, 그것을 **임의의 git 레포에 이식·운영**하기 위한 스킬을 관리하는 레포. 스킬 배포 자체가 목적이 아니라 워크플로우의 이식이 목적이다.
 
-이식은 2층으로 나뉜다: 스킬(절차)은 유저 레벨 symlink로 모든 레포에서 쓰이고, 레포 각인(AGENTS.md 마커 블록 + docs/ 골격 + 레포별 설정)은 setup 스킬(초안: `skill-drafts/setup.md`)이 담당한다.
+이식은 2층으로 나뉜다: 스킬(절차)은 유저 레벨 symlink로 모든 레포에서 쓰이고, 레포 각인(AGENTS.md 마커 블록 + docs/ 골격 + 레포별 설정)은 setup-workflow 스킬(초안: `skill-drafts/setup-workflow.md`)이 담당한다.
 
 ## 구성
 

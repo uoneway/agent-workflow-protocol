@@ -1,16 +1,16 @@
-# setup — 초안
+# setup-workflow — 초안
 
 베이스: 신규 설계 — 2026-07-12 이식 메커니즘 서베이(`digests/2026-07-12-setup-transplant-survey.md`: spec-kit·Agent OS·BMAD·GSD·superpowers·mattpocock·gstack) 종합. 호출 방식: user-invoked.
 
-link-workflow의 목적은 스킬 배포가 아니라 **워크플로우를 대상 git 레포에 이식**하는 것이고, 이 스킬이 그 진입점이다. 스킬(절차)은 유저 레벨 symlink로 이미 모든 레포에서 쓸 수 있으므로, setup이 맡는 것은 **레포 각인** — AGENTS.md 마커 블록, docs/ 최소 골격, 레포별 설정 — 이다.
+link-workflow의 목적은 스킬 배포가 아니라 **워크플로우를 대상 git 레포에 이식**하는 것이고, 이 스킬이 그 진입점이다. 스킬(절차)은 유저 레벨 symlink로 이미 모든 레포에서 쓸 수 있으므로, setup-workflow가 맡는 것은 **레포 각인** — AGENTS.md 마커 블록, docs/ 최소 골격, 레포별 설정 — 이다.
 
 ```yaml
-name: setup
-description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식된 레포를 프로토콜 최신판으로 갱신할 때. 사용자가 "워크플로우 세팅해줘", "이 레포에 프로토콜 이식하자", "setup 돌려줘"라고 하면 사용.
+name: setup-workflow
+description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식된 레포를 프로토콜 최신판으로 갱신할 때. 사용자가 "워크플로우 세팅해줘", "이 레포에 프로토콜 이식하자", "setup-workflow 돌려줘"라고 하면 사용.
 ```
 
 > `[신규 · 저작규율1]` description은 트리거만 — 절차 요약 없음.
-> `[검토점 1]` 스킬명. `setup`은 범용어라 충돌 위험이 실재한다(gstack `setup`, mattpocock `setup-matt-pocock-skills`). 대안: `setup-workflow` / `adopt-workflow`. 개인적으로 `setup-workflow` 권장 — 트리거 자연어("워크플로우 세팅")와 일치.
+> `[검토점 1 → 확정 2026-07-13]` 스킬명 = `setup-workflow`. `setup` 단독은 전역 skills 네임스페이스의 범용어라 충돌·모호가 실재(gstack `setup-*` 3종, mattpocock이 굳이 `setup-matt-pocock-skills`를 쓴 선례). 트리거 자연어("워크플로우 세팅해줘")·기존 2어절 kebab 명명 패턴(cold-read·upstream-scout)과 합치. `adopt-workflow`는 greenfield에 부자연 + 사용자 자연어와 불일치로 기각.
 
 ---
 
@@ -18,8 +18,8 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 | 층 | 내용 | 소유 |
 |---|---|---|
-| 유저 레벨 | 스킬 전부(align/kickoff/promote/research/cold-read/setup) — link-workflow의 `scripts/link-skills.sh`가 symlink 설치 | link-workflow |
-| 레포 레벨 | ① AGENTS.md의 마커 블록 ② CLAUDE.md 포인터 ③ docs/ 최소 골격 ④ (선택) 결정 ID lint 스크립트 | 마커 블록 안 = setup이 소유(재렌더링 대상), 그 외 전부 = 레포가 소유(생성 후 절대 안 덮음) |
+| 유저 레벨 | 스킬 전부(align/kickoff/promote/research/cold-read/setup-workflow) — link-workflow의 `scripts/link-skills.sh`가 symlink 설치 | link-workflow |
+| 레포 레벨 | ① AGENTS.md의 마커 블록 ② CLAUDE.md 포인터 ③ docs/ 최소 골격 ④ (선택) 결정 ID lint 스크립트 | 마커 블록 안 = setup-workflow가 소유(재렌더링 대상), 그 외 전부 = 레포가 소유(생성 후 절대 안 덮음) |
 
 - **프로토콜 전문은 레포에 복사하지 않는다.** 마커 블록이 담는 것은 요약본이 아니라 운영 불변식 + 스킬 라우팅 + 레포별 설정이다.
 
@@ -35,7 +35,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 {
   "has_git": true,          // .git 존재
   "already_setup": false,   // AGENTS.md 마커 블록 존재
-  "protocol_version": null, // 마커의 버전 스탬프 (already_setup일 때)
+  "protocol_stamp": null,   // 마커의 P-NNNN 스탬프 (already_setup일 때)
   "agents_md": "exists|missing",
   "claude_md": "exists|missing|pointer",  // pointer = AGENTS.md만 가리키는 한 줄
   "docs_dir": ["VISION.md", "adr/", ...], // docs/ 하위 실존 목록
@@ -78,20 +78,20 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 **⑤ 검증.** `/cold-read`를 돌려라 — 검증 대상은 AGENTS.md(마커 블록 포함): "이 레포를 처음 보는 agent가 이 파일만 보고 워크플로우를 따를 수 있는가." 시작 불가 질문이 나오면 마커 블록을 보강하라.
 
-> `[신규 · 프로토콜 §2 검토 게이트]` cold-read의 재사용 — setup 산출물도 핸드오프 문서다.
+> `[신규 · 프로토콜 §2 검토 게이트]` cold-read의 재사용 — setup-workflow 산출물도 핸드오프 문서다.
 
 **갱신 모드** (`already_setup=true`). 강제 재초기화는 없다:
 
-1. 마커의 `protocol_version`과 프로토콜 현재 버전을 비교하고, 그 사이의 변경 이력 행들을 사용자에게 보여라.
+1. 마커의 스탬프(`P-NNNN`)와 프로토콜 변경 이력의 마지막 행 ID를 비교하고, 그 사이의 행들을 사용자에게 보여라.
 2. 바뀐 불변식이 마커 블록에 영향을 주면 diff를 제시하고, 승인 후 **마커 블록 안만** 재렌더링하라. 마커 밖과 docs/는 건드리지 않는다.
 
 > `[가져옴 · GSD update]` "changelog 먼저 보여주고 확인 후 갱신".
-> `[참조 · spec-kit 안티패턴]` 갱신과 강제 초기화를 한 동사로 뭉뚱그리면 사용자 커스텀이 날아간다 — 별도 모드 없음, 마커 안만이 setup의 영토.
+> `[참조 · spec-kit 안티패턴]` 갱신과 강제 초기화를 한 동사로 뭉뚱그리면 사용자 커스텀이 날아간다 — 별도 모드 없음, 마커 안만이 setup-workflow의 영토.
 
 ## AGENTS.md 마커 블록 사양
 
 ```markdown
-<!-- agent-workflow-protocol v2026-07-10 start -->
+<!-- agent-workflow-protocol P-0011 start -->
 ## Agent Workflow
 
 이 레포는 Agent Workflow Protocol을 따른다. 단계 어휘: Capture → Align → Kickoff → Develop → Resume → Promote.
@@ -113,17 +113,17 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 <!-- agent-workflow-protocol end -->
 ```
 
-- 버전 스탬프 `v<날짜>`는 프로토콜 변경 이력의 마지막 행 날짜를 쓴다.
-- 블록 안은 setup만 고친다. 레포 고유 규칙(빌드 명령, 코드 진입점, LEARNINGS 승격분)은 블록 **밖** — 레포 소유 영역 — 에 쌓인다.
+- 버전 스탬프는 이식·갱신 시점의 프로토콜 변경 이력 **마지막 행 ID**(`P-NNNN` — 변경 이력 규약 P-0011)다.
+- 블록 안은 setup-workflow만 고친다. 레포 고유 규칙(빌드 명령, 코드 진입점, LEARNINGS 승격분)은 블록 **밖** — 레포 소유 영역 — 에 쌓인다.
 
 > `[가져옴 · GSD claude-md 마커 + spec-kit agent-context]` 마커 경계 관리 섹션, 밖은 불가침, 없으면 append.
-> `[검토점 2]` 버전 표기 — 변경 이력 마지막 날짜는 하루 2개 행이면 모호하다. 프로토콜에 명시적 버전 필드(gstack VERSION 패턴)를 둘지, 날짜로 충분한지.
+> `[검토점 2 → 확정 2026-07-13]` 버전 표기 = 변경 이력 행 연번 `P-NNNN` (프로토콜 P-0011로 규약 신설·소급 부여 완료). 날짜 기각 — 같은 날 다수 행이 실존(2026-07-10에 7행)해 기준점을 유일하게 지목 못 함. semver(spec-kit constitution)·릴리스 버전(gstack VERSION) 기각 — 리뷰 세션 단위 일괄 개정에 호환성·릴리스 의미론이 부적합하고 판정 비용만 부과. 결정 ID 규약(D-NNNN)으로 이미 검증된 연번 패턴의 재사용.
 > `[검토점 3]` 마커 블록에 프로토콜 원문 위치(link-workflow 레포 경로/URL)를 넣을지 — 협업자 접근성 vs 사적 경로 노출. 현재 안은 넣지 않음(스킬이 안다).
 
 ## 동봉물 (스킬 폴더 위성 파일)
 
 ```
-skills/setup/
+skills/setup-workflow/
 ├── SKILL.md
 ├── scripts/detect-repo-state.sh     # ⓪ pre-flight JSON
 ├── scripts/lint-decision-logs.sh    # ④4 복사용 (ai-tab 것 일반화)
@@ -148,8 +148,8 @@ skills/setup/
 ## 통째로 가져오지 않은 것 (기각 기록)
 
 - **BMAD 해시 매니페스트 3분류** — 마커 경계 + "존재 파일 불가침"만으로 충분한 규모. 코드 유지비가 이득을 초과.
-- **GSD map-codebase / BMAD document-project 등가물(ARCHITECTURE 역생성)** — setup 범위 밖. brownfield에서 필요하면 별도 세션으로 제안만 한다 (setup이 비대해지면 실행 문턱이 올라간다).
+- **GSD map-codebase / BMAD document-project 등가물(ARCHITECTURE 역생성)** — setup-workflow 범위 밖. brownfield에서 필요하면 별도 세션으로 제안만 한다 (setup-workflow가 비대해지면 실행 문턱이 올라간다).
 - **superpowers SessionStart 훅 주입** — 훅은 하니스 종속이고, 우리 각인 대상은 사람도 읽는 AGENTS.md.
 - **Agent OS index.yml 카탈로그** — 문서 수가 한 자릿수인 우리 docs/에는 Document Index(프로토콜)로 충분.
 
-> `[검토점 5]` 이식된 레포 목록을 link-workflow가 추적할지(`installed-repos.md` 등) — 프로토콜 개정 시 일괄 갱신 순회가 가능해진다. 반면 수동 목록은 부패하기 쉽고, 갱신 모드가 레포 방문 시점에 감지하는 pull 방식이 프로토콜의 최소주의에 가깝다. 현재 안: 추적하지 않음(pull 방식).
+> `[검토점 5 → 확정 2026-07-13]` 추적하지 않음(pull). 명단은 파생 가능 정보의 수동 사본이라 스스로 낡는다 — PROJECT_STATE `Last Updated` 삭제와 같은 원칙이고, link-workflow 자신의 경로 이동(~/docs → ~/Project)이 부패 시나리오의 실증. 갱신 수요는 방문과 동시에 발생하므로 미방문 레포의 낡음은 무비용(절차는 유저 레벨 스킬이라 항상 최신 — 낡는 건 마커 요약뿐). 일괄 점검이 필요한 드문 순간엔 `grep -rl "agent-workflow-protocol" ~/Project/*/AGENTS.md`로 그 시점의 진실을 즉석 파생 — 명단의 유일 효용이 한 줄로 대체된다.
