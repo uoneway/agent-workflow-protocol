@@ -23,8 +23,6 @@ background agent의 임무:
 1. 질문을 **1차 소스** — 공식 문서, 소스코드, 스펙, first-party API — 에 대해 조사하라. 2차 요약본이 아니라, 모든 주장을 그 주장을 소유한 소스까지 따라가라.
 2. 발견을 단일 Markdown 파일로 쓰고, 각 주장에 출처를 달아라.
 
-> `[가져옴 · mattpocock research]` 1·2번 거의 원문 번역. 원문 3번("repo 관례에 맞는 위치에 저장")은 아래 우리 관례로 구체화하며 대체.
-
 3. `docs/_research/YYYY-MM-DD-<slug>.md`로 저장하라. 날짜는 오늘이다. 같은 주제의 기존 파일이 있으면 새 파일을 만들지 말고 본문을 갱신한 뒤 새 날짜로 rename하고, `Update History`에 항목을 추가하라 (`Created`·`Last Updated` 헤더는 두지 않는다 — 2026-07-10 전면 리뷰에서 Update History로 일원화).
 4. 파일 끝에 `## Implications` 섹션으로 "이 발견이 브리프의 결정에 주는 함의"를 3~5줄로 정리하라.
 

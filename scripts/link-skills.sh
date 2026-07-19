@@ -6,6 +6,20 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/.claude/skills"
+
+# DEST 자체가 이 레포를 가리키는 symlink면, 아래 루프가 레포의 skills/ 트리 안에
+# symlink를 다시 써넣게 된다. 감지해서 중단한다. (mattpocock/skills link-skills.sh 관례)
+if [ -L "$DEST" ]; then
+  resolved="$(readlink -f "$DEST")"
+  case "$resolved" in
+    "$REPO"|"$REPO"/*)
+      echo "error: $DEST 가 이 레포를 가리키는 symlink다 ($resolved)." >&2
+      echo "제거 후($DEST) 재실행하라 — 스크립트가 실제 디렉토리로 다시 만든다." >&2
+      exit 1
+      ;;
+  esac
+fi
+
 mkdir -p "$DEST"
 
 found=0

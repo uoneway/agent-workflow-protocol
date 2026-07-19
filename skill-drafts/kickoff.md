@@ -26,12 +26,12 @@ main에서 한 커밋으로 시작 전이를 만들라:
 
 > `[가져옴 · 프로토콜 §3]` 체크리스트 그대로. 스킬은 프로토콜의 실행자일 뿐 새 규칙을 만들지 않는다 (저작규율 4).
 > `[신규 · 프로토콜 §4 결정 ID 규약, 2026-07-10]` 4의 ID 부여 — 초안 단계에는 ID가 없고, 기준 문서로 착지하는 순간이 부여 시점. 1의 이슈 코멘트 — 이슈 트래커 경계 규칙(같은 개정)의 kickoff 쪽 실행.
+> `[신규 · mattpocock ADR-0001 hard-dependency 패턴]` 4의 시작 연번(`D-0001부터` 또는 기존 ADR 연번 승계)은 AGENTS.md 마커 블록의 "이 레포의 설정"에 있어야 한다 — 없으면(마커 없음 = setup-workflow 미실행) 임의로 D-0001부터 매기지 말고 setup-workflow 실행 여부부터 물어라. 모르고 새로 매기면 기존 ADR 시리즈와 갈라져 되돌리기 어렵다 — mattpocock의 hard-dependency 스킬이 설정 없이는 출력이 틀린다는 것과 같은 이유(`upstream-sources.md`의 mattpocock/skills 항목 참고).
 > `[검토점]` ID 규약 lint(ai-tab은 `scripts/lint-decision-logs.sh`를 pre-commit에 연결)를 스킬이 언급할지 — repo마다 존재가 달라 AGENTS.md 몫일 수도.
 
 커밋 후 branch/worktree를 만들라. 이름은 workstream slug를 따른다 (`feat/<slug>`, worktree는 `../repo-<slug>`). 이후 이 branch에서는 `docs/workstreams/<slug>.md`만 갱신한다 — `PROJECT_STATE.md`·`BACKLOG.md`는 main 전용이다.
 
-> `[가져옴 · 프로토콜 §3 + Parallel Workstreams]` main-only 규칙의 실행 시점 상기.
-> `[참조 · obra using-git-worktrees]` worktree 명명 관례 정도만. superpowers는 worktree 생성·정리에 별도 스킬을 두지만 우리는 kickoff/promote에 인라인 — 조건부가 아니라 무조건 단계라서 (저작규율 3).
+> `[가져옴 · 프로토콜 §3 + Parallel Workstreams]` main-only 규칙의 실행 시점 상기. worktree 명명 관례는 obra/superpowers에서 참조했다 — `upstream-sources.md`의 obra/superpowers 항목 참고.
 
 끝나면 한 줄로 보고하라: 만든 것(커밋·branch·worktree 경로)과 첫 슬라이스가 무엇인지.
 

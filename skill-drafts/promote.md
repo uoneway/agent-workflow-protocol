@@ -13,8 +13,6 @@ description: 작업이 끝나서 문서를 정리하고 workstream을 닫을 때
 
 **게이트: 증거 확인.** `docs/workstreams/<slug>.md`의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있는지 확인하라. 비어 있거나 "될 것이다" 수준이면 완료 처리를 중단하고 검증부터 하라. 주장보다 증거다.
 
-> `[가져옴 · superpowers verification-before-completion]` "주장보다 증거" 원칙. superpowers는 이를 상시 규칙으로 두지만 우리는 promote의 입구 게이트로 배치 — 상시 규칙은 AGENTS.md 몫이고, 여기는 마지막 방어선.
-
 게이트를 통과하면 순서대로:
 
 1. `docs/PROJECT_STATE.md`: active 제거 — 완료 이력은 merge 커밋이 기록하므로 별도 목록은 없다. 이슈 트래커에서 온 작업이면 이슈에 근거 커밋 해시를 코멘트로 남기고 닫아라
@@ -28,14 +26,14 @@ description: 작업이 끝나서 문서를 정리하고 workstream을 닫을 때
 > `[가져옴 · 프로토콜 §6]` 1~7 그대로. 3의 "mark 빠뜨린 결정 되짚기"만 `[신규]` — promote가 mark의 최종 안전망 역할.
 > `[신규 · 프로토콜 §6]` 6의 "이동 시점에 반복 판정" — 승격 판단을 별도 리뷰로 미루지 않고 이동하는 손이 그 자리에서 (승격은 어차피 diff를 보는 순간이 가장 싸다).
 > `[신규 · 프로토콜 §4 결정 ID 규약 + 2026-07-10 ai-tab 전환 세션]` 3의 ID·중복 금지 — ADR 9건을 주제 로그로 통합하며 확인된 저작 패턴: Current Decision과 히스토리에 같은 실질을 두 번 쓰면 다음 갱신 때 한쪽이 낡는다. 히스토리는 "현행 유지(본문 참고)"로 위임. 1의 이슈 닫기 — 이슈 트래커 경계 규칙의 promote 쪽 실행 (ai-tab AGENTS.md task lifecycle에서 가져옴). → 2026-07-10 전면 리뷰로 중복 금지·이슈 닫기 모두 프로토콜(§4·§6)에 편입 — 이 단계는 이제 신규 규칙이 아니라 실행 지점이다.
+> `[신규 · mattpocock ADR-0001 hard-dependency 패턴]` 3의 시작 연번은 kickoff와 마찬가지로 AGENTS.md 마커 블록의 "이 레포의 설정"에 있어야 한다 — 없으면 임의로 매기지 말고 setup-workflow 실행 여부부터 물어라(kickoff.md 참고, 같은 근거). 1의 이슈 트래커 사용 여부도 마커 블록에 없으면 그 자리에서 물어라 — 틀린 값(트래커 있는데 없다고 가정)으로 진행해 이슈를 안 닫고 넘어가는 게 더 나쁘다.
 
 마무리 대조 두 가지:
 
 - `docs/BACKLOG.md`에 이 작업으로 이미 해결된 항목이 남아 있으면 제거를 제안하라.
 - `PROJECT_STATE.md`의 다른 active workstream 중 오래 진전 없는 것(좀비)이 보이면 지적만 하라 — 닫을지는 사용자가 정한다.
 
-> `[참조 · gstack ship]` "ship이 TODOS를 diff와 대조해 완료 항목 자동 이동" — 우리는 자동 이동 대신 제안으로 (User Sovereignty와 우리의 강제 대신 가이드 선호, 양쪽 모두와 일관).
-> `[가져옴 · 프로토콜 Parallel Workstreams]` 좀비 감지를 promote 시점에 얹음 — "PROJECT_STATE를 갱신할 때마다"의 실행 시점이 바로 여기.
+> `[가져옴 · 프로토콜 Parallel Workstreams]` 좀비 감지를 promote 시점에 얹음 — "PROJECT_STATE를 갱신할 때마다"의 실행 시점이 바로 여기. 완료 대조 방식(자동 이동 대신 제안)이 gstack ship에서 무엇을 참조했는지는 `upstream-sources.md`의 garrytan/gstack 항목 참고.
 
 승격이 끝나면 한 줄로 보고하라: 승격된 것(어디로), 삭제된 것, 남긴 제안.
 
