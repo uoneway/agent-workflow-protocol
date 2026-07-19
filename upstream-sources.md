@@ -19,6 +19,7 @@
 | buildermethods/agent-os | repo | 2026-07-12 | 이식 서베이 조사 시점 — v1·v1.3·v2·v3 비교 |
 | get-shit-done-cc (GSD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
 | bmad-method (BMAD-METHOD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
+| Geoffrey Litt | blog | 2026-07-20 | "Understanding is the new bottleneck" |
 
 spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서베이(`digests/2026-07-18-setup-transplant-survey.md`)에서 `setup-workflow` 설계를 위해 처음 조사됐다. 이 문서가 갱신되기 전까지는 추적 표에 등록되지 않은 채 다이제스트에만 있었다.
 
@@ -90,6 +91,23 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 ### aihero.dev
 
 추적 표에는 2026-07-05 비교 분석 시점부터 있었지만, 지금까지 구체적으로 "이 항목은 aihero.dev에서 가져왔다"고 지목할 수 있는 흡수 기록은 없다. 초기 조사가 mattpocock/superpowers/gstack 세 레포 중심으로 진행됐고, 블로그는 참고 맥락으로만 훑은 상태로 보인다. 다음 upstream-scout 리뷰에서 구체적으로 무엇을 봤는지 다시 확인이 필요하다 — 추적만 하고 실질 흡수 기록이 없는 유일한 소스라는 점을 그대로 남겨둔다.
+
+---
+
+### Geoffrey Litt
+
+2026-07-02 글 ["Understanding is the new bottleneck"](https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck.html)을 2026-07-20 리뷰에서 검토했다. agent가 작성하는 코드가 늘수록 사람의 병목은 검증만이 아니라, 시스템을 이해해 다음 변화를 제안하는 참여 능력이라는 문제의식이 핵심이다.
+
+**가져온 것**
+
+- **이해의 목적 재정의** — 문서화의 목적에 retrieval(재개·유지)과 participation(사람이 살아있는 멘탈 모델을 유지해 다음 판단에 참여)을 동등하게 두었다. agent가 코드를 탐색해 알 수 있다는 사실만으로, 사람이 빠르게 판단할 수 있는 설명의 가치를 부정하지 않도록 했다(P-0012).
+- **교육적 이해 도구** — 배경·직관을 먼저 제시하고, 필요할 때 코드 설명·확인 질문·조작 가능한 작은 예시로 내려가는 흐름을 Change Brief·이해 확인·micro-world로 흡수했다. 질문은 사용자 평가가 아니라 agent 설명의 빈틈을 찾는 장치로 변형했다.
+- **소비성 설명물** — explainer와 micro-world는 대개 읽거나 써서 멘탈 모델을 만들면 임무가 끝나는 도구다. 매 변경마다 파일로 남기지 않고, 장기 판단 가치가 확인된 모델만 기존 기준 문서로 승격하도록 했다. Align의 일회성 프로토타입 착지 규칙을 같은 방식으로 일반화했다.
+
+**가져오지 않은 것 / 보류**
+
+- **전용 explain 스킬** — 코드 설명의 서사 순서와 확인 질문을 자동화하는 스킬은 후보지만, 실제로 어떤 요청·산출물·수명 규칙이 반복되는지 관찰하기 전에는 새 스킬을 만들지 않는다. P-0012의 `explain` 횡단 규칙으로 먼저 운영한다.
+- **shared space** — 팀 단위 공유 이해 도구는 현재 1인-다중 agent 중심의 프로토콜에서 실사용 마찰이 아직 관찰되지 않아 도입하지 않는다. 협업 규모에서 같은 문제가 반복되면 friction log에 capture한다.
 
 ---
 

@@ -21,7 +21,7 @@ main에서 한 커밋으로 시작 전이를 만들라:
 
 1. `docs/BACKLOG.md`에서 해당 항목 제거. 이슈 트래커에서 넘어온 작업이면 이슈에 착수를 코멘트로 남겨라 — 이슈는 promote 때 근거 커밋과 함께 닫는다
 2. `docs/PROJECT_STATE.md`에 active 등록 — 이름, 상태, owner, 상세 링크만
-3. `docs/workstreams/<slug>.md` 생성 — align 초안을 합의부로, 상태부는 뼈대(Current State: 착수 전 / Next Step: 첫 슬라이스)
+3. `docs/workstreams/<slug>.md` 생성 — align 초안(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope)을 합의부로, 상태부는 뼈대(Current State: 착수 전 / Next Step: 첫 슬라이스)
 4. align에서 나온 decision-log 초안이 있으면 `docs/decision-logs/`에 착지. 착지하는 순간 결정마다 레포 전역 연번 ID(마지막 번호 +1)를 부여해 히스토리 항목 제목에 박고, 같은 파일의 `Current Decision`을 갱신하라. 이후 인용은 파일 경로가 아니라 ID로
 
 > `[가져옴 · 프로토콜 §3]` 체크리스트 그대로. 스킬은 프로토콜의 실행자일 뿐 새 규칙을 만들지 않는다 (저작규율 4).

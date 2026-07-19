@@ -4,11 +4,13 @@
 
 ## Principles
 
-- Documentation의 1차 목적은 코드만으로는 알 수 없는 정보 중에서 본 프로젝트를 개발/유지해나가는데 꼭 필요한 정보를 기록하는데 있다. 따라서 코드 및 스키마는 특별한 사유가 없는 한 문서에 포함하지 않는다. 
-- 단 코드를 통해 파악할 수 있는 정보일지라도, 이를 위해 agent가 봐야하는 코드의 범위나 드는 시간이 상당히 높거나, 관리자인 사람이 앞으로 본 프로젝트를 발전시켜나가는데 효용이 높은 정보는 문서화한다.
+- Documentation은 동등한 두 목적을 갖는다. 첫째, 코드만으로는 알 수 없는 정보 중에서 본 프로젝트를 개발·유지하는 데 꼭 필요한 것을 기록해 재개 가능하게 한다. 둘째, 관리자인 사람이 시스템의 살아있는 멘탈 모델을 유지하여 agent의 산출물을 단순 승인하지 않고 다음 판단과 변화를 주도하게 한다.
+- 따라서 코드 및 스키마는 특별한 사유가 없는 한 문서에 포함하지 않는다. 단 코드로 파악할 수 있더라도, 이를 위해 agent가 봐야 하는 코드의 범위나 드는 시간이 상당히 높거나, 사람이 의도·핵심 규칙·경계·트레이드오프를 빠르게 이해하고 다음 결정을 내리는 데 효용이 높은 정보는 문서화한다.
 - 작업중 필요한 정보는 일시적으로 한 곳에 저장했다가 작업 완료 후에도 보존해야 할 정보만 적절한 기준 문서로 승격하고 나머지는 삭제한다. 이를 통해 작업중에는 별도의 handoff 과정 필요 없이 언제든 새로운 세션으로 시작할 수 있도록 돕고, 작업 후에는 코드를 source of truth로 하고 문서와의 괴리를 원천 차단한다.
 - 문서가 담을 지식과 프로세스가 담당할 지식을 구분한다. 지식 4분면 중 문서는 "알고 있음을 아는 것" 가운데 장기 보존 가치가 있는 것만 담는다. 암묵지(알지만 당연해서 적지 않는 것)는 grill로 꺼내고, 인지된 무지는 리서치로 해소하고, 인지 못한 무지는 수직 슬라이스·해결책 공간 리서치·전제 도전으로 드러낸다. 문서 하나로 네 분면을 모두 커버하려는 시도가 spec 문서 부패의 근본 원인이다.
 - git 추적 여부는 문서의 주제가 아니라 두 질문으로 정한다: ① 코드와 원자적으로 동기화되어야 하는가 (같은 커밋에 담는 것이 유일하게 강제력 있는 싱크 수단이다. 문서를 git 밖으로 빼는 것은 싱크 부담을 줄이는 게 아니라 싱크 깨짐을 안 보이게 만드는 것이다) ② 협업자(사람·agent)가 공유해야 할 진실인가. 하나라도 참이면 git 안에 둔다. 리서치 raw 정보도 기본은 git 안이다 — 리서치의 협업자는 미래의 나와 에이전트이고, git 밖 보관은 유실로 이어진다(§Research Documents).
+
+**기준 문서와 이해 도구.** 기준 문서는 재개·유지·변경의 장기 기준으로 git 안에 남는다. 반면 Change Brief, explain-diff, micro-world 같은 이해 도구는 이번 변경의 멘탈 모델을 만드는 소비성 산출물이며, 대화·PR·일회성 데모로 충분하다. 이해 도구를 매번 파일로 축적하지 않는다. 시간이 지나도 사용·운영·확장 판단을 반복해서 돕는 내용만 `ARCHITECTURE.md`·`decision-logs/`·`features/` 등 기준 문서로 승격한다. 프로토타입과 마찬가지로 도구 자체의 착지점은 문서가 아니라 mark다.
 
 ## Sample Repo
 
@@ -91,13 +93,13 @@ AGENTS.md는 OpenAI Codex가 주도하고 Anthropic·Google 등이 채택해 현
 | `CLAUDE.md`                           | `@AGENTS.md` import로 `AGENTS.md`를 자동 로드하는 호환용 포인터다(마크다운 링크는 자동 로드되지 않음). 추가 규칙은 두지 않는다.                              | 장기                                 | Claude 전용 별도 규칙, 현재 진행 상태                                       |
 | `docs/VISION.md`                      | 서비스 목적, 타겟, 제품 방향을 담는다.                                                                                             | 장기                                 | sprint 계획, 구현 메모                                                |
 | `docs/GLOSSARY.md` (선택)               | 도메인 용어집(ubiquitous language). 같은 개념에 어떤 단어를 쓰는지만 정의한다.                                                              | 장기                                 | 구현 스펙, 결정 rationale                                             |
-| `docs/ARCHITECTURE.md`                | 현재 구조, 경계, 흐름 같은 사실 정보를 담는다.                                                                                        | 장기                                 | 세션 로그, 긴 rationale                                              |
+| `docs/ARCHITECTURE.md`                | 현재 구조, 경계, 주요 흐름 같은 사실과 사람이 시스템을 이해하기 위한 핵심 모델을 담는다.                                                              | 장기                                 | 세션 로그, 긴 rationale                                              |
 | `docs/PROJECT_STATE.md`               | active workstream의 인덱스와 우선순위를 보여준다.                                                                                 | 장기, 항목은 휘발성                        | branch별 상세 재개 메모                                                |
-| `docs/workstreams/<slug>.md`          | 특정 작업의 상세 상태와 handoff 역할을 맡는다. 현재 작업의 `Next Step`도 여기에 둔다.                                                          | branch/worktree 수명 동안              | repo-wide 우선순위, 장기 구조 설명                                        |
+| `docs/workstreams/<slug>.md`          | 특정 작업의 합의(목표·멘탈 모델·핵심 trade-off)와 상세 상태를 담아 handoff 역할을 맡는다. 현재 작업의 `Next Step`도 여기에 둔다.                            | branch/worktree 수명 동안              | repo-wide 우선순위, 장기 구조 설명                                        |
 | `docs/decision-logs/<topic>.md`       | 중요한 결정의 이유와 변경 이력을 담는다. rationale은 여기 둔다. 히스토리 항목은 레포 전역 연번 ID를 갖는다(§4 결정 ID 규약).                                   | 장기                                 | 사소한 임시 결정                                                       |
 | `docs/BACKLOG.md`                     | 아직 시작하지 않은 작업 목록을 관리한다. 이슈 트래커를 쓰는 레포에서는 fog·장기 후보의 권위만 맡는다(표 아래 참고).                                               | 장기, 항목은 휘발성                        | 현재 진행 상태, 세션 메모                                                 |
 | `docs/LEARNINGS.md`                   | 1회성 교훈의 중간 버퍼다. 반복 확인된 항목만 `AGENTS.md`로 승격하고 제거한다.                                                                  | 장기, 항목은 휘발성                        | 진행 상태, 결정 rationale                                             |
-| `docs/features/<feature>.md`          | 완료 후에도 설명 가치가 있는 기능만 남긴다.                                                                                           | 선택적 장기                             | 개발 중 진행 상태                                                      |
+| `docs/features/<feature>.md`          | 완료 후에도 사람이 기능을 사용·운영·확장·제한할 판단을 하는 데 설명 가치가 있는 기능만 남긴다. 목적·관측 가능한 동작·핵심 모델·한계를 담는다.                         | 선택적 장기                             | 개발 중 진행 상태, 구현의 시간순 기록                                      |
 | `docs/<reference>.md`                 | 소스 오브 트루스가 코드가 아닌 장기 사실만 담는 reference — 외부 시스템 실측(OS·서드파티 API 동작), 수동 절차(QA 매트릭스·운영 가이드) 등. 같은 소스를 다루는 문서는 하나로 합친다. | 장기                                 | 코드가 소스인 사실 (`ARCHITECTURE.md`나 코드 주석으로), 미래 설계 노트 (BACKLOG·이슈로) |
 | `docs/_research/YYYY-MM-DD-<slug>.md` | 광범위한 외부 정보를 raw 형태로 보존하는 저장소. 비기준 문서라(`_` 접두가 그 표시) 다른 문서와 링크로 연결하지 않는다. 기본 git 추적, 예외는 §Research Documents.        | 장기, stale 무방 (업데이트 시 파일명·본문 일시 갱신) | 진행 중 작업 상태, 다른 문서에서 링크·참조되어야 하는 정보                              |
 
@@ -105,9 +107,11 @@ AGENTS.md는 OpenAI Codex가 주도하고 Anthropic·Google 등이 채택해 현
 
 **파일명 관례**: 대문자 = 레포당 하나뿐인 고정 역할 문서(전부 읽는 층), 소문자 = 주제·작업 단위로 늘어나는 문서(`workstreams/`, `decision-logs/`, `features/`, reference, `_research/` — 관련된 것만 골라 읽는 층)
 
+**사람의 이해가 주 목적인 문서의 서술 기준.** `VISION.md`·`ARCHITECTURE.md`·`features/`는 사실을 나열하기보다 그 사실이 만드는 인과와 선택의 맥락을 먼저 쓴다. 배경 다음에 직관과 핵심 개념을 놓고, 세부 구현은 질문이 생겼을 때 내려갈 수 있는 층으로 둔다. 독자가 다음 판단을 할 수 있는 최소 멘탈 모델과, 보장하지 않는 경계를 함께 제공한다.
+
 ## Workflow
 
-단계 어휘: **Capture → Align → Kickoff → Develop → Resume → Promote**. 횡단 규칙: **park**(가지 착지), **mark**(결정 기록). 이 어휘를 문서·스킬·대화에서 동일하게 쓴다.
+단계 어휘: **Capture → Align → Kickoff → Develop → Resume → Promote**. 횡단 규칙: **park**(가지 착지), **mark**(결정 기록), **explain**(사람의 멘탈 모델 정렬). 이 어휘를 문서·스킬·대화에서 동일하게 쓴다.
 
 ### 1. Capture — 아이디어 및 방향 수립
 
@@ -117,7 +121,7 @@ AGENTS.md는 OpenAI Codex가 주도하고 Anthropic·Google 등이 채택해 현
 
 ### 2. Align — 작업 셰이핑
 
-BACKLOG의 항목을 실제 작업으로 전환하기 전, grill 세션으로 사용자의 의도와 agent의 이해를 동기화하고 작업을 착수 가능한 형태로 다듬는다. 네 수(手)로 진행한다.
+BACKLOG의 항목을 실제 작업으로 전환하기 전, grill 세션으로 사용자의 의도·멘탈 모델과 agent의 이해를 동기화하고 작업을 착수 가능한 형태로 다듬는다. agent가 내부적으로 이해했다고 해서 Align이 끝난 것이 아니다. 사용자가 이 작업의 변화·선택·경계를 이해해 다음 판단에 참여할 수 있을 때까지 네 수(手)로 진행한다.
 
 **① 접근안 벌리기.** 설계 트리를 내려가기 전에 접근안 2~3개를 트레이드오프와 함께 제시하고 방향을 고른다. 방향이 자명하면 건너뛴다.
 
@@ -127,6 +131,8 @@ BACKLOG의 항목을 실제 작업으로 전환하기 전, grill 세션으로 �
 - 사용자의 선호·권한에 속하면 → 사용자에게 묻는다.
 - 외부 세계의 사실이면 → 리서치로 핸드오프한다.
 - 보거나 만져야 답할 수 있으면(고충실도) → 프로토타입으로 핸드오프한다.
+
+**이해 정렬.** agent가 중요한 동작·핵심 규칙·선택의 trade-off를 이해했지만 사용자가 아직 같은 모델을 가졌는지 확신할 수 없으면, 먼저 배경과 직관을 평이한 언어로 설명한 뒤 대표 시나리오나 한 가지 질문으로 빈틈을 드러낸다. 질문은 사용자를 시험하는 장치가 아니라 설명의 실패를 찾는 장치다. 사용자는 답을 암기해 되풀이할 필요 없이, 설명을 수정·보완하거나 선택·우려를 제기할 수 있으면 된다. 규모가 작거나 변화가 자명하면 이 확인은 건너뛴다.
 
 프로토타입 핸드오프의 산출물은 일회성 코드다. 착지 지점은 문서가 아니라 mark다 — 발견이 결정을 좌우하면 workstream 합의부나 `docs/decision-logs/`에 반영하고, 코드 자체는 폐기하거나 branch로 남긴다.
 
@@ -149,9 +155,9 @@ BACKLOG의 항목을 실제 작업으로 전환하기 전, grill 세션으로 �
 
 전제 도전은 agent가 사용자의 명시적 방향을 뒤집자고 제안하는 순간이므로 규격을 따른다: **사용자의 원래 방향이 기본값**이고, agent는 "우리가 놓쳤을 수 있는 맥락"과 "우리가 틀렸을 때의 비용"을 명시해 변경을 입증해야 한다. 복수의 모델이 합의해도 그것은 신호일 뿐 명령이 아니다 — 자동으로 결정하지 않는다.
 
-**③ 초안 작성.** 합의가 수렴하면 workstream 문서의 합의부(Goal / Current Scope / Behavior Notes / Out of Scope) 초안으로 종합한다. 별도 PRD 문서는 만들지 않는다 — 이 초안이 그 역할이다. Current Scope는 각각 독립적으로 완결 가능한 **수직 슬라이스**로 쪼갠다. 모든 통합 레이어를 관통하는 얇은 조각이 미지의 미지를 가장 빨리 드러낸다. ADR급 결정은 `docs/decision-logs/<topic>.md` 초안으로 함께 뽑는다.
+**③ 초안 작성.** 합의가 수렴하면 workstream 문서의 합의부(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope) 초안으로 종합한다. 별도 PRD 문서는 만들지 않는다 — 이 초안이 그 역할이다. Mental Model은 이 변경 뒤 사람이 이해해야 할 핵심 규칙·흐름·경계이고, Key Trade-off는 검토한 선택지와 채택 기준이다. Current Scope는 각각 독립적으로 완결 가능한 **수직 슬라이스**로 쪼갠다. 모든 통합 레이어를 관통하는 얇은 조각이 미지의 미지를 가장 빨리 드러낸다. ADR급 결정은 `docs/decision-logs/<topic>.md` 초안으로 함께 뽑는다.
 
-**④ 검토 게이트.** 사용자가 초안을 승인한다. 규모 있는 작업이면 **cold-read audit**을 추가한다: 대화에 참여하지 않은 fresh agent가 초안만 읽고 "이것만으로는 답할 수 없는 질문" 목록을 낸다. align 참여자들은 대화 컨텍스트를 공유해 초안의 구멍이 보이지 않고, 미래의 구현 세션은 fresh할 수 있기 때문이다. 통과 기준은 한 문장이다: fresh한 구현 에이전트가 질문 없이 시작할 수 있는가.
+**④ 검토 게이트.** 사용자가 초안을 승인한다. 규모 있는 작업이면 두 확인을 추가한다. **cold-read audit**은 대화에 참여하지 않은 fresh agent가 초안만 읽고 "이것만으로는 답할 수 없는 질문" 목록을 낸다. **이해 확인**은 agent가 배경 → 직관 → 선택 순으로 설명하고, 사용자가 대표 시나리오·선택·우려 중 하나로 응답해 자신의 모델을 수정할 기회를 갖는다. 첫째는 fresh한 구현 에이전트가 질문 없이 시작할 수 있는가, 둘째는 프로젝트 책임자가 이 변경의 다음 판단에 참여할 수 있는가를 묻는다. align 참여자들은 대화 컨텍스트를 공유해 초안의 구멍이 보이지 않고, 미래의 구현 세션과 사용자는 fresh할 수 있기 때문에 둘 다 필요할 수 있다.
 
 **출구.** align의 출구는 세 갈래다. 어느 쪽이든 align에서 내린 결정은 코드가 되거나 문서가 되어야 하며, 컨텍스트와 함께 버려져서는 안 된다.
 
@@ -180,7 +186,7 @@ align이 항상 Kickoff로 이어진다면 전제 도전은 연극이다. 작업
 
 - `BACKLOG.md`에서는 시작한 항목을 제거한다.
 - `PROJECT_STATE.md`에는 이름, 상태, owner, 상세 링크만 넣는다.
-- `docs/workstreams/<slug>.md`에는 align의 초안을 합의부로 착지시키고, 상태부에 재개 정보를 적는다.
+- `docs/workstreams/<slug>.md`에는 align의 초안(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope)을 합의부로 착지시키고, 상태부에 재개 정보를 적는다.
 - 이 시작 전이 커밋은 main에서 만든 뒤 branch/worktree를 딴다. 이후 branch에서는 `docs/workstreams/<slug>.md`만 갱신한다.
 
 피해야 할 것:
@@ -203,10 +209,12 @@ align이 항상 Kickoff로 이어진다면 전제 도전은 연극이다. 작업
 
 - 의미 있는 기술 결정이 생기면 현재 구조 요약은 `docs/ARCHITECTURE.md`에, 결정 이유와 변경 이력은 `docs/decision-logs/<topic>.md`에 둔다.
 - 기록 기준: 나중에 다시 물어볼 만한가 / 다른 기능에 영향을 주는가 / 뒤집는 비용이 큰가 — 두 개 이상이면 기록한다.
-- workstream 문서의 합의부(Goal/Current Scope/Behavior Notes)를 바꾸는 것도 결정이다. 조용히 고치지 말고 mark를 거친다.
+- workstream 문서의 합의부(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope)를 바꾸는 것도 결정이다. 조용히 고치지 말고 mark를 거친다.
 - mark는 Develop 전용이 아니라 Align의 전제 도전 산출물에도 적용되는 횡단 규칙이다.
 
 park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mark.
+
+**explain.** 의미 있는 수직 슬라이스가 끝나거나, 사람의 다음 판단에 영향을 줄 결정·동작 변화가 생기면 agent는 코드 투어 대신 Change Brief로 사용자의 멘탈 모델을 갱신한다. 기본 순서는 결과 → 고려와 선택 → 이제의 모델 → 경계 → 검증이다. Change Brief는 대화·PR·일회성 데모로 전달하는 소비성 이해 도구이며, 코드 파일명·diff는 요청될 때만 다음 층으로 내린다. 정적 설명으로 부족하면 before/after 시나리오, 흐름 시각화, micro-world 같은 도구를 Develop에서도 발주할 수 있다. 도구가 드러낸 장기 규칙·결정만 mark로 기준 문서에 승격한다.
 
 **결정 ID 규약.** mark로 `docs/decision-logs/`에 기록할 때:
 
@@ -243,19 +251,22 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 별도의 handoff 파일은 두지 않는다. 그 역할은 `docs/workstreams/<slug>.md`가 맡는다.
 아직 시작하지 않은 신규 후보를 다시 검토하는 경우에만 `docs/BACKLOG.md`를 추가로 읽는다.
 
+읽기를 마친 agent는 사용자에게도 짧은 **reorientation**을 제공한다: 현재 멘탈 모델, 직전의 확정 선택, 남은 판단, 다음 행동이 그 판단에 미치는 영향을 말한다. 이를 별도 파일로 남기지 않는다. 기준 문서를 읽고도 재정향을 만들 수 없다면, 이전 Promote에서 장기 맥락을 제대로 승격하지 못했다는 신호다.
+
 ### 6. Promote — 작업 완료
 
-전제: workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 주장보다 증거다.
+전제: workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 주장보다 증거다. 이해 확인은 Verification에 섞지 않는다 — 테스트·실행의 객관적 증거와 사람의 멘탈 모델은 다른 게이트다.
 
 작업이 끝나면 아래 순서로 정리한다. 이 정리는 merge 후 main에서 수행한다 — `PROJECT_STATE.md`·`BACKLOG.md`가 main 전용이기 때문이다(§Parallel Workstreams).
 
-1. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. 이슈 트래커에서 온 작업이면 이슈를 닫는다.
-2. 현재 구조가 바뀌었으면 `docs/ARCHITECTURE.md`를 갱신한다.
-3. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다.
-4. 설명서 가치가 있는 기능이면 `docs/features/<feature>.md`를 생성하거나 갱신한다.
-5. repo 전체 작업 규칙이 새로 드러났다면 `AGENTS.md`를 갱신한다.
-6. workstream 문서의 `Learnings`를 `docs/LEARNINGS.md`로 옮긴다. `LEARNINGS.md`에서 같은 교훈이 반복 확인되면 `AGENTS.md`로 승격하고 항목을 제거한다.
-7. 승격이 끝나면 `docs/workstreams/<slug>.md`는 삭제한다.
+1. 사람의 다음 판단에 영향을 줄 규모 있는 변경이면 최종 Change Brief로 이해 확인을 한다. Change Brief는 결과 → 고려와 선택 → 이제의 모델 → 경계 → 검증을 빠짐없이 다루고, 각 항목에서는 배경과 직관을 구현 세부보다 먼저 설명한다. 사용자는 승인·수정·추가 질문 중 하나로 응답한다. 대표 시나리오나 질문은 필요할 때만 쓰며 사용자를 시험하지 않는다. 이 과정에서 드러난 장기 모델만 다음 단계에서 승격한다.
+2. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. 이슈 트래커에서 온 작업이면 이슈를 닫는다.
+3. 현재 구조가 바뀌었으면 `docs/ARCHITECTURE.md`를 갱신한다.
+4. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다.
+5. 설명서 가치가 있는 기능이면 `docs/features/<feature>.md`를 생성하거나 갱신한다. 판정 기준은 이 기능을 앞으로 사용·운영·확장·제한할 사람이 목적·관측 가능한 동작·핵심 모델·한계를 다시 알아야 하는가다.
+6. repo 전체 작업 규칙이 새로 드러났다면 `AGENTS.md`를 갱신한다.
+7. workstream 문서의 `Learnings`를 `docs/LEARNINGS.md`로 옮긴다. `LEARNINGS.md`에서 같은 교훈이 반복 확인되면 `AGENTS.md`로 승격하고 항목을 제거한다.
+8. 승격이 끝나면 `docs/workstreams/<slug>.md`는 삭제한다.
 
 즉, 진행 중 메모는 임시이고, 승격된 정보만 영속 문서로 남긴다.
 
@@ -377,6 +388,14 @@ Worktree: ../repo-payment-webhook-retry
 Goal:
 결제 webhook 재전송 시 중복 반영과 누락을 줄인다.
 
+Mental Model:
+외부 시스템은 같은 이벤트를 여러 번 보낼 수 있다. 이 시스템은 수신 횟수가 아니라
+이벤트 ID를 처리 단위로 삼아, 하나의 이벤트를 최대 한 번만 반영한다.
+
+Key Trade-off:
+사후 보정보다 수신 시점 차단을 선택한다. 중복 반영의 운영·신뢰 비용을 줄이는 대신,
+이벤트 ID의 보관 기간과 조회 실패를 운영해야 한다.
+
 Current Scope (수직 슬라이스):
 - duplicate guard — 수신 → 중복 판정 → 멱등 처리까지 관통
 - retry backoff — 실패 → 재시도 스케줄 → 성공/포기까지 관통
@@ -417,6 +436,27 @@ Commands:
 Verification:
 - unit test 통과
 - integration test 일부 미실행
+```
+
+### Change Brief (소비성 이해 도구)
+
+Change Brief는 커밋 로그나 기준 문서의 대체물이 아니다. 의미 있는 변경 뒤 대화·PR·데모에서 전달하고, 장기 가치가 확인된 모델만 기준 문서로 승격한다.
+
+```md
+## 결과
+- 사용자·운영·시스템 관점에서 새로 가능해진 일
+
+## 고려와 선택
+- 검토한 선택지, 채택한 선택, 선택 기준과 감수한 trade-off
+
+## 이제의 모델
+- 앞으로 이 동작을 어떤 규칙·흐름·경계로 이해하면 되는가
+
+## 경계
+- 이번에 바꾸지 않은 것과 다음에 결정할 것
+
+## 검증
+- 테스트·실행·관측으로 확인한 증거
 ```
 
 
@@ -482,3 +522,4 @@ Stripe webhook 재전송 전략 비교.
 | P-0009 | 2026-07-10 | git 중복 제거 — PROJECT_STATE shape에서 `Last Updated`·`Current Summary`·`Completed (recent)` 삭제(§6 1단계 함께 개정), workstream `Current State`에 커밋 로그 재서술 금지(로그가 못 담는 판정만) 가이드, `_research`에서 `Created`·`Last Updated` 삭제(`Update History`로 일원화). features→reference 통합은 기각 | 원칙(git이 아는 정보 재기록 금지) 적용: 날짜는 git log가, 완료 이력은 merge 커밋이 진실 — 수동 사본은 갱신 누락 시 거짓이 됨. 단 `_research`의 `Update History`(gitignore 예외 레포 존재 + rename이 추적을 끊음)와 decision-log 제목 날짜(히스토리 항목이 파일 간 ID째 이동 가능)는 git 위임 불가라 유지. features 통합은 사용자 기각 — 기능 설명서 카테고리의 자명성 유지 |
 | P-0010 | 2026-07-12 | CLAUDE.md 포인터 예시를 마크다운 링크에서 `@AGENTS.md` import로 정정(Sample Repo 참고 항목·Document Index `CLAUDE.md` 행). AGENTS.md 가이드 섹션 신설(원칙·포함할 것·넣지 말 것) — 원칙에 "매 요청마다 항상 필요한 내용만" 기준 추가(조건부 규칙은 경로별 규칙·스킬로) | 실제 `CLAUDE.md`를 마크다운 링크 → `@AGENTS.md`로 바꾼 뒤에야 AGENTS.md 규칙이 세션 컨텍스트에 실제로 로드됨을 확인(마크다운 링크는 자동 로드되지 않음, Claude Code 공식 문서). 프로토콜이 AGENTS.md라는 파일의 존재는 규정하면서 내용 기준은 없어 매 레포마다 임의로 채워지던 공백을, agents.md 표준·OpenAI Codex 공식 가이드·Claude Code 공식 문서 교차 확인으로 메움. 상시성 기준은 Claude Code 공식 문서의 rules/skills 구분(매 세션 로드 vs 필요시만 로드) 적용 |
 | P-0011 | 2026-07-13 | 변경 이력 행 연번 규약 신설 — 각 행에 전역 연번 ID(P-NNNN) 소급 부여, 표에 ID 열 추가. 이식된 레포의 AGENTS.md 마커는 이식·갱신 시점의 마지막 행 ID를 버전 스탬프로 삼는다(setup-workflow 갱신 모드의 기준점). 인용은 날짜가 아니라 ID로 | setup-workflow 초안 검토에서 확정. 날짜는 기준점 역할 불가 — 같은 날 다수 행이 실데이터로 존재(2026-07-10에 7행). semver는 리뷰 세션 단위 일괄 개정에 호환성 의미론이 부적합하고 매 개정 판정 비용을 부과. 결정 ID 규약(§4, D-NNNN)으로 이미 검증된 연번 패턴의 재사용 — 프로토콜 사상의 자기 적용 |
+| P-0012 | 2026-07-20 | 문서화 목적에 사람의 멘탈 모델 유지·다음 판단 참여를 동등하게 추가. 기준 문서와 소비성 이해 도구를 구분하고, 문서 서술 기준을 신설. Align에 agent와 사용자의 이해 정렬·이해 확인, workstream 합의부에 Mental Model·Key Trade-off, Develop에 Change Brief와 micro-world 일반화, Resume에 reorientation, Promote에 별도 이해 확인을 추가 | Geoffrey Litt의 "Understanding is the new bottleneck" 관점을 검토해, 이해를 agent 산출물의 정오 판정이 아니라 사람이 프로젝트를 다음으로 움직일 참여 능력으로 재정의. 매 diff 설명문을 영속화하면 문서 과잉이라는 창립 원칙과 충돌하므로, 설명은 기본 소비성 도구·반복 판단 가치가 확인된 모델만 기준 문서 승격으로 설계. Align에서 agent만 이해한 상태를 합의로 오인하지 않고, 질문·시나리오를 설명 실패 감지 장치로 사용 |

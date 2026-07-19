@@ -99,7 +99,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 ## AGENTS.md 마커 블록 사양
 
 ```markdown
-<!-- agent-workflow-protocol P-0011 start -->
+<!-- agent-workflow-protocol P-0012 start -->
 <!-- agent-workflow-protocol-hash: <아래 마커 본문의 sha256> -->
 ## Agent Workflow
 
@@ -110,9 +110,10 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 이 파일 → docs/VISION.md → (docs/GLOSSARY.md) → docs/ARCHITECTURE.md → docs/PROJECT_STATE.md
 → 관련 docs/workstreams/<slug>.md → 관련 docs/decision-logs/의 Current Decision (필수)
 
-### 상시 규칙 — park / mark
+### 상시 규칙 — park / mark / explain
 - 작업 중 새 가지는 쫓지 말고 한 줄로 착지한다: 현재 scope 안 → workstream 문서의 Next Step, 밖 → docs/BACKLOG.md (main에서만).
 - 결정이 굳으면 그 자리에서 기록한다: 현재 구조는 docs/ARCHITECTURE.md, 이유·이력은 docs/decision-logs/ (레포 전역 연번 ID).
+- 사람의 다음 판단에 영향을 줄 변경은 코드 투어 대신 결과·선택·핵심 모델·경계·검증을 설명해 멘탈 모델을 정렬한다. 장기 가치가 확인된 내용만 기준 문서로 남긴다.
 
 ### Skill routing
 셰이핑 → /align · 작업 시작 → /kickoff · 작업 완료 → /promote · 외부 사실 조사 → /research · 초안 감사 → /cold-read
@@ -136,7 +137,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 ②D에서 전역을 선택했을 때 대상 파일(`~/.claude/CLAUDE.md` 또는 `~/.codex/AGENTS.md`)에 append하는 내용. 레포 마커 블록과 달리 **조건부 문장으로만** 구성한다 — 이 머신의 모든 레포에 워크플로우를 강제하면 opt-in 필터(마커 블록)가 무의미해지기 때문이다.
 
 ```markdown
-<!-- agent-workflow-protocol-global P-0011 start -->
+<!-- agent-workflow-protocol-global P-0012 start -->
 <!-- agent-workflow-protocol-global-hash: <아래 마커 본문의 sha256> -->
 ## Agent Workflow (전역 라우팅)
 
