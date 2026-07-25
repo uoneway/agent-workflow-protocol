@@ -1,4 +1,6 @@
-# upstream-scout — 초안
+# upstream-scout — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/upstream-scout/SKILL.md`](../skills/upstream-scout/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 번역본이 아니다.
 
 베이스: 2026-07-07 세션에서 수동으로 수행한 방법론 그 자체 (superpowers·gstack·mattpocock 병렬 분석). 참조: mattpocock의 changelog 관행(다이제스트를 산출물로), gstack `learn`(관찰→학습 승격 루프). 호출 방식: user-invoked (또는 주기 실행).
 

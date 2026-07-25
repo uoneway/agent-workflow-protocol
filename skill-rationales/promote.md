@@ -1,4 +1,6 @@
-# promote — 초안
+# promote — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/promote/SKILL.md`](../skills/promote/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 번역본이 아니다.
 
 베이스: 프로토콜 §6 체크리스트 + superpowers verification-before-completion(게이트) + gstack ship(백로그 대조). 호출 방식: user-invoked.
 

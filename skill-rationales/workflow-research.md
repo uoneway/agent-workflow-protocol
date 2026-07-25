@@ -1,4 +1,6 @@
-# research — 초안
+# workflow-research — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/workflow-research/SKILL.md`](../skills/workflow-research/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 이름은 승격 시 `workflow-research`로 확정됐다. 번역본이 아니다.
 
 베이스: mattpocock `research` (전문 3원칙이 이미 훌륭함 — 우리 관례만 결합). 호출 방식: model-invoked (align의 핸드오프 대상) + user-invoked 겸용.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Align Work"
+  short_description: "Shape work into a clear agreed workstream"
+  default_prompt: "Use $align to shape this request before implementation."

@@ -18,7 +18,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 | 층 | 내용 | 소유 |
 |---|---|---|
-| 유저 레벨 | 스킬 전부(align/kickoff/promote/research/cold-read/setup-workflow) — link-workflow의 `scripts/link-skills.sh`가 symlink 설치 | link-workflow |
+| 유저 레벨 | 스킬 전부(align/kickoff/promote/workflow-research/cold-read/setup-workflow) — link-workflow의 `scripts/link-skills.sh`가 symlink 설치 | link-workflow |
 | 머신 레벨 (선택) | 전역 `~/.claude/CLAUDE.md`·`~/.codex/AGENTS.md`의 조건부 라우팅 마커 — 머신당 최초 1회만 물음(②D) | 전역 마커 안 = setup-workflow가 소유(재렌더링 대상), 그 외 = 사용자가 소유 |
 | 레포 레벨 | ① AGENTS.md의 마커 블록 ② CLAUDE.md 포인터 ③ docs/ 최소 골격 ④ (선택) 결정 ID lint 스크립트 | 마커 블록 안 = setup-workflow가 소유(재렌더링 대상), 그 외 전부 = 레포가 소유(생성 후 절대 안 덮음) |
 
@@ -83,7 +83,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 ②D에서 전역을 선택했다면, 위 커밋과는 별개로 처리하라 — 대상이 레포 밖 파일(`~/.claude/CLAUDE.md` 또는 `~/.codex/AGENTS.md`)이라 이 레포의 커밋에 포함되지 않는다. 해당 파일에 아래 "전역 라우팅 템플릿"을 append하라. 파일이 없으면 새로 만들고, 있으면 마커 블록과 같은 원칙으로 기존 내용 뒤에 이어 쓴다 — 기존 내용은 건드리지 않는다.
 
-**⑤ 검증.** `/cold-read`를 돌려라 — 검증 대상은 AGENTS.md(마커 블록 포함): "이 레포를 처음 보는 agent가 이 파일만 보고 워크플로우를 따를 수 있는가." 시작 불가 질문이 나오면 마커 블록을 보강하라.
+**⑤ 검증.** `cold-read`를 돌려라 — 검증 대상은 AGENTS.md(마커 블록 포함): "이 레포를 처음 보는 agent가 이 파일만 보고 워크플로우를 따를 수 있는가." 시작 불가 질문이 나오면 마커 블록을 보강하라.
 
 > `[신규 · 프로토콜 §2 검토 게이트]` cold-read의 재사용 — setup-workflow 산출물도 핸드오프 문서다.
 
@@ -116,7 +116,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 - 사람의 다음 판단에 영향을 줄 변경은 코드 투어 대신 결과·선택·핵심 모델·경계·검증을 설명해 멘탈 모델을 정렬한다. 장기 가치가 확인된 내용만 기준 문서로 남긴다.
 
 ### Skill routing
-셰이핑 → /align · 작업 시작 → /kickoff · 작업 완료 → /promote · 외부 사실 조사 → /research · 초안 감사 → /cold-read
+셰이핑 → align · 작업 시작 → kickoff · 작업 완료 → promote · 외부 사실 조사 → workflow-research · 초안 감사 → cold-read
 
 ### 이 레포의 설정
 - 이슈 트래커: {GitHub Issues — 셰이핑 완료 작업은 이슈가 권위, fog·장기 후보는 docs/BACKLOG.md | 없음 — docs/BACKLOG.md 단독}
@@ -145,7 +145,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 - 지금 작업 중인 레포의 AGENTS.md에 `<!-- agent-workflow-protocol` 마커가 있다 → **이 전역 라우팅보다 그 마커 블록의 지시를 항상 우선한다.** 레포 로컬 설정이 전역보다 이긴다.
 - 마커는 없지만 사용자가 align·kickoff·promote 중 하나를 이름으로 부르거나 "셰이핑하자"/"grill해줘"/"이 작업 마무리하자" 같은 트리거를 쓴다 → 해당 스킬을 실행하되, 이 세 스킬은 이슈 트래커·결정 ID 같은 레포별 설정에 의존하므로 이 레포가 아직 이식되지 않았다면 `setup-workflow` 실행 여부를 먼저 물어라.
-- 마커는 없지만 사용자가 research·cold-read·setup-workflow·upstream-scout를 부른다 → 레포별 설정과 무관하게 곧바로 실행한다. setup-workflow를 먼저 제안하지 않는다.
+- 마커는 없지만 사용자가 workflow-research·cold-read·setup-workflow·upstream-scout를 부른다 → 레포별 설정과 무관하게 곧바로 실행한다. setup-workflow를 먼저 제안하지 않는다.
 
 원문: https://github.com/uoneway/link-workflow/blob/main/AGENT_WORKFLOW_PROTOCOL.md
 <!-- agent-workflow-protocol-global end -->
@@ -153,7 +153,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 - 마커 이름을 레포용(`agent-workflow-protocol`)과 다르게(`agent-workflow-protocol-global`) 둔 것은, 갱신 모드가 레포 마커와 전역 마커를 서로 다른 대상으로 착각하지 않게 하기 위함이다.
 - 버전 스탬프·해시·갱신 로직은 레포 마커와 완전히 동일(`P-NNNN` 비교, 재렌더링 전 `agent-workflow-protocol-global-hash`로 사용자 수정 감지, 승인 후 마커 안쪽만 재렌더링) — 다만 갱신 대상 파일이 레포가 아니라 전역 파일이라는 점만 다르다.
-- **align·kickoff·promote만 hard-dependency로 지정한 이유**: mattpocock ADR-0001의 hard/soft 의존성 구분을 그대로 적용했다. 이 셋은 이슈 트래커 권위·결정 ID 연번을 마커 블록에서 읽어야 틀리지 않게 동작하고, research·cold-read·upstream-scout는 레포별 설정을 아예 안 써서 setup-workflow 제안 자체가 불필요한 마찰이다(`upstream-sources.md`의 mattpocock/skills 항목 참고).
+- **align·kickoff·promote만 hard-dependency로 지정한 이유**: mattpocock ADR-0001의 hard/soft 의존성 구분을 그대로 적용했다. 이 셋은 이슈 트래커 권위·결정 ID 연번을 마커 블록에서 읽어야 틀리지 않게 동작하고, workflow-research·cold-read·upstream-scout는 레포별 설정을 아예 안 써서 setup-workflow 제안 자체가 불필요한 마찰이다(`upstream-sources.md`의 mattpocock/skills 항목 참고).
 - link-workflow가 아직 private이면 마커 블록과 같은 이유로 원문 링크 줄은 비워두거나 생략한다.
 
 ## 동봉물 (스킬 폴더 위성 파일)
@@ -169,6 +169,8 @@ skills/setup-workflow/
     ├── PROJECT_STATE.md             # 프로토콜 Recommended Shape의 빈 골격
     └── BACKLOG.md
 ```
+
+위 동봉물은 아직 구현되지 않았다. 따라서 `setup-workflow`는 이 동봉물의 구현·검증이 끝날 때까지 초안으로 유지한다. 그동안은 완결된 작은 스킬을 먼저 승격한다.
 
 템플릿·스크립트를 스킬 폴더에 동봉하고 대상 레포에는 산출물만 남기는 패턴(spec-kit처럼 스크립트 트리를 심지 않는다)이 mattpocock setup에서 왔다는 근거는 `upstream-sources.md` 참고.
 

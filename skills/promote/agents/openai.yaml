@@ -1,0 +1,4 @@
+interface:
+  display_name: "Promote Completed Work"
+  short_description: "Close merged work and preserve durable knowledge"
+  default_prompt: "Use $promote to close this merged workstream on main."

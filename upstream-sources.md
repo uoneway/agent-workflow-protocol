@@ -17,7 +17,7 @@
 | aihero.dev | blog | 2026-07-07 | "Real-world feature build" |
 | github/spec-kit | repo | 2026-07-12 | 이식 서베이 조사 시점 (커밋 해시 미기록) |
 | buildermethods/agent-os | repo | 2026-07-12 | 이식 서베이 조사 시점 — v1·v1.3·v2·v3 비교 |
-| get-shit-done-cc (GSD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
+| open-gsd/gsd-core (GSD, 활성 계보) | repo | 2026-07-24 | 원조 `gsd-build/get-shit-done`은 아카이브됨; 활성 계보 검증 |
 | bmad-method (BMAD-METHOD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
 | Geoffrey Litt | blog | 2026-07-20 | "Understanding is the new bottleneck" |
 
@@ -41,7 +41,7 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 - **changelog를 산출물로 남기는 관행** — `upstream-scout`가 리뷰 결과를 다이제스트 파일로 남기는 착상의 참조점.
 - **skill 명명 선례** — 스킬명을 정할 때(검토점 1) mattpocock이 굳이 `setup-matt-pocock-skills`처럼 긴 이름을 쓴 선례가, "setup" 단독은 전역 네임스페이스 충돌 위험이 있다는 판단의 근거 중 하나가 됐다.
 - **ADR-0001의 hard/soft 의존성 구분** (2026-07-19 로컬 플러그인 캐시 직접 조사) — mattpocock/skills는 스킬을 두 부류로 나눈다: 레포별 설정(이슈 트래커, triage 라벨) 없이는 출력이 **틀리는** hard-dependency 스킬(`to-tickets`,`to-spec`,`triage` — "…should have been provided to you, run `/setup-matt-pocock-skills` if not"라는 명시적 한 줄을 둠)과, 없어도 그냥 덜 날카로워지기만 하는 soft-dependency 스킬. 이 구분을 그대로 가져와 `kickoff`·`promote`의 결정 ID 단계, `align`의 이슈 트래커 단계에 "마커 블록에 값이 없으면 setup-workflow부터 확인하라"는 문장을 넣었다. 다만 우리는 이 카테고리 자체가 mattpocock보다 훨씬 작다 — 우리 스킬 대부분이 의존하는 건 레포 밖 사실이 아니라 **문서 존재 여부**라, lazy 생성 원칙이 hard dependency를 구조적으로 없애버린다. 진짜 hard dependency는 결정 ID 연번(kickoff·promote)과 이슈 트래커 여부(align, 더 약한 등급) 두 값뿐이었다.
-- **`scripts/link-skills.sh`(비공식 dev-script)의 두 가지 안전장치** — mattpocock 자신의 유지보수용 스크립트(README가 "지원 대상 아님"이라고 명시)를 로컬 플러그인 캐시에서 직접 읽고 확인했다. ① 설치 대상이 이미 이 레포 자신을 가리키는 symlink면 순환 방지를 위해 에러를 내고 중단하는 가드 — 우리 `scripts/link-skills.sh`에도 2026-07-19에 동일하게 추가했다. ② `~/.claude/skills`뿐 아니라 `~/.agents/skills`(Cline·Dexto·Kimi 등 여러 하니스가 공유하는 전역 경로)에도 동시에 symlink — 단, vercel-labs/skills(아래) 조사로 **Codex 자신의 전역 경로는 `~/.codex/skills`이지 `~/.agents/skills`가 아님**을 확인했다. 우리 전역 라우팅 설계가 애초에 Codex 전역 파일을 `~/.codex/AGENTS.md`로 잡은 것과 일치한다.
+- **`scripts/link-skills.sh`(비공식 dev-script)의 두 가지 안전장치** — mattpocock 자신의 유지보수용 스크립트(README가 "지원 대상 아님"이라고 명시)를 로컬 플러그인 캐시에서 직접 읽고 확인했다. ① 설치 대상이 이미 이 레포 자신을 가리키는 symlink면 순환 방지를 위해 에러를 내고 중단하는 가드 — 우리 `scripts/link-skills.sh`에도 2026-07-19에 동일하게 추가했다. ② `~/.claude/skills`뿐 아니라 `~/.agents/skills`에도 동시에 symlink하는 관례도 참고했다. 현재 스크립트는 Claude Code에는 `~/.claude/skills`, Codex에는 `~/.agents/skills`를 대상으로 하며, 이는 각 제품의 현재 스킬 설치 경로에 맞춘다.
 - **vercel-labs/skills(`npx skills`, skills.sh 레지스트리 엔진)의 갱신 메커니즘 비교** — mattpocock/skills 자체가 아니라 그걸 배포하는 별도 오픈소스 CLI다. `.skill-lock.json`에 설치 시점 GitHub tree SHA를 저장해뒀다가 `skills update` 실행 시 최신 해시와 비교하는데, **로컬에서 사용자가 그 스킬을 고쳤는지는 전혀 추적하지 않아 업데이트가 있으면 그냥 조용히 덮어쓴다.** 이 반면교사가, 우리 마커 블록·전역 라우팅 마커 양쪽에 `agent-workflow-protocol-hash`(사용자 직접 수정 감지용) 라인을 추가하는 결정의 직접 근거가 됐다 — spec-kit의 자기 콘텐츠 SHA-256 추적과 같은 목적.
 
 **가져오지 않은 것 / 기각**
@@ -146,7 +146,9 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 ---
 
-### get-shit-done-cc (GSD)
+### GSD — active lineage: open-gsd/gsd-core
+
+처음 조사한 `gsd-build/get-shit-done`은 아카이브되었고, 현재 추적 대상은 `open-gsd/gsd-core`다. 아래의 마커 렌더링·갱신 모드·결정적 pre-flight 평가는 이 활성 계보와 2026-07-18 이식 서베이를 기준으로 유지한다.
 
 마커 블록 렌더링·갱신 모드 설계에서 가장 구체적으로 참고한 소스. `.planning/`이라는 레포 내 상태 저장소를 두는 전체 철학이 우리 `docs/PROJECT_STATE.md` + `workstreams/`와 개념적으로 닮았다.
 

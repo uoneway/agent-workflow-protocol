@@ -1,4 +1,6 @@
-# align — 초안
+# align — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/align/SKILL.md`](../skills/align/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 번역본이 아니다.
 
 베이스: mattpocock `grilling`(공용 인터뷰 엔진) + `grill-with-docs`(코드 교차검증) + obra `brainstorming`(접근안 벌리기). 호출 방식: user-invoked.
 

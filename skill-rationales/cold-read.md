@@ -1,4 +1,6 @@
-# cold-read — 초안
+# cold-read — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/cold-read/SKILL.md`](../skills/cold-read/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 번역본이 아니다.
 
 베이스: superpowers v5의 어드버서리 Spec Review 서브에이전트(개념만). 호출 방식: model-invoked (align ④에서) + user-invoked (아무 핸드오프 문서에).
 

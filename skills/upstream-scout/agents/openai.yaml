@@ -1,0 +1,4 @@
+interface:
+  display_name: "Upstream Scout"
+  short_description: "Detect meaningful upstream changes and prepare a digest"
+  default_prompt: "Use $upstream-scout to check tracked upstream sources."

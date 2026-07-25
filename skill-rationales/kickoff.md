@@ -1,4 +1,6 @@
-# kickoff — 초안
+# kickoff — 한국어 의사결정 기록
+
+> **상태:** 확정됨. 실행 기준은 [`skills/kickoff/SKILL.md`](../skills/kickoff/SKILL.md)다. 아래는 승격 전 한국어 검토 기록이며, 번역본이 아니다.
 
 베이스: 없음 — 프로토콜 §3 체크리스트의 직역. (skill-guide가 "이 지시가 반복되는 순간이 첫 스킬이 태어나는 순간"이라 지목한 바로 그 지시문.) 호출 방식: user-invoked.
 

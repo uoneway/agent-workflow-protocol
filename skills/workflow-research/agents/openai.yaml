@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workflow Research"
+  short_description: "Research external facts for a workflow decision"
+  default_prompt: "Use $workflow-research to investigate this decision."

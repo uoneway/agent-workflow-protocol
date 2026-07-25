@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cold-Read Audit"
+  short_description: "Test whether a handoff document stands alone"
+  default_prompt: "Use $cold-read to audit this handoff document."
