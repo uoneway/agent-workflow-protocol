@@ -7,10 +7,10 @@ AI agent와 함께 개발할 때, 사람이 다음 결정을 이해하고 주도
 이 레포는 프로토콜과 **6개의 확정 스킬**, 그리고 아직 구현·검증이 남은 `setup-workflow` 초안을 함께 관리합니다. 확정 스킬은 설치할 수 있지만, `setup-workflow` 초안을 일반 스킬처럼 호출하거나 대상 레포에 이미 이식된 것으로 가정하지 마세요.
 
 - 워크플로우 자체를 이해하려면 [AGENT_WORKFLOW_PROTOCOL.md](./AGENT_WORKFLOW_PROTOCOL.md)를 읽습니다.
-- 실제 서비스 레포에 적용하며 회차별로 무엇이 동작하고 무엇이 비었는지 [field-notes/](./field-notes/)에 남깁니다. 마찰 로그가 **한 줄**의 장소라면, 여기는 **그 한 줄이 나온 맥락**의 장소입니다.
+- 실제 서비스 레포에서 프로토콜·스킬을 검증하는 동안에만 [field-notes/](./field-notes/)에 회차 맥락을 남깁니다. 리뷰가 끝나면 결론만 권위 문서에 남기고 회차 기록은 삭제합니다.
 - 운영 중 어색함·공백·반복 지시·위반을 발견하면 `마찰: …`로 남깁니다. agent는 [protocol-friction-log.md](./protocol-friction-log.md)에 한 줄만 기록하고, 그 자리에서 프로토콜을 고치지 않습니다.
 - 마찰이 10개 쌓이거나 2~3주가 지나면 리뷰 세션에서 한 항목씩 결정합니다. 확정된 변경만 프로토콜과 변경 이력에 반영합니다.
-- 같은 주기로 `upstream-scout`를 자동 또는 수동 실행할 수 있습니다. 실행은 먼저 업스트림 버전·변화만 감지하며, 버전 소스는 minor 이상 변화가 있을 때만 검토용 다이제스트를 만듭니다. 자동 실행은 프로토콜이나 추적 표를 바꾸지 않고 사용자 리뷰를 요청하는 데서 멈춥니다.
+- 같은 주기로 `upstream-scout`를 자동 또는 수동 실행할 수 있습니다. 실행은 먼저 업스트림 버전·변화만 감지하며, 버전 소스는 minor 이상 변화가 있을 때만 검토용 다이제스트를 만듭니다. 리뷰 뒤 결론을 권위 문서에 반영하고 다이제스트는 삭제합니다. 자동 실행은 프로토콜이나 추적 표를 바꾸지 않고 사용자 리뷰를 요청하는 데서 멈춥니다.
 
 ## 워크플로우 한눈에 보기
 
@@ -40,8 +40,8 @@ AI agent와 함께 개발할 때, 사람이 다음 결정을 이해하고 주도
 | 다음 스킬의 내용 검토 | [skill-drafts/](./skill-drafts/)와 [초안 관계도](./skill-drafts/00-README.md) |
 | 확정 스킬의 한국어 의도·업그레이드 판단 확인 | [skill-rationales/](./skill-rationales/) |
 | 확정 스킬 확인·설치 | [skills/](./skills/) · `align`, `kickoff`, `promote`, `workflow-research`, `cold-read`, `upstream-scout` |
-| 실제 서비스 레포에 적용한 회차 기록 | [field-notes/](./field-notes/) |
-| 외부 사례와 흡수 판단 확인 | [upstream-sources.md](./upstream-sources.md), [digests/](./digests/) |
+| 진행 중인 실제 적용 검증의 맥락 | [field-notes/](./field-notes/) — 리뷰 완료 뒤 삭제 |
+| 외부 사례와 현재 흡수 판단 | [upstream-sources.md](./upstream-sources.md) · 진행 중 검토만 [digests/](./digests/) |
 
 스킬 초안은 합의용 문서입니다. 리뷰에서 확정되면 `skills/<name>/SKILL.md`로 **영어 실행본을 새로 작성**하고, 초안은 더 이상 실행 명세로 유지하지 않습니다. 대신 확정된 한국어 검토 기록은 `skill-rationales/<name>.md`에 남겨 이후 업그레이드의 판단 기준으로 사용합니다. 이는 한글 초안의 문장별 번역이나 두 언어판의 병행 유지가 아닙니다. 영어 실행본은 행동을, 한국어 기록은 목적·선택·경계를 맡습니다. 자세한 관계는 [skill-rationales/](./skill-rationales/)와 [skills/](./skills/)의 안내를 따릅니다.
 

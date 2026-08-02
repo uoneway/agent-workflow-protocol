@@ -26,13 +26,8 @@ AGENT_WORKFLOW_PROTOCOL.md 운영 중 마주친 마찰의 로그. **프로토콜
 
 - 2026-07-10 | skill-guide 폐기 | 공백 | 격주 정비 패스(codebase-design 어휘로 deep module 후보 탐색) 아이디어가 폐기된 skill-guide에만 있었음 — 프로토콜 편입 여부 리뷰 필요
 - 2026-07-10 | skill-guide 폐기 | 공백 | "규모가 크면 grill 전에 그릴 가능한 덩어리로 쪼개고 덩어리별 별도 세션" 요령이 프로토콜 §2에 없음 — Align 앞수(⓪)로 편입 검토
-- 2026-07-26 | persquad 이식 | 공백 | setup-workflow 초안이 마커 블록의 sha256 해시를 요구하는데 그것을 계산·비교·기록하는 도구가 동봉물 목록에 없음
-- 2026-07-26 | persquad 이식 | 공백 | setup-workflow ②D 전역 라우팅은 사용자 응답을 전제하는데, 무인 배경 세션에서의 기본 행동이 초안에 없음 (물어보고 멈춤/전역 진행/상태파일 기록 셋 다 문제)
-- 2026-07-26 | persquad 이식 | 공백 | setup-workflow ②B 기존 문서 매핑의 착지점이 ④2가 "만들지 않는다"고 한 lazy 문서(GLOSSARY·decision-logs)인 경우의 우선순위가 없음
 - 2026-07-26 | persquad 이식 | 어색 | 마커 블록의 원문 링크가 link-workflow 공개 여부에 걸려 있어, 미공개 상태에서 이식하면 프로토콜 원문 도달 경로가 아예 사라짐
 - 2026-07-26 | persquad 이식 | 어색 | 배경 에이전트 세션의 강제 worktree 격리와 프로토콜 §3 Kickoff의 "전이 커밋을 main에서" 요구가 충돌 — agent가 main에 있을 수 없음
-- 2026-07-26 | persquad 이식 | 공백 | setup-workflow pre-flight JSON에 기존 `docs/decision-logs/`의 마지막 ID 필드가 없어, 갱신 모드가 결정 ID 연번을 이어받을 근거가 없음
-- 2026-07-26 | persquad 이식 | 어색 | setup-workflow ⑤의 cold-read 대상이 AGENTS.md 단독인데 초안은 "마커 블록은 프로토콜 요약본이 아니다"라고 못박음 — 시작 불가 판정이 구조적으로 항상 나오고, "시작 불가면 마커를 보강하라"를 따르면 금지된 요약본이 됨
 - 2026-07-26 | persquad 이식 | 공백 | 프로토콜 §4 park의 "scope 밖 → docs/BACKLOG.md (main에서만)"가 브랜치/worktree에서 작업 중인 agent에게 실행 불가능한 지시 — 대체 착지점이 없음
 - 2026-07-26 | persquad 이식 | 공백 | 결정 ID 레포 전역 연번의 동시 할당 규칙이 없음 — 병렬 worktree 둘이 같은 번호를 잡는 경우의 처리 미정의
 - 2026-07-26 | persquad 이식 | 공백 | `docs/decision-logs/`·`ARCHITECTURE.md`를 브랜치에서 쓰는지 main에서 쓰는지 프로토콜에 명시 없음 — §Parallel Workstreams는 PROJECT_STATE·BACKLOG만 main 전용으로 규정
@@ -44,10 +39,8 @@ AGENT_WORKFLOW_PROTOCOL.md 운영 중 마주친 마찰의 로그. **프로토콜
 - 2026-07-26 | persquad 이식 | 어색 | kickoff 1단계가 항목이 `BACKLOG.md`에 있다고 가정하는데, 이슈 트래커를 쓰는 레포에서 셰이핑 완료 항목은 정의상 BACKLOG에 없음 (align 출구에서 이미 제거됨)
 - 2026-07-26 | persquad 이식 | 공백 | 이슈 번호를 workstream과 잇는 위치가 규정되지 않아 나중 세션이 연결을 재발견할 방법이 없음 — kickoff은 "records the start on its issue", promote는 "close an associated issue"만 말함
 - 2026-07-26 | persquad 이식 | 공백 | promote가 요구하는 "concrete evidence"의 기준이 코드 없는 문서 전용 변경에 대해 정의되지 않음
-- 2026-07-26 | persquad 슬라이스1 align | 공백 | cold-read는 "2차 감사 후에도 blocking이 남으면 align으로 돌아가라"고 하는데, 외부 시스템의 실제 응답 형태처럼 실측 없이 답할 수 없는 질문은 감사를 반복해도 사라지지 않음 — align은 그 출구로 프로토타입 핸드오프를 규정하지만 cold-read에는 그 출구가 없음
 - 2026-07-26 | persquad 슬라이스1 align | 공백 | align의 프로토타입 핸드오프가 되돌릴 수 없는 외부 부작용을 요구할 때의 처리가 없음 — `orca repo add`는 remove 명령이 없어 되돌릴 수 없고, 사용자 부재 세션에서는 승인도 받을 수 없어 grill이 막힘
 - 2026-07-26 | persquad 슬라이스1 align | 어색 | 배경 세션에서 workstream을 순차 실행할 때 앞 workstream의 PR이 머지되지 않으면 뒤 workstream이 main에서 kickoff할 수 없음 — 한 세션에 여러 workstream이 쌓이면 PR 하나가 여러 작업을 담게 됨
 - 2026-07-26 | persquad 슬라이스1 develop | 어색 | kickoff이 만든 worktree에서 세션이 바로 편집할 수 없음 — 자기가 만든 worktree인데도 격리에 막혀 EnterWorktree로 명시적 전환이 필요. kickoff은 worktree를 "만들고 보고"할 뿐 "들어간다"고 말하지 않음
 - 2026-07-26 | persquad promote | 공백 | promote 5단계(새 repo 전체 규칙 → AGENTS.md)와 6단계(Learnings → LEARNINGS.md, 반복 확인되면 AGENTS.md)의 경계가 없음 — 위반의 대가가 되돌릴 수 없는 규칙은 반복 확인을 기다릴 이유가 없는데 6단계를 문자 그대로 따르면 두 번째 workstream까지 버퍼에 머무름
 - 2026-07-26 | persquad promote | 어색 | promote의 "저장소 지침이 요구하지 않는 한 자동 커밋 금지"와 배경 에이전트 세션의 "커밋·push·PR 필수"가 충돌 — 단서 조항으로 해소되나 실행 하니스의 규칙이 "저장소 지침"에 해당하는지 불명확
-- 2026-07-26 | persquad 슬라이스3 | 공백 | cold-read 4회를 통과한 명세에서 구현이 사실 오류 3건을 찾음 — 감사는 "답할 수 없는 질문"을 찾지 "틀리게 단언한 것"을 찾지 않음. 위임 프롬프트에 "명세가 틀린 곳을 보고하라"를 넣은 것이 유일한 검출 경로였음

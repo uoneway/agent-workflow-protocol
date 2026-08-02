@@ -15,6 +15,6 @@ For each changed source, collect the delta since its saved point. Use one backgr
 
 Write the synthesis to `digests/YYYY-MM-DD-upstream-digest.md`, with per-source sections and an adoption-candidates summary at the top. Review candidates with the user one at a time. The current protocol is the default; justify a proposed change with what it misses and the cost of keeping it unchanged.
 
-Only after that review, record accepted and rejected decisions in the protocol's change history and update the corresponding saved review point in `upstream-sources.md`. Never copy upstream text or change the protocol without the digest and user review.
+Only after that review, record accepted and rejected decisions in the protocol's change history and update the corresponding saved review point in `upstream-sources.md`, then delete the digest. Never copy upstream text or change the protocol without the digest and user review.
 
 At the 2–3 week review cadence, perform detection first. The cadence does not itself authorize a full review.

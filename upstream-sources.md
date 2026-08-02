@@ -21,7 +21,7 @@
 | bmad-method (BMAD-METHOD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
 | Geoffrey Litt | blog | 2026-07-20 | "Understanding is the new bottleneck" |
 
-spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서베이(`digests/2026-07-18-setup-transplant-survey.md`)에서 `setup-workflow` 설계를 위해 처음 조사됐다. 이 문서가 갱신되기 전까지는 추적 표에 등록되지 않은 채 다이제스트에만 있었다.
+spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서베이에서 `setup-workflow` 설계를 위해 처음 조사됐다. 이 문서가 갱신되기 전까지는 추적 표에 등록되지 않은 채 검토 packet에만 있었다.
 
 ## 소스별 흡수 기록
 

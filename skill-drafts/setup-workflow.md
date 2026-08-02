@@ -1,6 +1,6 @@
 # setup-workflow — 초안
 
-베이스: 신규 설계 — 이식 메커니즘 서베이(`digests/2026-07-18-setup-transplant-survey.md`: spec-kit·Agent OS·BMAD·GSD·superpowers·mattpocock·gstack, 2026-07-12 최초 조사 + 2026-07-18 전역/로컬 설정 라운드) 종합. 호출 방식: user-invoked.
+베이스: 신규 설계 — 이식 메커니즘 서베이와 `upstream-sources.md`의 spec-kit·Agent OS·BMAD·GSD·superpowers·mattpocock·gstack 흡수 기록(2026-07-12 최초 조사 + 2026-07-18 전역/로컬 설정 라운드) 종합. 호출 방식: user-invoked.
 
 link-workflow의 목적은 스킬 배포가 아니라 **워크플로우를 대상 git 레포에 이식**하는 것이고, 이 스킬이 그 진입점이다. 스킬(절차)은 유저 레벨 symlink로 이미 모든 레포에서 쓸 수 있으므로, setup-workflow가 맡는 것은 **레포 각인** — AGENTS.md 마커 블록, docs/ 최소 골격, 레포별 설정 — 이다.
 

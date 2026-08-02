@@ -507,7 +507,7 @@ Stripe webhook 재전송 전략 비교.
 
 ## 변경 이력
 
-운영 중 마찰은 `protocol-friction-log.md`에 기록하고, 리뷰에서 확정된 프로토콜 변경만 여기에 남긴다. 각 행은 전역 연번 ID(`P-NNNN`)를 가지며, 인용은 날짜가 아니라 ID로 한다 — 이식된 레포의 AGENTS.md 마커가 이 ID를 버전 스탬프로 삼는다. 스킬 초안과 관계도는 `skill-drafts/` 참고. 레포별 "언제 어떤 스킬을 쓰나"는 각 레포 `AGENTS.md`의 Skill routing이 맡는다.
+운영 중 마찰은 `protocol-friction-log.md`에 기록하고, 리뷰에서 확정된 프로토콜 변경만 여기에 남긴다. `field-notes/`의 실적용 기록과 `digests/`의 외부 검토는 **진행 중인 리뷰의 입력**일 뿐 기준 문서나 영구 아카이브가 아니다. 리뷰가 끝나면 결론은 이 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 로그 행과 review packet은 삭제한다. 각 행은 전역 연번 ID(`P-NNNN`)를 가지며, 인용은 날짜가 아니라 ID로 한다 — 이식된 레포의 AGENTS.md 마커가 이 ID를 버전 스탬프로 삼는다. 스킬 초안과 관계도는 `skill-drafts/` 참고. 레포별 "언제 어떤 스킬을 쓰나"는 각 레포 `AGENTS.md`의 Skill routing이 맡는다.
 
 | ID | 날짜 | 변경 내용 | 사유 |
 | --- | --- | --- | --- |
@@ -523,3 +523,4 @@ Stripe webhook 재전송 전략 비교.
 | P-0010 | 2026-07-12 | CLAUDE.md 포인터 예시를 마크다운 링크에서 `@AGENTS.md` import로 정정(Sample Repo 참고 항목·Document Index `CLAUDE.md` 행). AGENTS.md 가이드 섹션 신설(원칙·포함할 것·넣지 말 것) — 원칙에 "매 요청마다 항상 필요한 내용만" 기준 추가(조건부 규칙은 경로별 규칙·스킬로) | 실제 `CLAUDE.md`를 마크다운 링크 → `@AGENTS.md`로 바꾼 뒤에야 AGENTS.md 규칙이 세션 컨텍스트에 실제로 로드됨을 확인(마크다운 링크는 자동 로드되지 않음, Claude Code 공식 문서). 프로토콜이 AGENTS.md라는 파일의 존재는 규정하면서 내용 기준은 없어 매 레포마다 임의로 채워지던 공백을, agents.md 표준·OpenAI Codex 공식 가이드·Claude Code 공식 문서 교차 확인으로 메움. 상시성 기준은 Claude Code 공식 문서의 rules/skills 구분(매 세션 로드 vs 필요시만 로드) 적용 |
 | P-0011 | 2026-07-13 | 변경 이력 행 연번 규약 신설 — 각 행에 전역 연번 ID(P-NNNN) 소급 부여, 표에 ID 열 추가. 이식된 레포의 AGENTS.md 마커는 이식·갱신 시점의 마지막 행 ID를 버전 스탬프로 삼는다(setup-workflow 갱신 모드의 기준점). 인용은 날짜가 아니라 ID로 | setup-workflow 초안 검토에서 확정. 날짜는 기준점 역할 불가 — 같은 날 다수 행이 실데이터로 존재(2026-07-10에 7행). semver는 리뷰 세션 단위 일괄 개정에 호환성 의미론이 부적합하고 매 개정 판정 비용을 부과. 결정 ID 규약(§4, D-NNNN)으로 이미 검증된 연번 패턴의 재사용 — 프로토콜 사상의 자기 적용 |
 | P-0012 | 2026-07-20 | 문서화 목적에 사람의 멘탈 모델 유지·다음 판단 참여를 동등하게 추가. 기준 문서와 소비성 이해 도구를 구분하고, 문서 서술 기준을 신설. Align에 agent와 사용자의 이해 정렬·이해 확인, workstream 합의부에 Mental Model·Key Trade-off, Develop에 Change Brief와 micro-world 일반화, Resume에 reorientation, Promote에 별도 이해 확인을 추가 | Geoffrey Litt의 "Understanding is the new bottleneck" 관점을 검토해, 이해를 agent 산출물의 정오 판정이 아니라 사람이 프로젝트를 다음으로 움직일 참여 능력으로 재정의. 매 diff 설명문을 영속화하면 문서 과잉이라는 창립 원칙과 충돌하므로, 설명은 기본 소비성 도구·반복 판단 가치가 확인된 모델만 기준 문서 승격으로 설계. Align에서 agent만 이해한 상태를 합의로 오인하지 않고, 질문·시나리오를 설명 실패 감지 장치로 사용 |
+| P-0013 | 2026-08-02 | 프로토콜 레포도 문서 lifecycle 예외를 두지 않는다. `protocol-friction-log.md`는 미결 마찰 inbox, `field-notes/`·`digests/`는 진행 중 review packet으로 한정한다. 리뷰 뒤 결론은 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 로그 행과 packet을 삭제한다 | 실적용 기록과 다이제스트를 영구 아카이브로 축적하면 “임시 정보는 승격 후 삭제”라는 창립 원칙과 어긋나며, 같은 결론이 로그·회고·기준 문서에 중복된다. 실제 검증의 맥락은 판단 전까지 필요하지만, 판단 뒤 현재 규칙을 이해하는 데 필요한 것은 결론과 이유뿐이다. Git 이력은 필요할 때만 과거 packet을 되짚는 경로로 충분하다 |

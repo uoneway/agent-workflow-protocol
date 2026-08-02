@@ -43,7 +43,7 @@ workstream 초안 외에도: upstream-scout의 다이제스트, AGENTS.md 후보
 
 ## 개정 (2026-07-26) — persquad 실적용에서 확정한 4건
 
-근거: `field-notes/persquad-round-01-transplant.md`(마찰 7), `field-notes/persquad-round-02-first-slice.md`(마찰 20·23·25). 이 세션에서 cold-read를 4회 실행하며 드러난 것들이다.
+근거: persquad 실제 적용에서 드러난 마찰 7·20·23·25. 이 세션에서 cold-read를 4회 실행하며 드러난 것들이다.
 
 ### ① 감사 대상 = 문서 + 그 문서가 라우팅하는 것
 
