@@ -40,6 +40,7 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
   "docs_dir": ["VISION.md", "adr/", ...], // docs/ 하위 실존 목록
   "doc_candidates": ["TODO.md", "CONTRIBUTING.md", ...], // 루트의 매핑 대상 문서
   "adr_dir": "docs/adr|null", "adr_last_number": 12,
+  "decision_last_number": null,     // docs/decision-logs/의 최대 결정 ID — 갱신·재이식 시 연번 승계용
   "remote": "github|gitlab|none",
   "tracker_hint": "github-issues|none",   // gh로 이슈 활성 여부 감지
   "machine_routing_asked": false,   // ~/.claude/agent-workflow-protocol/state.json 존재 여부 — 머신당 최초 1회 질문을 이미 했는지
@@ -60,6 +61,8 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 - **D. 전역 라우팅** (`machine_routing_asked=false`일 때만 — 머신당 최초 1회, 이 레포와 무관). 두 질문을 순서대로:
   1. 도구 확인. `tool_hint`를 추천으로 제시하고 확정하라: Claude Code / Codex / 둘 다.
   2. 배치 확인. **전역(추천)** — 1에서 답한 도구의 전역 설정 파일(Claude: `~/.claude/CLAUDE.md`, Codex: `~/.codex/AGENTS.md`, 둘 다면 둘 다)에 조건부 라우팅 요약을 추가한다. 이후 이 머신의 어떤 레포에서 작업하든, 그 레포에 마커가 있으면 따르고 없어도 사용자가 이 워크플로우의 스킬을 직접 부르면 setup-workflow부터 제안하게 된다 — 레포마다 setup-workflow를 미리 돌려둘 필요가 없다. **로컬만** — 지금 하던 대로 이 레포의 마커 블록만 쓴다. 다른 레포에서 이 워크플로우를 쓰려면 그 레포에서 setup-workflow를 따로 실행해야 한다.
+  **사용자 응답을 받을 수 없는 무인 실행에서는 이 단계 전체를 건너뛴다.** 로컬만으로 진행하고 상태 파일을 **쓰지 않는다** — 쓰면 "물어봤다"는 거짓 기록이 남아 사용자가 영영 질문받지 못한다. 레포 이식은 정상 완료되고 전역 결정만 다음 대화형 세션으로 연기된다. 전역 배치는 사용자 홈 파일을 고치는 일이라 근거로 대체할 수 없는 **권한**의 문제이지 선호가 아니다.
+
   답이 무엇이든 `~/.claude/agent-workflow-protocol/state.json`에 `{"tool": ..., "placement": ...}`로 기록해 다음부터 어느 레포에서 setup-workflow를 돌려도 다시 묻지 않는다. 사용자가 "전역 라우팅 다시 설정해줘"처럼 명시적으로 재요청하면 `machine_routing_asked` 값과 무관하게 이 단계를 다시 밟는다 — 상태 파일을 직접 지우라고 안내하지 않는다.
 
 > `[신규]` 마커 블록은 "이 레포가 명시적으로 이식됐다"는 opt-in 신호라 다른 레포에 임의로 새지 않는다(팀 레포·컨벤션 있는 레포에서 원치 않는 강제가 되는 걸 막는 설계). 전역 배치는 이 필터를 깨지 않도록 **조건부**로만 쓴다 — "이 머신의 모든 레포는 이 워크플로우를 따른다"가 아니라 "마커가 있으면 따르고, 없어도 사용자가 부르면 setup-workflow부터 제안한다"는 두 문장으로 한정한다. 실제 문구는 아래 "전역 라우팅 템플릿" 참고.
@@ -75,6 +78,10 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 1. `AGENTS.md` — 있으면 마커 블록만 추가(기존 내용 불변), 없으면 마커 블록 + 빈 뼈대로 생성. `CLAUDE.md`가 실체 파일이면 내용을 AGENTS.md로 옮기고 포인터로 전환할지 물어라 — 어느 쪽이든 **이미 있는 파일을 편집하고, 반대쪽을 임의로 새로 만들지 마라.**
 2. `docs/PROJECT_STATE.md`, `docs/BACKLOG.md` 골격 생성 (동봉 템플릿). VISION은 ②C의 초안. **그 외(GLOSSARY·LEARNINGS·decision-logs·features·workstreams)는 만들지 않는다** — 각 스킬이 필요해질 때 lazy 생성한다.
+
+   **단 ②B의 매핑 대상이 그 문서들로 가야 하면 매핑이 이긴다.** lazy 생성은 "빈 문서를 미리 깔지 마라"는 규칙이고, 매핑은 "실재하는 내용을 올바른 층에 착지시켜라"는 규칙이다 — 내용이 있으면 충돌하지 않는다. 기존 문서의 용어 정의는 GLOSSARY로, 되돌리기 비싼 결정은 decision-logs로 간다. 그러지 않으면 VISION이 원본 문서의 잡탕 상태를 그대로 물려받아, 이식이 해결하려던 바로 그 상태로 끝난다.
+
+   > `[신규 2026-07-26 · persquad 적용]` 실증: `product-concept.md` 216줄은 VISION 하나에 담을 수 없었다. "관계 인식 원칙"과 "강한 신호의 자동 포착"은 제품 방향처럼 읽히지만 실제로는 뒤집는 비용이 큰 설계 결정이다 — VISION에 두면 조용히 바뀌고 decision-log에 두면 mark를 거쳐야 바뀐다. 이 분해가 이식의 실질적 이득이었다.
 3. ②B의 매핑 실행 (변환·이관·폐기).
 4. pre-commit을 쓰는 레포면 결정 ID lint(`lint-decision-logs.sh`) 복사를 제안하라 — 강제하지 마라.
 5. 존재하는 파일은 절대 덮지 않는다. 스킵하고 보고하라.
@@ -83,9 +90,12 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 ②D에서 전역을 선택했다면, 위 커밋과는 별개로 처리하라 — 대상이 레포 밖 파일(`~/.claude/CLAUDE.md` 또는 `~/.codex/AGENTS.md`)이라 이 레포의 커밋에 포함되지 않는다. 해당 파일에 아래 "전역 라우팅 템플릿"을 append하라. 파일이 없으면 새로 만들고, 있으면 마커 블록과 같은 원칙으로 기존 내용 뒤에 이어 쓴다 — 기존 내용은 건드리지 않는다.
 
-**⑤ 검증.** `cold-read`를 돌려라 — 검증 대상은 AGENTS.md(마커 블록 포함): "이 레포를 처음 보는 agent가 이 파일만 보고 워크플로우를 따를 수 있는가." 시작 불가 질문이 나오면 마커 블록을 보강하라.
+**⑤ 검증.** `cold-read`를 돌려라 — 검증 대상은 **AGENTS.md와 Skill routing이 가리키는 스킬들**이다. 물을 것은 "이 파일만으로 절차를 재구성할 수 있는가"가 아니라 "이 파일이 라우팅한 곳까지 읽은 agent가 시작할 수 있는가"다.
+
+시작 불가 질문이 나오면 마커 블록을 반사적으로 보강하지 말고, **그 질문에 답할 책임이 있는 층**을 고쳐라 — 레포별 설정이면 마커 블록, 절차면 스킬, 불변식이면 프로토콜. 마커 블록으로 전부 흡수하면 초안이 금지한 프로토콜 요약본이 된다.
 
 > `[신규 · 프로토콜 §2 검토 게이트]` cold-read의 재사용 — setup-workflow 산출물도 핸드오프 문서다.
+> `[정정 2026-07-26 · persquad 적용]` 종전 문안("AGENTS.md만 보고 따를 수 있는가")은 이식 단위 표의 "마커 블록은 요약본이 아니다"와 양립 불가였다. 요약본이 아니면 단독 감사는 **구조적으로 항상** 시작 불가를 내고, 그 판정을 따라 마커를 보강하면 종착점이 금지된 요약본이다. 실증: 단독 감사는 blocking 5건을 냈고 다섯 다 라우팅된 스킬이 답을 갖고 있었다. 스킬을 포함한 재감사는 전혀 다른 층(레포 경계와 스킬 간 규약의 어긋남)을 찾아냈다. cold-read 스킬 본문에도 같은 개정을 반영했다.
 
 **갱신 모드** (`already_setup=true`). 강제 재초기화는 없다:
 
@@ -160,17 +170,27 @@ description: Agent Workflow Protocol을 대상 레포에 이식하거나, 이식
 
 ```
 skills/setup-workflow/
-├── SKILL.md
-├── scripts/detect-repo-state.sh     # ⓪ pre-flight JSON
-├── scripts/lint-decision-logs.sh    # ④4 복사용 (ai-tab 것 일반화, 상단에 # P-NNNN 스탬프 주석)
+├── SKILL.md                         # 미작성 (승격 시 영어 실행본으로 새로 저작)
+├── scripts/detect-repo-state.sh     # ⓪ pre-flight JSON — 구현·검증 완료
+├── scripts/marker-hash.sh           # 마커 블록 해시 compute/check/stamp — 구현·검증 완료
+├── scripts/lint-decision-logs.sh    # ④4 복사용 (상단에 # P-NNNN 스탬프) — 구현·검증 완료
 └── templates/
-    ├── agents-block.md              # 마커 블록 템플릿 ({설정} 치환)
-    ├── global-routing.md            # ②D 전역 선택 시 append하는 템플릿
-    ├── PROJECT_STATE.md             # 프로토콜 Recommended Shape의 빈 골격
-    └── BACKLOG.md
+    ├── agents-block.md              # 마커 블록 템플릿 ({{치환자}}) — 작성 완료
+    ├── global-routing.md            # ②D 전역 선택 시 append — 작성 완료
+    ├── PROJECT_STATE.md             # 프로토콜 Recommended Shape의 빈 골격 — 작성 완료
+    └── BACKLOG.md                   # 작성 완료
 ```
 
-위 동봉물은 아직 구현되지 않았다. 따라서 `setup-workflow`는 이 동봉물의 구현·검증이 끝날 때까지 초안으로 유지한다. 그동안은 완결된 작은 스킬을 먼저 승격한다.
+**`marker-hash.sh`는 종전 목록에 없던 것을 신설했다.** 초안은 마커 블록에 `agent-workflow-protocol-hash`(sha256)를 두고 갱신 모드가 그 값으로 사용자의 직접 수정을 감지하도록 규정하면서, 정작 그 해시를 계산·비교·기록하는 도구를 동봉물에 넣지 않았다. 그대로면 agent가 매번 "start~end 사이에서 해시 줄만 빼고 sha256"을 손으로 재구성해야 하고 — 절차가 아니라 **불변식의 매번 재구현**이라 어긋나기 쉬우며 — 어긋나면 갱신 모드가 멀쩡한 블록을 "수정됨"으로 오판한다. 해시의 존재 이유가 무결성인데 계산 방식이 불안정하면 기능 자체가 성립하지 않는다.
+
+**검증 상태 (2026-07-26, persquad 이식).** 네 스크립트·템플릿을 실제 이식에 써서 확인했다.
+
+- `detect-repo-state.sh` — persquad(미이식)와 link-workflow(자기 자신) 양쪽에서 분기 판정에 필요한 값을 정확히 산출. `gh issue list`로 `tracker_hint`가 실제 확인되어 ②A를 묻지 않고 넘어갔다.
+- `marker-hash.sh` — 6케이스 통과(정상/마커 없음/변조 감지/stamp 멱등성/global 마커 구분/파일 없음). 구현 중 실제 버그 1건 발견·수정: `body | sha256` 파이프라인이 마커 부재를 삼켜 빈 입력의 해시를 반환했다(파이프라인 exit status는 마지막 명령의 것).
+- `lint-decision-logs.sh` — 픽스처 12케이스 통과 후 persquad에 실행: 5 files / 7 decisions / 0 error / 0 warning.
+- 템플릿 4종 — persquad `AGENTS.md`·`docs/`에 실제 착지.
+
+**승격은 아직 보류한다.** 승격 계약 2번(실행 가능)은 위 검증으로 충족했으나, 1번(결정 완료)이 남았다. 이 초안의 열린 항목: `SKILL.md` 영어 실행본 미작성, 그리고 마커 원문 링크가 link-workflow 공개 여부에 걸려 있는 문제(아래 검토점 3의 미해결 잔여 — 현재 remote가 없어 생략했고, 그 결과 이식된 레포에서 프로토콜 원문 도달 경로가 사라진다).
 
 템플릿·스크립트를 스킬 폴더에 동봉하고 대상 레포에는 산출물만 남기는 패턴(spec-kit처럼 스크립트 트리를 심지 않는다)이 mattpocock setup에서 왔다는 근거는 `upstream-sources.md` 참고.
 
