@@ -23,3 +23,5 @@ For workstream-scale work, draft the agreement in the repository's workstream fo
 Ask for approval. For substantial work, run `cold-read` on the draft and give the user an opportunity to correct or extend their mental model.
 
 End with one explicit exit: start now (`kickoff`), defer (promote the accepted item to the configured issue tracker or condense it into BACKLOG), or stop. If issue-tracker configuration is absent, ask rather than guessing. Skip this process for work small enough to begin directly.
+
+Record that the approval happened and where the item now lives. A deferred item carries both in its issue or BACKLOG entry; `kickoff` copies them into the workstream document's `Source` and `Approved` fields. A later session cannot infer approval from the existence of a draft — an unapproved draft looks exactly the same.

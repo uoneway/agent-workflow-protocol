@@ -184,9 +184,10 @@ align이 항상 Kickoff로 이어진다면 전제 도전은 연극이다. 작업
 
 규칙:
 
-- `BACKLOG.md`에서는 시작한 항목을 제거한다.
+- 항목의 **출처에 따라** 전이한다. `BACKLOG.md`에 있던 항목이면 거기서 제거하고, 이슈 트래커에서 온 항목이면 이슈에 시작을 기록한다 — 후자는 align 출구에서 이미 BACKLOG를 떠났으므로 지울 것이 없다.
 - `PROJECT_STATE.md`에는 이름, 상태, owner, 상세 링크만 넣는다.
 - `docs/workstreams/<slug>.md`에는 align의 초안(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope)을 합의부로 착지시키고, 상태부에 재개 정보를 적는다.
+- 문서 상단의 **접합부 필드**를 채운다: `Source`(BACKLOG 항목 또는 이슈 번호), `Approved`(align 검토 게이트를 통과한 시점), `Branch`, `Worktree`. `PR`은 열리는 시점에 Develop이 채운다. 이후 단계의 스킬은 서로의 산출 규약이 아니라 이 필드를 읽는다 — 승인 여부·출처·PR을 문서가 들고 있으면 스킬 수가 늘어도 접합면이 늘지 않는다.
 - 이 시작 전이는 main 전용 문서를 갱신하므로 **동시 갱신이 없는 단일 지점**에서 만든다. 세션이 main에 있을 수 있으면 main에서 커밋한 뒤 branch/worktree를 딴다. 실행 환경이 격리를 강제하면(배경 agent, worktree 전용 세션) main 계보 위에 전이 전용 커밋을 만들어 merge로 main에 도달시킨다. 불변식은 위치가 아니라 동시 갱신의 부재다(§Parallel Workstreams).
 - 전이가 기록된 뒤 branch에서는 `docs/workstreams/<slug>.md`만 갱신한다.
 
@@ -257,17 +258,19 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 ### 6. Promote — 작업 완료
 
-전제: workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 주장보다 증거다. 이해 확인은 Verification에 섞지 않는다 — 테스트·실행의 객관적 증거와 사람의 멘탈 모델은 다른 게이트다.
+전제는 둘이고, 둘 다 주장이 아니라 증거로 확인한다. 첫째, workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 둘째, workstream branch가 실제로 기본 branch에 **들어갔음을 이력으로 확인한다** — 사용자가 promote를 요청한 사실은 merge의 증거가 아니다. 아직이면 멈추고 알린다. 이해 확인은 Verification에 섞지 않는다 — 테스트·실행의 객관적 증거와 사람의 멘탈 모델은 다른 게이트다.
+
+merge를 누가 하는지, PR을 거치는지, squash인지는 프로토콜이 정하지 않는다. 그것은 레포·팀의 git 정책이고, 프로토콜의 관심사는 **정리가 merge 뒤에 온다**는 순서뿐이다.
 
 작업이 끝나면 아래 순서로 정리한다. 이 정리는 merge 후에 하며, main 전용 문서를 갱신하므로 Kickoff 전이와 같은 불변식을 따른다 — main에 있을 수 있으면 main에서, 실행 환경이 격리를 강제하면 main 계보 위의 정리 전용 커밋으로 수행한다(§3·§Parallel Workstreams).
 
 1. 사람의 다음 판단에 영향을 줄 규모 있는 변경이면 최종 Change Brief로 이해 확인을 한다. Change Brief는 결과 → 고려와 선택 → 이제의 모델 → 경계 → 검증을 빠짐없이 다루고, 각 항목에서는 배경과 직관을 구현 세부보다 먼저 설명한다. 사용자는 승인·수정·추가 질문 중 하나로 응답한다. 대표 시나리오나 질문은 필요할 때만 쓰며 사용자를 시험하지 않는다. 이 과정에서 드러난 장기 모델만 다음 단계에서 승격한다.
-2. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. 이슈 트래커에서 온 작업이면 이슈를 닫는다.
+2. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. workstream 문서의 `Source`가 이슈를 가리키면 그 이슈를 닫는다 — 어느 이슈인지 다시 찾아내지 않는다.
 3. 현재 구조가 바뀌었으면 `docs/ARCHITECTURE.md`를 갱신한다.
 4. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다. branch에서 잠정 부여한 결정 ID를 main의 최대값 기준으로 확정하고, 다른 workstream과 충돌하면 나중에 merge하는 쪽이 재번호한다.
 5. 설명서 가치가 있는 기능이면 `docs/features/<feature>.md`를 생성하거나 갱신한다. 판정 기준은 이 기능을 앞으로 사용·운영·확장·제한할 사람이 목적·관측 가능한 동작·핵심 모델·한계를 다시 알아야 하는가다.
-6. repo 전체 작업 규칙이 새로 드러났다면 `AGENTS.md`를 갱신한다.
-7. workstream 문서의 `Learnings`를 `docs/LEARNINGS.md`로 옮긴다. `LEARNINGS.md`에서 같은 교훈이 반복 확인되면 `AGENTS.md`로 승격하고 항목을 제거한다.
+6. repo 전체 작업 규칙이 새로 드러났다면 `AGENTS.md`를 갱신한다. 7단계의 버퍼와 나누는 기준은 **확신도**다 — 이미 규칙임이 분명하면 여기서 바로, 표본이 하나뿐이라 아직 일반적인지 모르면 버퍼에서 반복을 기다린다.
+7. workstream 문서의 `Learnings`를 `docs/LEARNINGS.md`로 옮긴다. `LEARNINGS.md`에서 같은 교훈이 반복 확인되면 `AGENTS.md`로 승격하고 항목을 제거한다. 단 **위반의 대가가 되돌릴 수 없는 교훈은 반복을 기다리지 않고 즉시 승격한다** — 반복 확인은 그 교훈이 일반적인지 재는 장치인데, 한 번의 위반이 복구 불가능하면 표본을 모으는 비용이 규칙을 미루는 이익을 넘는다.
 8. workstream 문서의 `Parked (out of scope)`를 `docs/BACKLOG.md`로 이관한다. 작업이 끝나며 무의미해진 항목은 옮기지 않되, 버린 사실을 최종 보고에 말한다 — 조용히 사라지면 park의 보장이 깨진다.
 9. 승격이 끝나면 `docs/workstreams/<slug>.md`는 삭제한다.
 
@@ -384,8 +387,13 @@ Detail: docs/workstreams/auth-session-cleanup.md
 ```md
 # payment-webhook-retry
 
+<!-- 접합부: 스킬끼리 규약을 맞추는 대신 이 필드를 읽고 쓴다. -->
+
+Source: issue #42
+Approved: 2026-05-01 — align 검토 게이트 통과
 Branch: feat/payment-webhook-retry
 Worktree: ../repo-payment-webhook-retry
+PR: #57
 
 <!-- 합의부: Align 시점의 합의. 바꾸는 것은 결정이다 — mark를 거친다. -->
 
@@ -534,3 +542,5 @@ Stripe webhook 재전송 전략 비교.
 | P-0012 | 2026-07-20 | 문서화 목적에 사람의 멘탈 모델 유지·다음 판단 참여를 동등하게 추가. 기준 문서와 소비성 이해 도구를 구분하고, 문서 서술 기준을 신설. Align에 agent와 사용자의 이해 정렬·이해 확인, workstream 합의부에 Mental Model·Key Trade-off, Develop에 Change Brief와 micro-world 일반화, Resume에 reorientation, Promote에 별도 이해 확인을 추가 | Geoffrey Litt의 "Understanding is the new bottleneck" 관점을 검토해, 이해를 agent 산출물의 정오 판정이 아니라 사람이 프로젝트를 다음으로 움직일 참여 능력으로 재정의. 매 diff 설명문을 영속화하면 문서 과잉이라는 창립 원칙과 충돌하므로, 설명은 기본 소비성 도구·반복 판단 가치가 확인된 모델만 기준 문서 승격으로 설계. Align에서 agent만 이해한 상태를 합의로 오인하지 않고, 질문·시나리오를 설명 실패 감지 장치로 사용 |
 | P-0013 | 2026-08-02 | 프로토콜 레포도 문서 lifecycle 예외를 두지 않는다. `protocol-friction-log.md`는 미결 마찰 inbox, `field-notes/`·`digests/`는 진행 중 review packet으로 한정한다. 리뷰 뒤 결론은 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 로그 행과 packet을 삭제한다 | 실적용 기록과 다이제스트를 영구 아카이브로 축적하면 “임시 정보는 승격 후 삭제”라는 창립 원칙과 어긋나며, 같은 결론이 로그·회고·기준 문서에 중복된다. 실제 검증의 맥락은 판단 전까지 필요하지만, 판단 뒤 현재 규칙을 이해하는 데 필요한 것은 결론과 이유뿐이다. Git 이력은 필요할 때만 과거 packet을 되짚는 경로로 충분하다 |
 | P-0014 | 2026-08-03 | **main 전용을 위치가 아니라 직렬화 불변식으로 재정의.** §3 Kickoff 전이 커밋의 "main에서"를 "동시 갱신 없는 단일 지점에서"로 개정 — 격리 환경은 main 계보 위의 전이 전용 커밋과 merge로 같은 불변식을 만족시킨다. §4 park의 scope 밖 착지점을 위치로 분기(main → BACKLOG, branch → workstream 문서 `Parked (out of scope)`)하고 §6에 이관 단계(8) 신설. 결정 ID 동시 할당 규칙 신설 — branch는 잠정 번호, Promote가 main 최대값으로 확정, 충돌 시 나중 merge 쪽이 재번호. §Parallel Workstreams에 main 전용 문서가 `PROJECT_STATE.md`·`BACKLOG.md` 둘뿐임을 명시적으로 열거하고 `decision-logs/`·`ARCHITECTURE.md`가 main 전용이 아님을 확정. worktree 경로 규약은 실행 환경에 위임 | persquad 실적용(round-01~03) 마찰 6건이 한 뿌리였다. Claude Code 배경 에이전트 세션은 격리된 worktree에서 시작해 main에 물리적으로 있을 수 없으므로 "전이 커밋을 main에서"가 실행 불가능한 지시였고, agent는 규칙을 어긴 것이 아니라 앞 workstream branch를 main 대리로 삼는 우회를 발명해 Round 2를 완주했다. 규칙이 지키려던 것은 장소가 아니라 관리 문서의 동시 갱신 부재인데 목적 대신 수단을 못 박은 결과, 그 장소에 갈 수 없는 환경에서는 park의 착지 보장("두 곳뿐이라는 확신")까지 함께 무너졌다. 검증된 우회의 승격이며, 재번호 규약이 성립하는 근거(인용은 파일 경로가 아니라 ID)는 P-0003에 이미 있다. 대안 기각: 레포별 우회 위임은 다음 레포가 같은 발명을 반복하게 하고, main 전용 규칙 폐기는 병렬 branch 간 관리 문서 충돌을 일상화한다 |
+| P-0015 | 2026-08-03 | **스킬 간 접합면을 workstream 문서로 이관.** 문서 상단에 접합부 필드 신설(`Source`·`Approved`·`Branch`·`Worktree`·`PR`) — 승인 사실·출처·PR을 문서가 들고, 각 스킬은 서로가 아니라 이 필드를 읽는다. §3 Kickoff의 전이를 출처 기반으로 개정(BACKLOG에 있던 항목만 제거, 이슈에서 온 항목은 이슈에 시작 기록). §6 Promote 전제에 merge 확인을 증거 게이트로 추가하고, merge 주체·PR 필요 여부·squash는 프로토콜의 관심사가 아님을 명시. §6 6·7단계의 경계를 확신도로 규정하고, 위반의 대가가 되돌릴 수 없는 교훈은 반복 확인을 기다리지 않고 즉시 `AGENTS.md`로 승격 | persquad 실적용 마찰 6건. 각 스킬은 제 역할을 했으나 스킬 A가 만든 상태를 스킬 B가 찾을 방법이 없었다 — 승인이 어디 기록되는지, 어느 이슈였는지, BACKLOG에 항목이 남아 있는지가 전부 추론이었다. 스킬이 서로에게 직접 말을 걸면 접합면이 스킬 수의 제곱으로 늘고 스킬 하나를 추가할 때마다 기존 전부와 규약을 맞춰야 한다. 문서를 경유하면 N개로 떨어지며, 새 메커니즘도 아니다 — §5가 이미 "별도 handoff 파일은 두지 않는다, 그 역할은 workstream 문서가 맡는다"고 규정했고 그 역할을 실제로 시키는 것뿐이다. Learnings 승격의 반복 확인은 교훈이 일반적인지 재는 장치인데, 되돌릴 수 없는 위반에서는 두 번째 표본을 모으는 비용이 규칙을 미루는 이익을 넘는다(실측: "상태를 바꾸는 명령을 탐색 목적으로 실행하지 마라"가 두 번째 workstream까지 버퍼에 머물렀다). 기각: merge 주체·PR·squash 규정(레포·팀의 git 정책이지 워크플로우의 관심사가 아니다) |
+| P-0016 | 2026-08-03 | **Resume에 스킬을 두고 Develop에는 두지 않는다.** `resume` 스킬 신설(읽기 순서 + reorientation). Develop의 park·mark·explain은 스킬로 만들지 않고 `AGENTS.md` 층에 남긴다 | 프로토콜 6단계 중 둘에 스킬이 없어 Skill routing 표에 빈 칸이 남았고, 그것이 누락인지 의도인지 매번 다시 판정해야 했다. 판정 기준은 단계가 전이인가 상태인가다 — 스킬은 사용자가 "지금 이걸 해"라고 말할 수 있는 순간에 붙는다. Develop의 규칙은 작업 내내 지속되는 상시 규칙이므로 스킬로 만들면 호출되지 않으면 적용되지 않는 규칙이 되어 성질과 전달 수단이 어긋난다(P-0010의 상시성 기준 재적용). Resume은 읽기 자체가 세션마다 일어나지만 "중단했던 작업으로 돌아간다"는 호출 가능한 순간이고 그때만 필요한 절차가 있어 전이 쪽이다. 설계 판단의 전문은 `skill-rationales/resume.md` |
