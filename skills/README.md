@@ -6,6 +6,8 @@ It is not a translated copy of a Korean document. The English runtime skill is w
 
 Before adding a skill here, confirm that its open questions are resolved, any declared scripts or templates exist, and its YAML front matter and bundled resources have been validated. Add the runtime skill and remove its draft in the same change.
 
+Write for a capable model, not a compliant one. State the goal, the constraints, and the boundaries — where approval is required, what counts as done — and let the model choose the steps. Enumerating every step is what older models needed; on current ones it measurably lowers quality, and both Anthropic's and OpenAI's published guidance converged on this independently. Reasoning depth is a runtime setting, not something to ask for in prose.
+
 Install confirmed skills with `scripts/link-skills.sh`. It symlinks each skill to `~/.claude/skills/<name>` for Claude Code and `~/.agents/skills/<name>` for Codex. Plugin packaging is deferred until the workflow needs to distribute a stable bundle of skills, MCP, or hooks.
 
 Confirmed skills: `align`, `kickoff`, `resume`, `promote`, `workflow-research`, `cold-read`, and `upstream-scout`. `setup-workflow` is still a Korean draft, though no longer for the original reason — its scripts and templates are built and validated and its open decisions are closed, so what remains is the English rewrite and the public repository its marker URL will point at.

@@ -18,7 +18,7 @@
 
 ## Claude Fable 5 (`claude-fable-5`) / Mythos 5
 
-> 원문: [`anthropic-prompting-claude-fable-5.md`](../sources/prompting/anthropic-prompting-claude-fable-5.md)
+> 원문: [`anthropic-prompting-claude-fable-5.md`](../references/prompting/anthropic-prompting-claude-fable-5.md)
 
 **포지셔닝·용도**: Opus 위 신규 티어. 최고난도 추론, 수 시간짜리 장기 자율(agentic) 실행, 엔터프라이즈 딜리버러블(재무분석·법률검토·대규모 리팩터). Fable↔Mythos 차이는 안전 분류기뿐(Mythos는 승인 조직 한정). 입력 $10/출력 $50 per MTok — Opus보다 비싸므로 "기본 업그레이드 경로"가 아니라 명시적 선택.
 
@@ -68,7 +68,7 @@
 
 ## Claude Sonnet 5 (`claude-sonnet-5`)
 
-> 원문: [`anthropic-prompting-claude-sonnet-5.md`](../sources/prompting/anthropic-prompting-claude-sonnet-5.md) — Fable 5와 동일 구조의 전용 페이지 존재
+> 원문: [`anthropic-prompting-claude-sonnet-5.md`](../references/prompting/anthropic-prompting-claude-sonnet-5.md) — Fable 5와 동일 구조의 전용 페이지 존재
 
 **포지셔닝·용도**: 비용 대비 코딩·agentic 주력 — 이전 Opus급 품질을 Sonnet 가격($3/$15, 한시 $2/$10)에. 기존 Sonnet 4.6 프롬프트가 **out-of-the-box로 잘 동작** — 큰 재작성 불필요.
 
@@ -96,7 +96,7 @@
 
 ## GPT-5.6 세대 — Sol / Terra / Luna (Codex 포함)
 
-> 원문: [`openai-latest-model-gpt-5.6.md`](../sources/prompting/openai-latest-model-gpt-5.6.md) (Model guidance — 프롬프팅 best practices 포함; `prompt-guidance-gpt-5p6` URL과 동일 문서) · [`openai-reasoning-effort.md`](../sources/prompting/openai-reasoning-effort.md) · [`openai-codex-models.md`](../sources/prompting/openai-codex-models.md)
+> 원문: [`openai-latest-model-gpt-5.6.md`](../references/prompting/openai-latest-model-gpt-5.6.md) (Model guidance — 프롬프팅 best practices 포함; `prompt-guidance-gpt-5p6` URL과 동일 문서) · [`openai-reasoning-effort.md`](../references/prompting/openai-reasoning-effort.md) · [`openai-codex-models.md`](../references/prompting/openai-codex-models.md)
 
 **명명 체계 주의**: "GPT-5.6-Codex"는 없다. 2026-07 GPT-5.6 세대부터 코딩 전용 라인(`gpt-5.1-codex`~`gpt-5.3-codex`)이 폐지되고, 숫자=세대 / **Sol·Terra·Luna**=역량 티어가 ChatGPT와 Codex를 공통 구동한다.
 
