@@ -39,7 +39,9 @@
 setup-workflow (user-invoked, 이식 진입점 — 레포당 1회 + 갱신)
 ```
 
-`align`, `kickoff`, `promote`, `workflow-research`, `cold-read`, `upstream-scout`는 2026-07-26에 `skills/` 영어 실행본으로 승격되어 이 폴더에서 삭제됐다. 현재 실행 관계는 [skills/](../skills/)에서 확인한다. `setup-workflow`는 선언한 스크립트·템플릿이 실제로 구현·검증되기 전까지 이 폴더에 남는다.
+`align`, `kickoff`, `promote`, `workflow-research`, `cold-read`, `upstream-scout`는 2026-07-26에 `skills/` 영어 실행본으로 승격되어 이 폴더에서 삭제됐다. `resume`은 2026-08-03 리뷰에서 확정되어 초안 없이 바로 실행본으로 저작됐다(P-0016). 현재 실행 관계는 [skills/](../skills/)에서 확인한다.
+
+`setup-workflow`는 **계약 1·2번을 모두 충족했다** — 동봉물(스크립트 3종·템플릿 4종)은 persquad 이식에서 구현·검증됐고, 마지막 열린 검토점이던 마커 원문 링크는 2026-08-03 리뷰에서 해소됐다(link-workflow를 공개 레포로). 남은 것은 계약 4·5번인 **영어 실행본 저작**과, 마커의 URL이 실제로 가리킬 **공개 레포 생성**이다.
 
 ## 동기화 이력
 
@@ -53,3 +55,4 @@ setup-workflow (user-invoked, 이식 진입점 — 레포당 1회 + 갱신)
 - 2026-07-20 | 프로토콜 P-0012 동기화: Align에 agent와 사용자의 이해 정렬(설명 뒤 대표 시나리오·질문으로 설명의 빈틈 확인)을 추가하고, 합의부를 Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope로 확장. kickoff은 이 합의부를 착지하고, promote는 규모 있는 변경의 Change Brief·이해 확인과 기능 설명서 판정 기준을 실행한다. setup-workflow의 레포·전역 마커 템플릿은 P-0012 및 park / mark / explain 규칙으로 갱신.
 - 2026-07-26 | 승격 전 검토 결정을 반영: promote는 merge 후 main에서만 실행·자동 커밋 금지, cold-read는 새 fresh agent로 한 번만 재감사, kickoff은 workstream 전용·branch/worktree 자동 생성으로 확정. workflow-research는 범용 research와의 Codex 설치 경로 충돌을 피하도록 분리하고, align은 하니스별 슬래시 문법 대신 역할명으로 핸드오프한다. upstream-scout는 2~3주마다 변화만 감지하고 minor 이상 릴리스 또는 의미 있는 변경이 있을 때만 검토용 다이제스트를 만들며, 결론 반영 뒤 삭제한다. setup-workflow는 동봉물 구현·검증 전까지 초안으로 유지하고, 완결된 작은 스킬의 승격을 먼저 진행한다.
 - 2026-07-26 | 위 6개 확정 초안을 `skills/`의 영어 실행본으로 원자적으로 승격하고, 한글 원문은 `skill-rationales/`의 한국어 의사결정 기록으로 보존했다. 실행본은 문장별 번역이 아니라 확정된 목적·절차·경계를 독립 실행 가능한 영어 지시로 재저작했다.
+- 2026-08-03 | 프로토콜 리뷰(P-0014 ~ P-0019) 동기화. align은 선호/권한 분리와 위임 규칙·리서치 발주 전 실측 확인·cold-read 무조건 실행·승인 기록 남기기를, kickoff은 전이 커밋의 직렬화 불변식·출처 기반 전이·worktree 진입·접합부 필드를, promote는 merge 증거 확인·결정 ID 확정·`Parked` 이관·5/6단계 경계·자동 커밋 예외를 반영했다. cold-read는 재감사 라운드 수 고정을 제거했다. 작업 크기 게이트(다섯 표현)는 정의하지 않고 제거했다 — 판정 주체가 스킬을 호출하는 사용자이기 때문이다. `resume` 신설. `setup-workflow`의 마지막 검토점(마커 원문 링크)이 해소되어 남은 것은 영어 재저작뿐이다.

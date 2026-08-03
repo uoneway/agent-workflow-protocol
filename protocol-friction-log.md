@@ -24,6 +24,3 @@ AGENT_WORKFLOW_PROTOCOL.md 운영 중 마주친 마찰의 로그. **프로토콜
 
 <!-- 예: - 2026-07-08 | myapp | 반복 | "셰이핑 끝났으니 scope랑 behavior notes는 workstream 문서로, ADR급 결정은 decision-logs로 착지시켜줘" -->
 
-- 2026-07-10 | skill-guide 폐기 | 공백 | 격주 정비 패스(codebase-design 어휘로 deep module 후보 탐색) 아이디어가 폐기된 skill-guide에만 있었음 — 프로토콜 편입 여부 리뷰 필요
-- 2026-07-10 | skill-guide 폐기 | 공백 | "규모가 크면 grill 전에 그릴 가능한 덩어리로 쪼개고 덩어리별 별도 세션" 요령이 프로토콜 §2에 없음 — Align 앞수(⓪)로 편입 검토
-- 2026-07-26 | persquad 이식 | 어색 | 마커 블록의 원문 링크가 link-workflow 공개 여부에 걸려 있어, 미공개 상태에서 이식하면 프로토콜 원문 도달 경로가 아예 사라짐

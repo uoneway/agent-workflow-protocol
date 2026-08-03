@@ -13,7 +13,9 @@ Ask the agent to list every unanswered question it would need answered to start 
 
 For each question, either add the answer to the document, explicitly mark it Out of Scope or TBD, or reject it as unnecessary and report why.
 
-Pass only when no question blocks starting. After editing, use a different fresh agent for one re-audit; never re-audit with the first. If blocking questions remain after the second audit, sort them by what could answer them:
+Pass only when a round raises no question that blocks starting. After editing, audit again with an agent that has not seen the document before; never re-audit with one that already read it.
+
+Do not fix the number of rounds in advance. How many it takes tracks how thin the draft was when you started, and each round changes what the next one can see — a document long enough to contradict itself exposes contradictions that a short one had no room to hold. When successive rounds keep raising blocking questions that editing cannot close, sort them by what could answer them:
 
 - **Answerable by agreement** — the agreement is incomplete, not the proofreading. Return to `align`.
 - **Answerable only by observing a real system** — auditing again cannot resolve these. Write the unknown into the document as an unknown: the fallback behavior it forces, and how the first execution will capture the answer. Before concluding an unknown is unobservable, exhaust the read-only ways to observe it; a state-changing probe being unavailable does not mean the answer is unreachable.

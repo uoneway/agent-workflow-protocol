@@ -8,6 +8,6 @@ Before adding a skill here, confirm that its open questions are resolved, any de
 
 Install confirmed skills with `scripts/link-skills.sh`. It symlinks each skill to `~/.claude/skills/<name>` for Claude Code and `~/.agents/skills/<name>` for Codex. Plugin packaging is deferred until the workflow needs to distribute a stable bundle of skills, MCP, or hooks.
 
-Confirmed skills: `align`, `kickoff`, `resume`, `promote`, `workflow-research`, `cold-read`, and `upstream-scout`. `setup-workflow` remains a Korean draft until its declared scripts and templates exist and have been validated.
+Confirmed skills: `align`, `kickoff`, `resume`, `promote`, `workflow-research`, `cold-read`, and `upstream-scout`. `setup-workflow` is still a Korean draft, though no longer for the original reason — its scripts and templates are built and validated and its open decisions are closed, so what remains is the English rewrite and the public repository its marker URL will point at.
 
 The protocol has six stages but only four of them carry a skill. That is deliberate: skills attach to transitions a user can call for, while Develop's rules (park, mark, explain) hold for the whole of a session and belong in `AGENTS.md`, which loads every time. See `skill-rationales/resume.md` for the reasoning.

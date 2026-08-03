@@ -27,28 +27,10 @@ link-workflow의 프로토콜과 스킬을 실제 서비스 레포에 적용하�
 
 회차 문서에 마찰의 원인 분석을 적는 것은 허용된다 — 회차 문서 자체가 회고 산출물이기 때문이다. 캡처 시점의 무해석 원칙은 `protocol-friction-log.md`에만 적용된다.
 
-## 적용 레포
+## 진행 중인 회차
 
+없다.
 
-| 레포 | 회차 | 검증한 스킬 | 마찰 | 상태 |
-| --- | --- | --- | --- | --- |
-| persquad | [round-01 — 워크플로우 이식](./persquad-round-01-transplant.md) | `setup-workflow`(초안) · `cold-read` | 19건 | 완료 ([PR #1](https://github.com/uoneway/persquad/pull/1)) |
-| persquad | [round-02 — 첫 수직 슬라이스](./persquad-round-02-first-slice.md) | `align` · `workflow-research` · `kickoff` · `cold-read` | 6건 | 슬라이스 1 완료 |
-| persquad | [round-03 — workstream 완결과 promote](./persquad-round-03-promote.md) | `promote` | 3건 | 완료 · **확정 6개 스킬 전부 실행** |
+회차가 열리면 여기에 레포·회차·검증한 스킬·마찰 건수를 한 줄로 적고, 리뷰가 끝나면 그 줄과 회차 문서를 함께 지운다. 완료된 회차의 목록을 여기 쌓지 않는다 — 회차가 만든 결론은 프로토콜 변경 이력·스킬 rationale·`upstream-sources.md`가 들고 있고, 회차 자체의 이력은 git이 안다.
 
-
-## 리뷰 대기
-
-- [2026-07-26 프로토콜 리뷰 제안](./2026-07-26-protocol-review-proposal.md) — 마찰 25건을 4개 군집으로 정리. 최우선은 "브랜치에 있는 agent가 main 전용 자원에 닿는 방법"(6건이 한 뿌리).
-
-## 이 기록이 만든 변경
-
-실적용에서 확정되어 이미 반영된 것들.
-
-
-| 대상                                 | 변경                                                                          |
-| ---------------------------------- | --------------------------------------------------------------------------- |
-| `skills/cold-read/SKILL.md`        | 감사 대상 = 문서 + 라우팅된 것 · 종료 조건 세 갈래 · 적용 대상을 만료 문서로 한정 · 사각지대 명시               |
-| `skills/setup-workflow/scripts/`   | `detect-repo-state.sh` · `marker-hash.sh` · `lint-decision-logs.sh` 구현·검증   |
-| `skills/setup-workflow/templates/` | `agents-block.md` · `global-routing.md` · `PROJECT_STATE.md` · `BACKLOG.md` |
-| `skill-drafts/setup-workflow.md`   | ⑤ 감사 대상 정정 · ②D 무인 실행 규칙 · ④2 매핑 우선순위 · 동봉물 검증 상태                           |
+> persquad 3개 회차(2026-07-26 ~ 08-02)와 그 리뷰 제안서는 2026-08-03 리뷰에서 판단이 끝나 삭제됐다. 확정·기각의 이유는 프로토콜 변경 이력의 P-0014 ~ P-0019에 있다.
