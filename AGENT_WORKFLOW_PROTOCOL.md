@@ -187,7 +187,8 @@ align이 항상 Kickoff로 이어진다면 전제 도전은 연극이다. 작업
 - `BACKLOG.md`에서는 시작한 항목을 제거한다.
 - `PROJECT_STATE.md`에는 이름, 상태, owner, 상세 링크만 넣는다.
 - `docs/workstreams/<slug>.md`에는 align의 초안(Goal / Mental Model / Key Trade-off / Current Scope / Behavior Notes / Out of Scope)을 합의부로 착지시키고, 상태부에 재개 정보를 적는다.
-- 이 시작 전이 커밋은 main에서 만든 뒤 branch/worktree를 딴다. 이후 branch에서는 `docs/workstreams/<slug>.md`만 갱신한다.
+- 이 시작 전이는 main 전용 문서를 갱신하므로 **동시 갱신이 없는 단일 지점**에서 만든다. 세션이 main에 있을 수 있으면 main에서 커밋한 뒤 branch/worktree를 딴다. 실행 환경이 격리를 강제하면(배경 agent, worktree 전용 세션) main 계보 위에 전이 전용 커밋을 만들어 merge로 main에 도달시킨다. 불변식은 위치가 아니라 동시 갱신의 부재다(§Parallel Workstreams).
+- 전이가 기록된 뒤 branch에서는 `docs/workstreams/<slug>.md`만 갱신한다.
 
 피해야 할 것:
 
@@ -201,9 +202,9 @@ align이 항상 Kickoff로 이어진다면 전제 도전은 연극이다. 작업
 작업 중 새 가지가 뻗으면 — 추가 아이디어, 발견한 버그, "이것도 다시 봐야 할 것 같은" 항목 — 쫓아가지도, 머리에 담아두지도 말고 한 줄로 착지시킨 뒤 현재 작업으로 복귀한다 (park, don't chase):
 
 - 현재 scope 안이면 → workstream 문서의 `Next Step`
-- scope 밖이면 → `docs/BACKLOG.md`
+- scope 밖이면 → main에 있으면 `docs/BACKLOG.md`, branch에 있으면 workstream 문서의 `Parked (out of scope)`. 후자는 Promote가 main에서 BACKLOG로 이관한다.
 
-착지 지점이 항상 이 두 곳뿐이라는 확신이 열린 루프를 닫는다. 발산 자체는 결함이 아니라 미지의 미지가 드러나는 순간이다. 문제는 발산이 아니라 포획 없는 발산이다.
+착지 지점이 항상 정해져 있다는 확신이 열린 루프를 닫는다. 발산 자체는 결함이 아니라 미지의 미지가 드러나는 순간이다. 문제는 발산이 아니라 포획 없는 발산이다. branch의 `Parked`는 착지점이 둘로 늘어난 것이 아니라, main 전용 문서에 닿을 수 없는 위치에서 쓰는 **같은 착지점의 버퍼**다 — `Learnings`가 `LEARNINGS.md`의 버퍼인 것과 같다.
 
 결정이 굳으면 그 자리에서 기록한다 (mark):
 
@@ -219,6 +220,7 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 **결정 ID 규약.** mark로 `docs/decision-logs/`에 기록할 때:
 
 - 결정마다 레포 전역 연번 ID를 부여하고 히스토리 항목 제목에 박는다: `### D-0012 — <제목> (YYYY-MM-DD)`. 네임스페이스는 레포당 하나다 — 신규 레포는 `D-0001`부터, 구 ADR 체계에서 전환한 레포는 `ADR-` 연번을 그대로 이어간다. 항목을 추가하면 같은 파일의 `Current Decision`을 함께 갱신한다.
+- 병렬 workstream이 같은 번호를 동시에 잡을 수 있다. branch에서는 **잠정 번호**로 쓰고, Promote가 main의 최대값 기준으로 확정한다. 충돌하면 나중에 merge하는 쪽이 재번호한다. 인용이 파일 경로가 아니라 ID이므로 재번호 비용은 grep 치환이다 — 이 규약이 성립하는 근거가 아래의 ID 인용 규칙에 이미 있다.
 - 결정 실질은 `Current Decision`에만 둔다. 히스토리 항목에는 그 시점의 배경(Why)과 supersede 사실만 적는다 — 같은 실질을 두 곳에 쓰면 다음 갱신 때 한쪽이 낡는다.
 - 코드 주석·이슈·다른 문서는 결정을 파일 경로가 아니라 ID로 인용한다. ID → 파일 해소는 grep이 맡는다.
 - 주제 파일은 ID들의 뷰다. 분류가 어색해지면 히스토리 항목을 ID째 다른 파일로 옮긴다 — ID 인용은 깨지지 않는다. 한 결정이 두 주제에 걸치면 본문은 한 곳에만 두고 다른 파일에서는 ID로 링크한다.
@@ -257,16 +259,17 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 전제: workstream 문서의 `Verification`이 실제 증거(테스트 결과, 실행 확인)로 채워져 있어야 완료를 선언할 수 있다. 주장보다 증거다. 이해 확인은 Verification에 섞지 않는다 — 테스트·실행의 객관적 증거와 사람의 멘탈 모델은 다른 게이트다.
 
-작업이 끝나면 아래 순서로 정리한다. 이 정리는 merge 후 main에서 수행한다 — `PROJECT_STATE.md`·`BACKLOG.md`가 main 전용이기 때문이다(§Parallel Workstreams).
+작업이 끝나면 아래 순서로 정리한다. 이 정리는 merge 후에 하며, main 전용 문서를 갱신하므로 Kickoff 전이와 같은 불변식을 따른다 — main에 있을 수 있으면 main에서, 실행 환경이 격리를 강제하면 main 계보 위의 정리 전용 커밋으로 수행한다(§3·§Parallel Workstreams).
 
 1. 사람의 다음 판단에 영향을 줄 규모 있는 변경이면 최종 Change Brief로 이해 확인을 한다. Change Brief는 결과 → 고려와 선택 → 이제의 모델 → 경계 → 검증을 빠짐없이 다루고, 각 항목에서는 배경과 직관을 구현 세부보다 먼저 설명한다. 사용자는 승인·수정·추가 질문 중 하나로 응답한다. 대표 시나리오나 질문은 필요할 때만 쓰며 사용자를 시험하지 않는다. 이 과정에서 드러난 장기 모델만 다음 단계에서 승격한다.
 2. `docs/PROJECT_STATE.md`에서 active 상태를 제거한다. 완료 이력은 merge 커밋이 이미 기록하므로 별도 목록을 두지 않는다. 이슈 트래커에서 온 작업이면 이슈를 닫는다.
 3. 현재 구조가 바뀌었으면 `docs/ARCHITECTURE.md`를 갱신한다.
-4. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다.
+4. 장기 가치가 있는 결정이면 `docs/decision-logs/*.md`를 갱신한다. branch에서 잠정 부여한 결정 ID를 main의 최대값 기준으로 확정하고, 다른 workstream과 충돌하면 나중에 merge하는 쪽이 재번호한다.
 5. 설명서 가치가 있는 기능이면 `docs/features/<feature>.md`를 생성하거나 갱신한다. 판정 기준은 이 기능을 앞으로 사용·운영·확장·제한할 사람이 목적·관측 가능한 동작·핵심 모델·한계를 다시 알아야 하는가다.
 6. repo 전체 작업 규칙이 새로 드러났다면 `AGENTS.md`를 갱신한다.
 7. workstream 문서의 `Learnings`를 `docs/LEARNINGS.md`로 옮긴다. `LEARNINGS.md`에서 같은 교훈이 반복 확인되면 `AGENTS.md`로 승격하고 항목을 제거한다.
-8. 승격이 끝나면 `docs/workstreams/<slug>.md`는 삭제한다.
+8. workstream 문서의 `Parked (out of scope)`를 `docs/BACKLOG.md`로 이관한다. 작업이 끝나며 무의미해진 항목은 옮기지 않되, 버린 사실을 최종 보고에 말한다 — 조용히 사라지면 park의 보장이 깨진다.
+9. 승격이 끝나면 `docs/workstreams/<slug>.md`는 삭제한다.
 
 즉, 진행 중 메모는 임시이고, 승격된 정보만 영속 문서로 남긴다.
 
@@ -293,9 +296,10 @@ park와 mark는 한 쌍이다: 가지가 뻗으면 park, 결정이 굳으면 mar
 
 여러 작업을 동시에 굴리는 것 자체는 문제가 아니다. 동시 개수의 상한은 사람마다 다르므로 강제하지 않는다. 대신 병렬 운용이 무너지지 않게 하는 flow를 둔다.
 
-- workstream 하나당 worktree 하나를 쓴다. `docs/workstreams/<slug>.md`는 해당 branch에서만 수정한다.
-- `docs/PROJECT_STATE.md`와 `docs/BACKLOG.md`는 main에서만 갱신한다. 갱신 시점은 작업의 시작·종료·상태 전이 시점이다. 이렇게 하면 병렬 branch 간 merge 충돌이 원천 차단된다.
-- 작업 A 중 발견한 작업 B 관련 가지는 B의 workstream 문서가 아니라 `docs/BACKLOG.md`(main)에 착지시킨다. A의 세션은 B의 branch 파일을 건드리지 않는다.
+- workstream 하나당 worktree 하나를 쓴다. `docs/workstreams/<slug>.md`는 해당 branch에서만 수정한다. worktree의 경로 규약은 프로토콜이 정하지 않는다 — 실행 환경의 규약(sibling 디렉터리, `.claude/worktrees/` 등)을 따르고, workstream 문서 상단에 실제 경로를 적는다.
+- **main 전용 문서는 `docs/PROJECT_STATE.md`와 `docs/BACKLOG.md` 둘뿐이다.** 갱신 시점은 작업의 시작·종료·상태 전이 시점이다. 이렇게 하면 병렬 branch 간 merge 충돌이 원천 차단된다. 나머지는 쓰는 시점이 branch를 결정한다 — `docs/decision-logs/`와 `docs/ARCHITECTURE.md`는 Kickoff 전이·Develop·Promote 어디서든 갱신될 수 있고, main 전용이 아니다.
+- main 전용이 요구하는 것은 **물리적 위치가 아니라 동시 갱신의 부재**다. 세션이 main에 있을 수 있으면 main에서 갱신하고, 실행 환경이 격리를 강제하면 main 계보 위의 전이 전용 커밋으로 같은 불변식을 만족시킨다(§3). 브랜치에 있어 main 전용 문서에 닿을 수 없는 동안의 착지점은 workstream 문서의 버퍼 섹션이며, Promote가 main에서 이관한다.
+- 작업 A 중 발견한 작업 B 관련 가지는 B의 workstream 문서가 아니라 `docs/BACKLOG.md`(main) — 브랜치에 있으면 A의 `Parked (out of scope)` — 에 착지시킨다. A의 세션은 B의 branch 파일을 건드리지 않는다.
 - align 세션은 병렬로 돌리기 좋다. 한 세션이 생각하는 동안 다른 세션의 질문에 답한다. 보통 2개가 편한 한계이고, 한쪽이 리서치 같은 장시간 작업이면 3개까지도 가능하다.
 - 인지 부하가 다른 작업을 짝짓는다. 깊은 구현 1개 + 얕은 셰이핑·리서치 1개 조합이 깊은 구현 2개 조합보다 오래 버틴다.
 - 상한 대신 좀비를 감지한다. `PROJECT_STATE.md`를 갱신할 때마다 오래 진전 없는 workstream을 확인하고, 살릴 계획이 없으면 닫아서 BACKLOG로 되돌린다. 열린 루프는 개수보다 방치가 문제다.
@@ -409,7 +413,9 @@ Out of Scope:
 - 관리자 수동 재전송 UI
 
 <!-- 상태부: 개발 중 수시로 변한다. Current State는 커밋 로그를 재서술하지 않는다 —
-     로그가 못 담는 판정(슬라이스별 완료/미완, 1차/우회 같은 해석)만 적는다. -->
+     로그가 못 담는 판정(슬라이스별 완료/미완, 1차/우회 같은 해석)만 적는다.
+     Parked는 개발 중 발견한 scope 밖 가지의 버퍼다 — Align에서 합의한 제외 범위인
+     합의부의 Out of Scope와 다르다. -->
 
 Current State:
 - duplicate guard: 완료
@@ -425,6 +431,9 @@ Next Step:
 
 Learnings:
 - sandbox는 서명 헤더가 실제 재전송과 달라 로컬 검증이 안 됨
+
+Parked (out of scope):
+- 관리자 화면의 재전송 이력 필터가 느림 — 이번 작업과 무관, Promote가 BACKLOG로 이관
 
 Read First:
 - src/payments/webhook.ts
@@ -524,3 +533,4 @@ Stripe webhook 재전송 전략 비교.
 | P-0011 | 2026-07-13 | 변경 이력 행 연번 규약 신설 — 각 행에 전역 연번 ID(P-NNNN) 소급 부여, 표에 ID 열 추가. 이식된 레포의 AGENTS.md 마커는 이식·갱신 시점의 마지막 행 ID를 버전 스탬프로 삼는다(setup-workflow 갱신 모드의 기준점). 인용은 날짜가 아니라 ID로 | setup-workflow 초안 검토에서 확정. 날짜는 기준점 역할 불가 — 같은 날 다수 행이 실데이터로 존재(2026-07-10에 7행). semver는 리뷰 세션 단위 일괄 개정에 호환성 의미론이 부적합하고 매 개정 판정 비용을 부과. 결정 ID 규약(§4, D-NNNN)으로 이미 검증된 연번 패턴의 재사용 — 프로토콜 사상의 자기 적용 |
 | P-0012 | 2026-07-20 | 문서화 목적에 사람의 멘탈 모델 유지·다음 판단 참여를 동등하게 추가. 기준 문서와 소비성 이해 도구를 구분하고, 문서 서술 기준을 신설. Align에 agent와 사용자의 이해 정렬·이해 확인, workstream 합의부에 Mental Model·Key Trade-off, Develop에 Change Brief와 micro-world 일반화, Resume에 reorientation, Promote에 별도 이해 확인을 추가 | Geoffrey Litt의 "Understanding is the new bottleneck" 관점을 검토해, 이해를 agent 산출물의 정오 판정이 아니라 사람이 프로젝트를 다음으로 움직일 참여 능력으로 재정의. 매 diff 설명문을 영속화하면 문서 과잉이라는 창립 원칙과 충돌하므로, 설명은 기본 소비성 도구·반복 판단 가치가 확인된 모델만 기준 문서 승격으로 설계. Align에서 agent만 이해한 상태를 합의로 오인하지 않고, 질문·시나리오를 설명 실패 감지 장치로 사용 |
 | P-0013 | 2026-08-02 | 프로토콜 레포도 문서 lifecycle 예외를 두지 않는다. `protocol-friction-log.md`는 미결 마찰 inbox, `field-notes/`·`digests/`는 진행 중 review packet으로 한정한다. 리뷰 뒤 결론은 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 로그 행과 packet을 삭제한다 | 실적용 기록과 다이제스트를 영구 아카이브로 축적하면 “임시 정보는 승격 후 삭제”라는 창립 원칙과 어긋나며, 같은 결론이 로그·회고·기준 문서에 중복된다. 실제 검증의 맥락은 판단 전까지 필요하지만, 판단 뒤 현재 규칙을 이해하는 데 필요한 것은 결론과 이유뿐이다. Git 이력은 필요할 때만 과거 packet을 되짚는 경로로 충분하다 |
+| P-0014 | 2026-08-03 | **main 전용을 위치가 아니라 직렬화 불변식으로 재정의.** §3 Kickoff 전이 커밋의 "main에서"를 "동시 갱신 없는 단일 지점에서"로 개정 — 격리 환경은 main 계보 위의 전이 전용 커밋과 merge로 같은 불변식을 만족시킨다. §4 park의 scope 밖 착지점을 위치로 분기(main → BACKLOG, branch → workstream 문서 `Parked (out of scope)`)하고 §6에 이관 단계(8) 신설. 결정 ID 동시 할당 규칙 신설 — branch는 잠정 번호, Promote가 main 최대값으로 확정, 충돌 시 나중 merge 쪽이 재번호. §Parallel Workstreams에 main 전용 문서가 `PROJECT_STATE.md`·`BACKLOG.md` 둘뿐임을 명시적으로 열거하고 `decision-logs/`·`ARCHITECTURE.md`가 main 전용이 아님을 확정. worktree 경로 규약은 실행 환경에 위임 | persquad 실적용(round-01~03) 마찰 6건이 한 뿌리였다. Claude Code 배경 에이전트 세션은 격리된 worktree에서 시작해 main에 물리적으로 있을 수 없으므로 "전이 커밋을 main에서"가 실행 불가능한 지시였고, agent는 규칙을 어긴 것이 아니라 앞 workstream branch를 main 대리로 삼는 우회를 발명해 Round 2를 완주했다. 규칙이 지키려던 것은 장소가 아니라 관리 문서의 동시 갱신 부재인데 목적 대신 수단을 못 박은 결과, 그 장소에 갈 수 없는 환경에서는 park의 착지 보장("두 곳뿐이라는 확신")까지 함께 무너졌다. 검증된 우회의 승격이며, 재번호 규약이 성립하는 근거(인용은 파일 경로가 아니라 ID)는 P-0003에 이미 있다. 대안 기각: 레포별 우회 위임은 다음 레포가 같은 발명을 반복하게 하고, main 전용 규칙 폐기는 병렬 branch 간 관리 문서 충돌을 일상화한다 |
