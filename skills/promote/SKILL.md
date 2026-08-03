@@ -22,4 +22,6 @@ Then, in order:
 7. Move `Parked (out of scope)` entries to `docs/BACKLOG.md`. Drop one only when the completed work made it moot, and name what you dropped — a parked branch that disappears silently breaks the guarantee that made parking safe.
 8. Delete the completed workstream document.
 
-Suggest, but never silently remove, already-resolved BACKLOG items. Flag stale active workstreams without closing them. Do not auto-commit documentation changes unless repository instructions or the user explicitly require it.
+Evidence takes whatever form the change allows, but it is always something you did, never something that reads well. A documentation-only change verifies through a passed cold-read, a run of the procedure the document prescribes, or a lint and link check.
+
+Suggest, but never silently remove, already-resolved BACKLOG items. Flag stale active workstreams without closing them. Do not auto-commit documentation changes unless the user, the repository, or the execution environment requires it — an unattended session whose harness mandates commit and push is such a requirement, since there the commit is how the work reaches the user at all, and withholding it defeats the very purpose the restraint serves.

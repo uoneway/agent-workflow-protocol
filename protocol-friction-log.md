@@ -27,7 +27,3 @@ AGENT_WORKFLOW_PROTOCOL.md 운영 중 마주친 마찰의 로그. **프로토콜
 - 2026-07-10 | skill-guide 폐기 | 공백 | 격주 정비 패스(codebase-design 어휘로 deep module 후보 탐색) 아이디어가 폐기된 skill-guide에만 있었음 — 프로토콜 편입 여부 리뷰 필요
 - 2026-07-10 | skill-guide 폐기 | 공백 | "규모가 크면 grill 전에 그릴 가능한 덩어리로 쪼개고 덩어리별 별도 세션" 요령이 프로토콜 §2에 없음 — Align 앞수(⓪)로 편입 검토
 - 2026-07-26 | persquad 이식 | 어색 | 마커 블록의 원문 링크가 link-workflow 공개 여부에 걸려 있어, 미공개 상태에서 이식하면 프로토콜 원문 도달 경로가 아예 사라짐
-- 2026-07-26 | persquad 이식 | 공백 | 작업 크기 임계가 align·kickoff에서 다섯 표현(non-trivial, workstream-scale, substantial, workstream-sized, small enough to begin directly)으로 나타나는데 어느 것도 정의되지 않음
-- 2026-07-26 | persquad 이식 | 공백 | promote가 요구하는 "concrete evidence"의 기준이 코드 없는 문서 전용 변경에 대해 정의되지 않음
-- 2026-07-26 | persquad 슬라이스1 align | 공백 | align의 프로토타입 핸드오프가 되돌릴 수 없는 외부 부작용을 요구할 때의 처리가 없음 — `orca repo add`는 remove 명령이 없어 되돌릴 수 없고, 사용자 부재 세션에서는 승인도 받을 수 없어 grill이 막힘
-- 2026-07-26 | persquad promote | 어색 | promote의 "저장소 지침이 요구하지 않는 한 자동 커밋 금지"와 배경 에이전트 세션의 "커밋·push·PR 필수"가 충돌 — 단서 조항으로 해소되나 실행 하니스의 규칙이 "저장소 지침"에 해당하는지 불명확

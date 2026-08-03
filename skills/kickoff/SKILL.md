@@ -1,11 +1,11 @@
 ---
 name: kickoff
-description: Start an approved workstream by making its main-branch state transition, then creating its branch and worktree. Use when the user says to start, kick off, or begin an Align-approved non-trivial task.
+description: Start an approved workstream by making its main-branch state transition, then creating its branch and worktree. Use when the user says to start, kick off, or begin an Align-approved task.
 ---
 
 # Kickoff
 
-Use this only for workstream-sized work. Approval is a recorded fact, not an inference: look for it on the item's issue or BACKLOG entry, or in this session. If it is absent, ask whether to run `align` or whether the work is small enough to start without kickoff.
+Being called is the judgement that this work warrants a workstream — do not re-estimate its size. What you do check is approval, which is a recorded fact rather than an inference: look for it on the item's issue or BACKLOG entry, or in this session. If it is absent, ask whether to run `align` first.
 
 Make one start-transition commit that:
 
