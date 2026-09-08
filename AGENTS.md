@@ -5,7 +5,26 @@
 ## 규칙
 
 - 프로토콜 본문은 리뷰 세션에서 확정된 변경만 수정한다. 운영 중 마찰은 `protocol-friction-log.md`에 한 줄 append만 하고, 그 자리에서 원인 분석이나 수정을 시도하지 않는다 (park, don't chase).
-- `field-notes/`와 `digests/`는 진행 중인 프로토콜 리뷰의 입력이다. 결론은 프로토콜 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 마찰 행과 review packet은 삭제한다.
+- `field-notes/`와 `digests/`는 진행 중인 프로토콜 리뷰의 입력이다. 결론은 프로토콜 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 마찰 행과 review packet은 삭제한다. 다만 결정형 조사 synthesis와 재해석 가치가 큰 원본 evidence는 P-0024에 따라 `research/`로 재분류해 보존한다.
 - 확정된 변경은 프로토콜의 변경 이력 테이블에 사유와 함께 남긴다. 기각된 제안도 남긴다 — 조용한 재론 방지.
+- 이전 결정을 뒤집거나 책임을 옮길 때는 새 변경 이력에서 대체되는 결정 ID와 달라진 전제를 명시한다. 현재 실행 문서에는 최신 규칙만 두고, 폐기된 스킬의 rationale은 방향 변화 기록으로 보존한다.
 - `skill-drafts/`는 합의용 초안이다. 확정되면 `skills/<name>/SKILL.md`로 재작성하고 초안은 삭제한다. 설치는 `scripts/link-skills.sh`.
-- 업스트림(타 스킬 레포·블로그) 텍스트를 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다.
+- 업스트림(타 스킬 레포·블로그) 텍스트를 프로토콜이나 스킬에 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다. 원문 evidence 보존은 출처·시점·권리 범위를 기록하고 기본 읽기 경로 밖에 둔다.
+- 수기 `PROJECT_STATE`나 코드·git에서 즉시 복원 가능한 설명을 새로 만들지 않는다. 현재 상태와 사람용 설명은 live source에서 파생하고, 코드 밖에 남겨야 할 의도·경계·근거만 기록한다.
+
+<!-- agent-workflow-protocol P-0024 start -->
+<!-- agent-workflow-protocol-hash: 7bcdbbab6296eeba5560cd86ad733e7d5b9100721af69867d0480fd7dde8de7d -->
+## Agent Workflow
+
+원문: https://github.com/uoneway/link-workflow/blob/main/AGENT_WORKFLOW_PROTOCOL.md
+
+- 흐름은 Orient → Align → Act → Reorient다. 열린 가지의 capture는 어느 단계에서나 한다.
+- 현재 사실은 코드·테스트·git·worktree·PR·issue·session 같은 live source에서 읽는다. 수기 상태표에 복제하지 않는다.
+- 문서는 다른 신뢰 가능한 원천에서 복원할 수 없는 제품 의도·경계·비싼 결정·외부 증거만 보존한다.
+- 결정에 쓰인 리서치는 짧은 synthesis와 참조 원문 목록을 남긴다. 휘발성·재수집 비용·정확성·재해석 가치가 큰 원본 evidence는 기본 읽기 경로 밖에 보존한다.
+- 한 세션에서 이어지는 작업은 대화의 합의로 충분하다. 다른 session·agent·사람·worktree로 넘길 때만 짧은 작업 계약을 issue 또는 임시 workstream에 남긴다.
+- agent는 합의된 범위의 탐색·구현·검증·정리를 완결한다. 제품 취향, 되돌릴 수 없는 외부 작용, 비용, 사용자만 가진 권한, 검증 불가능한 불확실성만 사용자에게 돌려보낸다.
+- `orient`는 현재 방향 복원, `align`은 다음 행동의 합의에 쓴다. 외부 사실 조사는 `workflow-research`, 독립 감사가 실제로 필요할 때는 `cold-read`를 쓴다.
+- 작업 중 새 가지는 쫓지 않는다(park). 코드 밖에 남지 않으면 사라질 비싼 정보만 기록한다(mark). 사람의 판단 시점에는 현재 원천에서 설명한다(explain).
+- 의미 있는 결과 뒤에는 가능해진 것, 선택 이유, 경계, 실제 검증, 추천 다음 방향을 설명한다. 목표·동작·중요 경계가 바뀌면 해당 부분만 다시 Align한다.
+<!-- agent-workflow-protocol end -->

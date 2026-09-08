@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# P-0012
+# P-0023
 #
 # Pre-flight detection for setup-workflow. Emits one JSON object describing the
 # target repository so the skill branches on facts instead of guesses.
@@ -15,8 +15,9 @@ if [ -z "$ROOT" ]; then
 fi
 cd "$ROOT"
 
-MARKER='<!-- agent-workflow-protocol '
-STATE_FILE="$HOME/.claude/agent-workflow-protocol/state.json"
+MARKER_START_RE='^<!-- agent-workflow-protocol P-[0-9][0-9][0-9][0-9] start -->$'
+MARKER_END='<!-- agent-workflow-protocol end -->'
+STATE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/link-workflow/setup-state.json"
 
 # --- helpers ---------------------------------------------------------------
 
@@ -67,7 +68,13 @@ fi
 
 ALREADY_SETUP=false
 PROTOCOL_STAMP=""
-if [ -f AGENTS.md ] && grep -qF "$MARKER" AGENTS.md 2>/dev/null; then
+MARKER_START_COUNT=0
+MARKER_END_COUNT=0
+if [ -f AGENTS.md ]; then
+  MARKER_START_COUNT="$(grep -Ec "$MARKER_START_RE" AGENTS.md 2>/dev/null || true)"
+  MARKER_END_COUNT="$(grep -Fxc "$MARKER_END" AGENTS.md 2>/dev/null || true)"
+fi
+if [ "$MARKER_START_COUNT" -gt 0 ]; then
   ALREADY_SETUP=true
   PROTOCOL_STAMP="$(sed -n 's/.*<!-- agent-workflow-protocol \(P-[0-9]\{4\}\) start -->.*/\1/p' AGENTS.md | head -1)"
 fi
@@ -79,7 +86,7 @@ if [ -f AGENTS.md ]; then AGENTS_MD=exists; else AGENTS_MD=missing; fi
 CLAUDE_MD=missing
 if [ -f CLAUDE.md ]; then
   # A pointer is a CLAUDE.md whose only substantive line is the @AGENTS.md import.
-  SUBSTANTIVE="$(grep -v '^[[:space:]]*$' CLAUDE.md | grep -v '^[[:space:]]*<!--' | wc -l | tr -d ' ')"
+  SUBSTANTIVE="$(sed -e '/^[[:space:]]*$/d' -e '/^[[:space:]]*<!--/d' CLAUDE.md | wc -l | tr -d ' ')"
   if [ "$SUBSTANTIVE" = "1" ] && grep -q '^[[:space:]]*@AGENTS\.md[[:space:]]*$' CLAUDE.md; then
     CLAUDE_MD=pointer
   else
@@ -108,29 +115,6 @@ for d in research notes docs-src adr; do
 done
 DOC_CANDIDATES="$(printf '%s\n' "$DOC_CANDIDATES" | grep -v '^$' || true)"
 
-# --- ADR -------------------------------------------------------------------
-
-ADR_DIR=""
-for cand in docs/adr docs/decisions docs/architecture/decisions adr; do
-  if [ -d "$cand" ]; then ADR_DIR="$cand"; break; fi
-done
-
-ADR_LAST=""
-if [ -n "$ADR_DIR" ]; then
-  ADR_LAST="$(ls -1 "$ADR_DIR" 2>/dev/null \
-    | sed -n 's/^[Aa][Dd][Rr][-_]*\([0-9][0-9]*\).*/\1/p' \
-    | sed 's/^0*//' \
-    | sort -n | tail -1)"
-  [ -z "$ADR_LAST" ] && ADR_LAST=""
-fi
-
-# Existing decision-logs also carry a sequence the skill must continue.
-DECISION_LAST=""
-if [ -d docs/decision-logs ]; then
-  DECISION_LAST="$(grep -rhno '^### \(D\|ADR\)-[0-9]\{4\}' docs/decision-logs 2>/dev/null \
-    | sed 's/.*-\([0-9]\{4\}\)$/\1/' | sed 's/^0*//' | sort -n | tail -1 || true)"
-fi
-
 # --- issue tracker ---------------------------------------------------------
 
 TRACKER_HINT=none
@@ -146,9 +130,9 @@ fi
 MACHINE_ASKED=false
 MACHINE_CHOICE=null
 if [ -f "$STATE_FILE" ]; then
-  MACHINE_ASKED=true
   PLACEMENT="$(json_read_string "$STATE_FILE" placement)"
-  if [ -n "$PLACEMENT" ]; then
+  if [ "$PLACEMENT" = global ] || [ "$PLACEMENT" = local-only ]; then
+    MACHINE_ASKED=true
     MACHINE_CHOICE="\"$(json_escape "$PLACEMENT")\""
   fi
 fi
@@ -166,6 +150,8 @@ printf '{\n'
 printf '  "repo_root": "%s",\n' "$(json_escape "$ROOT")"
 printf '  "has_git": %s,\n' "$HAS_GIT"
 printf '  "already_setup": %s,\n' "$ALREADY_SETUP"
+printf '  "marker_start_count": %s,\n' "$MARKER_START_COUNT"
+printf '  "marker_end_count": %s,\n' "$MARKER_END_COUNT"
 if [ -n "$PROTOCOL_STAMP" ]; then
   printf '  "protocol_stamp": "%s",\n' "$(json_escape "$PROTOCOL_STAMP")"
 else
@@ -175,21 +161,6 @@ printf '  "agents_md": "%s",\n' "$AGENTS_MD"
 printf '  "claude_md": "%s",\n' "$CLAUDE_MD"
 printf '  "docs_dir": %s,\n' "$(printf '%s\n' "$DOCS_LIST" | json_array)"
 printf '  "doc_candidates": %s,\n' "$(printf '%s\n' "$DOC_CANDIDATES" | json_array)"
-if [ -n "$ADR_DIR" ]; then
-  printf '  "adr_dir": "%s",\n' "$(json_escape "$ADR_DIR")"
-else
-  printf '  "adr_dir": null,\n'
-fi
-if [ -n "$ADR_LAST" ]; then
-  printf '  "adr_last_number": %s,\n' "$ADR_LAST"
-else
-  printf '  "adr_last_number": null,\n'
-fi
-if [ -n "$DECISION_LAST" ]; then
-  printf '  "decision_last_number": %s,\n' "$DECISION_LAST"
-else
-  printf '  "decision_last_number": null,\n'
-fi
 printf '  "remote": "%s",\n' "$REMOTE"
 printf '  "tracker_hint": "%s",\n' "$TRACKER_HINT"
 printf '  "machine_routing_asked": %s,\n' "$MACHINE_ASKED"

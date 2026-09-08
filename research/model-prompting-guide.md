@@ -1,6 +1,6 @@
 # 모델별 프롬프팅 가이드 — Claude 5 세대 · GPT-5.6 세대
 
-작성: 2026-07-24. 공식 문서 조사 기반 종합. 원문 스냅샷은 [`references/prompting/`](../references/prompting/)에 verbatim 보존 — 세부 지침이 필요하면 스냅샷을 읽는 것이 우선이고, 이 문서는 "어떤 모델에 어떤 태도로 프롬프팅할지"의 지도다.
+작성: 2026-07-24. 공식 문서 조사 기반 종합. 원문 스냅샷은 [`references/prompting/`](evidence/model-prompting-guide/)에 verbatim 보존 — 세부 지침이 필요하면 스냅샷을 읽는 것이 우선이고, 이 문서는 "어떤 모델에 어떤 태도로 프롬프팅할지"의 지도다.
 
 ## TL;DR — 두 진영이 수렴한 방향
 
@@ -18,7 +18,7 @@
 
 ## Claude Fable 5 (`claude-fable-5`) / Mythos 5
 
-> 원문: [`anthropic-prompting-claude-fable-5.md`](../references/prompting/anthropic-prompting-claude-fable-5.md)
+> 원문: [`anthropic-prompting-claude-fable-5.md`](evidence/model-prompting-guide/anthropic-prompting-claude-fable-5.md)
 
 **포지셔닝·용도**: Opus 위 신규 티어. 최고난도 추론, 수 시간짜리 장기 자율(agentic) 실행, 엔터프라이즈 딜리버러블(재무분석·법률검토·대규모 리팩터). Fable↔Mythos 차이는 안전 분류기뿐(Mythos는 승인 조직 한정). 입력 $10/출력 $50 per MTok — Opus보다 비싸므로 "기본 업그레이드 경로"가 아니라 명시적 선택.
 
@@ -68,7 +68,7 @@
 
 ## Claude Sonnet 5 (`claude-sonnet-5`)
 
-> 원문: [`anthropic-prompting-claude-sonnet-5.md`](../references/prompting/anthropic-prompting-claude-sonnet-5.md) — Fable 5와 동일 구조의 전용 페이지 존재
+> 원문: [`anthropic-prompting-claude-sonnet-5.md`](evidence/model-prompting-guide/anthropic-prompting-claude-sonnet-5.md) — Fable 5와 동일 구조의 전용 페이지 존재
 
 **포지셔닝·용도**: 비용 대비 코딩·agentic 주력 — 이전 Opus급 품질을 Sonnet 가격($3/$15, 한시 $2/$10)에. 기존 Sonnet 4.6 프롬프트가 **out-of-the-box로 잘 동작** — 큰 재작성 불필요.
 
@@ -96,7 +96,7 @@
 
 ## GPT-5.6 세대 — Sol / Terra / Luna (Codex 포함)
 
-> 원문: [`openai-latest-model-gpt-5.6.md`](../references/prompting/openai-latest-model-gpt-5.6.md) (Model guidance — 프롬프팅 best practices 포함; `prompt-guidance-gpt-5p6` URL과 동일 문서) · [`openai-reasoning-effort.md`](../references/prompting/openai-reasoning-effort.md) · [`openai-codex-models.md`](../references/prompting/openai-codex-models.md)
+> 원문: [`openai-latest-model-gpt-5.6.md`](evidence/model-prompting-guide/openai-latest-model-gpt-5.6.md) (Model guidance — 프롬프팅 best practices 포함; `prompt-guidance-gpt-5p6` URL과 동일 문서) · [`openai-reasoning-effort.md`](evidence/model-prompting-guide/openai-reasoning-effort.md) · [`openai-codex-models.md`](evidence/model-prompting-guide/openai-codex-models.md)
 
 **명명 체계 주의**: "GPT-5.6-Codex"는 없다. 2026-07 GPT-5.6 세대부터 코딩 전용 라인(`gpt-5.1-codex`~`gpt-5.3-codex`)이 폐지되고, 숫자=세대 / **Sol·Terra·Luna**=역량 티어가 ChatGPT와 Codex를 공통 구동한다.
 
@@ -147,3 +147,4 @@
 **OpenAI** — 스냅샷 보유: [Model guidance / GPT-5.6 Prompting Guidance](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.6) (두 URL — `latest-model?model=gpt-5.6` · `prompt-guidance-gpt-5p6` — 이 byte-identical 동일 문서) · [Reasoning models](https://developers.openai.com/api/docs/guides/reasoning) · [Codex Models](https://developers.openai.com/codex/models) / 참고(구버전): [Codex Prompting Guide](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide) (gpt-5.3-codex 대상, 코딩 원칙은 유효) / 미확인: [발표 페이지](https://openai.com/index/gpt-5-6/) (fetch 403 — 공식 docs로 교차검증)
 
 주의: OpenAI 가격 수치는 3자 매체 출처라 이 문서에서 제외했다. 인용 필요 시 공식 pricing 페이지 확인.
+

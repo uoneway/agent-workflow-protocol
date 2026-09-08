@@ -1,4 +1,0 @@
-interface:
-  display_name: "Kick Off Workstream"
-  short_description: "Start an approved workstream safely on main"
-  default_prompt: "Use $kickoff to start this approved workstream."

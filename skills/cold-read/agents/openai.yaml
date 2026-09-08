@@ -1,4 +1,4 @@
 interface:
   display_name: "Cold-Read Audit"
-  short_description: "Test whether a handoff document stands alone"
-  default_prompt: "Use $cold-read to audit this handoff document."
+  short_description: "Independently audit a high-risk or cross-context agreement"
+  default_prompt: "Use $cold-read to audit this work agreement without prior context."

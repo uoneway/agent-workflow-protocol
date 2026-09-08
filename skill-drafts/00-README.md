@@ -2,7 +2,7 @@
 
 실 스킬 파일로 재작성하기 전, **무엇을 왜 실행해야 하는지 합의하기 위한 한국어 작업 문서**. 초안은 실행 대상도, 영어 스킬의 병행 사본도 아니다. 확정되면 이 폴더의 해당 초안은 삭제하고, 그 검토 기록은 `skill-rationales/<name>.md`로 보존한다. 확정된 목적·절차·경계를 바탕으로 `skills/<name>/SKILL.md`를 영어 실행본으로 새로 작성한다. 즉 문장별 번역이 아니라, 그 사상으로 처음부터 영어 스킬을 쓴다면 자연스러울 표현과 구조를 선택한다.
 
-설치는 `scripts/link-skills.sh`가 같은 스킬을 `~/.claude/skills/<name>`(Claude Code)와 `~/.agents/skills/<name>`(Codex)에 symlink로 처리한다 — 레포가 source of truth고 `git pull`이 곧 업데이트다. 플러그인 패키징은 여러 스킬·MCP·훅을 함께 배포해야 할 때까지 보류한다.
+설치와 배포는 `scripts/link-skills.sh`가 담당한다. 이 레포가 source of truth이고 dotfiles 사본은 배포 스냅샷이다. 플러그인 패키징은 여러 스킬·MCP·훅을 함께 배포해야 할 때까지 보류한다.
 
 ## 승격 계약
 
@@ -39,9 +39,9 @@
 setup-workflow (user-invoked, 이식 진입점 — 레포당 1회 + 갱신)
 ```
 
-`align`, `kickoff`, `promote`, `workflow-research`, `cold-read`, `upstream-scout`는 2026-07-26에 `skills/` 영어 실행본으로 승격되어 이 폴더에서 삭제됐다. `resume`은 2026-08-03 리뷰에서 확정되어 초안 없이 바로 실행본으로 저작됐다(P-0016). 현재 실행 관계는 [skills/](../skills/)에서 확인한다.
+`align`, `workflow-research`, `cold-read`, `upstream-scout`는 2026-07-26에 영어 실행본으로 승격됐다. `resume`은 2026-08-03에 추가됐으나, 2026-09-08 리뷰에서 더 넓은 현재 복원 역할인 `orient`로 대체됐다. 같은 리뷰에서 `kickoff`와 `promote`는 독립 스킬의 비용이 효용보다 커져 폐기됐다(P-0021·P-0022). 현재 실행 관계는 [skills/](../skills/)에서, 폐기 이유는 [skill-rationales/](../skill-rationales/)에서 확인한다.
 
-`setup-workflow`는 **계약 1·2번을 모두 충족했다** — 동봉물(스크립트 3종·템플릿 4종)은 persquad 이식에서 구현·검증됐고, 마지막 열린 검토점이던 마커 원문 링크는 2026-08-03 리뷰에서 해소됐다(link-workflow를 공개 레포로). 남은 것은 계약 4·5번인 **영어 실행본 저작**과, 마커의 URL이 실제로 가리킬 **공개 레포 생성**이다.
+`setup-workflow`는 예전 6단계 프로토콜을 대상으로 구현·검증된 적이 있지만, P-0020~P-0024에서 기본 문서와 실행 단계·리서치 보존 경계가 바뀌어 **승격 계약을 다시 검토 중**이다. 현재 초안과 동봉물은 `AGENTS.md` + 조건부 `VISION.md`, live-source orientation, 조건부 작업 계약을 이식하는 최소 형태로 다시 줄였다. 영어 실행본 작성과 새 형태의 실제 적용 검증이 남아 있다.
 
 ## 동기화 이력
 
@@ -56,3 +56,5 @@ setup-workflow (user-invoked, 이식 진입점 — 레포당 1회 + 갱신)
 - 2026-07-26 | 승격 전 검토 결정을 반영: promote는 merge 후 main에서만 실행·자동 커밋 금지, cold-read는 새 fresh agent로 한 번만 재감사, kickoff은 workstream 전용·branch/worktree 자동 생성으로 확정. workflow-research는 범용 research와의 Codex 설치 경로 충돌을 피하도록 분리하고, align은 하니스별 슬래시 문법 대신 역할명으로 핸드오프한다. upstream-scout는 2~3주마다 변화만 감지하고 minor 이상 릴리스 또는 의미 있는 변경이 있을 때만 검토용 다이제스트를 만들며, 결론 반영 뒤 삭제한다. setup-workflow는 동봉물 구현·검증 전까지 초안으로 유지하고, 완결된 작은 스킬의 승격을 먼저 진행한다.
 - 2026-07-26 | 위 6개 확정 초안을 `skills/`의 영어 실행본으로 원자적으로 승격하고, 한글 원문은 `skill-rationales/`의 한국어 의사결정 기록으로 보존했다. 실행본은 문장별 번역이 아니라 확정된 목적·절차·경계를 독립 실행 가능한 영어 지시로 재저작했다.
 - 2026-08-03 | 프로토콜 리뷰(P-0014 ~ P-0019) 동기화. align은 선호/권한 분리와 위임 규칙·리서치 발주 전 실측 확인·cold-read 무조건 실행·승인 기록 남기기를, kickoff은 전이 커밋의 직렬화 불변식·출처 기반 전이·worktree 진입·접합부 필드를, promote는 merge 증거 확인·결정 ID 확정·`Parked` 이관·5/6단계 경계·자동 커밋 예외를 반영했다. cold-read는 재감사 라운드 수 고정을 제거했다. 작업 크기 게이트(다섯 표현)는 정의하지 않고 제거했다 — 판정 주체가 스킬을 호출하는 사용자이기 때문이다. `resume` 신설. `setup-workflow`의 마지막 검토점(마커 원문 링크)이 해소되어 남은 것은 영어 재저작뿐이다.
+- 2026-09-08 | P-0020~P-0023에 맞춰 setup-workflow를 재개방했다. 기본 생성물을 `AGENTS.md`와 조건부 `VISION.md`로 줄이고, `PROJECT_STATE`·전역 결정 연번·kickoff/promote 라우팅·무조건 cold-read를 제거했다. 과거 persquad 이식 검증은 예전 설계의 증거로만 남으며, 새 초안은 별도 적용 검증 뒤 승격한다.
+- 2026-09-08 | P-0024를 반영해 마커에 결정형 research synthesis·참조 원문 목록과 조건부 cold evidence 보존을 추가했다. research 폴더는 setup 기본 생성물이 아니며 실제 결정형 조사가 생길 때 `workflow-research`가 만든다.

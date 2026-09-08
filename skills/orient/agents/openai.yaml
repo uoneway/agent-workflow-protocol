@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orient Project"
+  short_description: "Reconstruct current direction from live sources"
+  default_prompt: "Use $orient to reconstruct the current state and recommend the next action."

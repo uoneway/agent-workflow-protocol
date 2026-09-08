@@ -11,15 +11,18 @@
 
 | 소스 | 종류 | 마지막 리뷰 | 지점 |
 |---|---|---|---|
-| mattpocock/skills | repo | 2026-07-07 | v1.0.1 (커밋 해시 미기록) |
-| obra/superpowers | repo | 2026-07-07 | v5.0.7 |
+| mattpocock/skills | repo | 2026-09-06 | main `3cca18b` (2026-09-04) |
+| obra/superpowers | repo | 2026-09-06 | v6.3.0 |
 | garrytan/gstack | repo (로컬 클론 — fetch만, merge/pull 금지) | 2026-07-07 | v1.58.5 |
-| aihero.dev | blog | 2026-07-07 | "Real-world feature build" |
+| aihero.dev | blog | 2026-09-06 | Skills v1.2 변경 안내·grilling 문서(2026-08-24) |
 | github/spec-kit | repo | 2026-07-12 | 이식 서베이 조사 시점 (커밋 해시 미기록) |
-| buildermethods/agent-os | repo | 2026-07-12 | 이식 서베이 조사 시점 — v1·v1.3·v2·v3 비교 |
+| buildermethods/agent-os | repo | 2026-09-06 | v3 migration 재검토 |
 | open-gsd/gsd-core (GSD, 활성 계보) | repo | 2026-07-24 | 원조 `gsd-build/get-shit-done`은 아카이브됨; 활성 계보 검증 |
 | bmad-method (BMAD-METHOD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
-| Geoffrey Litt | blog | 2026-07-20 | "Understanding is the new bottleneck" |
+| Geoffrey Litt | blog | 2026-09-06 | "Understanding is the new bottleneck" 재해석 |
+| Anthropic Engineering | blog | 2026-09-06 | 2025 장기 실행 harness·2026 후속 단순화 |
+| Microsoft Research | paper | 2026-09-06 | CHI 2025 지식노동자 설문 |
+| Anthropic·OpenAI prompting guidance | official docs | 2026-07-24 | 목표·제약·경계 중심 저작 원칙 |
 
 spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서베이에서 `setup-workflow` 설계를 위해 처음 조사됐다. 이 문서가 갱신되기 전까지는 추적 표에 등록되지 않은 채 검토 packet에만 있었다.
 
@@ -27,21 +30,21 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 ### mattpocock/skills
 
-가장 큰 지분을 차지하는 소스. `align`·`kickoff`·`promote`·`research` 스킬 골격 대부분이 여기서 왔고, 이 레포 저작 규율(`skill-drafts/00-README.md`) 자체도 mattpocock 관례와의 비교에서 나왔다.
+초기 `align`·`kickoff`·`promote`·research 골격에 가장 큰 영향을 준 소스다. 2026-09 리뷰에서는 질문 묶음과 무거운 흐름의 적용 경계를 다시 비교했고, `kickoff`·`promote`는 폐기했다.
 
 **가져온 것**
 
-- **grill 루프의 핵심 3문장**(`grilling` 스킬) — "공유된 이해에 도달할 때까지 인터뷰하라, 질문은 한 번에 하나씩, 매 질문마다 추천 답을 함께 제시하라"를 거의 원문 그대로 번역해 `align`②의 뼈대로 삼았다. 원문에 있던 "한 번에 여러 질문은 사용자를 혼란시킨다"는 이유 문장은 없어도 실행이 달라지지 않는 no-op으로 판단해 뺐다.
+- **grill 루프와 round-based 질문** — 초기에는 한 번에 한 질문과 추천 답을 `align`의 뼈대로 삼았다. v1.2가 독립적인 질문을 round로 묶도록 바뀐 뒤, 관련 선택을 함께 볼 때 사용자가 관계와 빠진 관점을 더 잘 판단한다는 사용자 피드백과 합쳐 질문 묶음을 채택했다. 다만 업스트림의 모든 decision frontier 소진은 가져오지 않고 결과·증거·경계·위임·재논의 조건이 맞으면 실행으로 넘어간다. [v1.2 변경 안내](https://www.aihero.dev/skills/skills-changelog-v12-wait-what-writing-for-agents-claude-code-plugin-and-more), [grilling 설명](https://www.aihero.dev/skills-grilling)
 - **grill-with-docs의 교차검증** — "사용자가 진술한 작동 방식이 코드와 맞는지 확인하라", "구체적 시나리오로 압박 테스트하라" 두 항목만 가져왔다. 같은 스킬의 CONTEXT.md 용어집 생성 절차는 가져오지 않았다 — domain-modeling 자체를 이 워크플로우에 들일지가 보류 상태라, 그 위성 절차만 먼저 들이면 앞뒤가 안 맞는다고 판단했다.
-- **research의 조사 원칙** — "1차 소스(공식 문서·소스코드·스펙)까지 따라가라, 2차 요약본에 멈추지 마라"와 "발견을 출처와 함께 단일 Markdown에 담아라" 두 원칙은 완성도가 높아 거의 원문 번역으로 가져왔다. 원문의 세 번째 원칙("repo 관례에 맞는 위치에 저장")은 그대로 쓰기엔 너무 일반적이라, 우리 착지 관례(`docs/_research/YYYY-MM-DD-<slug>.md`, 같은 주제 rename+Update History)로 구체화해 대체했다.
+- **research의 조사 원칙** — 1차 소스까지 따라가고 사실과 해석을 구분하는 원칙을 가져왔다. 처음에는 결과를 단일 Markdown에 기본 저장했고, P-0020에서는 맥락 이동·재조사 비용·검증 한계를 보존할 때만 note를 만들도록 줄였다. P-0024에서 외부 evidence는 코드 상태와 달리 사후 복원이 불가능할 수 있음을 구분해, 결정형 synthesis와 참조 원문 목록은 기본 보존하고 원본 evidence는 휘발성·비용·정확성·복수 해석 가능성에 따라 cold archive에 보존하도록 보강했다.
 - **to-prd의 태도와 골격** — "사용자를 인터뷰하지 말고 이미 나온 합의를 종합만 하라"는 태도, 그리고 문제/해결/범위 밖 3분할 구조를 workstream 문서의 합의부(Goal/Current Scope/Behavior Notes/Out of Scope) 형식으로 변형해 가져왔다. 원문의 이슈 트래커 게시 스텝은 처음엔 뺐다("무인 병렬 구현 전까지 트래커 불채택"이라는 2026-07-07 결정 때문) — 그러다 2026-07-10에 ai-tab 레포 적용 리뷰를 계기로 이 결정을 뒤집었고, 이슈 트래커를 쓰는 레포에서는 "나중에" 출구가 이슈 승격이 되도록 다시 들여왔다(프로토콜 변경 이력 P-0003).
 - **to-issues의 수직 슬라이스 개념** — 이슈로 쪼개는 방식 자체는 안 가져오고, "각 조각이 통합 레이어를 관통하는 독립 완결 단위"라는 수직 슬라이스 개념만 workstream의 Current Scope 항목 형식으로 가져왔다.
 - **setup-matt-pocock-skills의 대화 골격** — 탐색 → 발견 제시 → 섹션별 질문(추천 답 선행, 이미 결정된 섹션은 스킵) → 초안 확인 → 쓰기, 이 5단계 흐름을 `setup-workflow`의 본문 ①~④ 구조로 그대로 가져왔다. "CLAUDE.md가 있으면 그것을 편집하고 반대쪽(AGENTS.md)을 임의로 새로 만들지 않는다"는 안전장치도 함께 가져왔다. 레포별 설정을 `docs/agents/*.md`라는 별도 파일로 착지시키는 부분은 안 가져왔다 — 우리는 그 정보를 AGENTS.md 마커 블록 안에 직접 넣는 설계라, 별도 파일을 하나 더 만들 이유가 없었다.
-- **domain.md의 lazy 생성 원칙** — "문서가 없으면 미리 만들지 말고 조용히 진행하다가, 실제로 필요해지는 시점에 생성하라"는 원칙을 `setup-workflow`의 문서 골격 생성 단계(PROJECT_STATE·BACKLOG만 즉시 생성, GLOSSARY·LEARNINGS·decision-logs·features·workstreams는 lazy)에 그대로 적용했다. 이 레포 자체의 최소주의 원칙과도 정확히 합치했다.
+- **lazy 생성 원칙** — 문서가 없다는 이유로 미리 만들지 않고 실제 필요가 생길 때 생성한다는 원칙을 가져왔다. 처음에는 PROJECT_STATE·BACKLOG를 예외로 즉시 생성했지만, P-0020에서 PROJECT_STATE를 폐기하고 BACKLOG도 트래커가 없으며 실제 후보가 있을 때만 만들도록 더 엄격하게 적용했다.
 - **changelog를 산출물로 남기는 관행** — `upstream-scout`가 리뷰 결과를 다이제스트 파일로 남기는 착상의 참조점.
 - **skill 명명 선례** — 스킬명을 정할 때(검토점 1) mattpocock이 굳이 `setup-matt-pocock-skills`처럼 긴 이름을 쓴 선례가, "setup" 단독은 전역 네임스페이스 충돌 위험이 있다는 판단의 근거 중 하나가 됐다.
-- **ADR-0001의 hard/soft 의존성 구분** (2026-07-19 로컬 플러그인 캐시 직접 조사) — mattpocock/skills는 스킬을 두 부류로 나눈다: 레포별 설정(이슈 트래커, triage 라벨) 없이는 출력이 **틀리는** hard-dependency 스킬(`to-tickets`,`to-spec`,`triage` — "…should have been provided to you, run `/setup-matt-pocock-skills` if not"라는 명시적 한 줄을 둠)과, 없어도 그냥 덜 날카로워지기만 하는 soft-dependency 스킬. 이 구분을 그대로 가져와 `kickoff`·`promote`의 결정 ID 단계, `align`의 이슈 트래커 단계에 "마커 블록에 값이 없으면 setup-workflow부터 확인하라"는 문장을 넣었다. 다만 우리는 이 카테고리 자체가 mattpocock보다 훨씬 작다 — 우리 스킬 대부분이 의존하는 건 레포 밖 사실이 아니라 **문서 존재 여부**라, lazy 생성 원칙이 hard dependency를 구조적으로 없애버린다. 진짜 hard dependency는 결정 ID 연번(kickoff·promote)과 이슈 트래커 여부(align, 더 약한 등급) 두 값뿐이었다.
-- **`scripts/link-skills.sh`(비공식 dev-script)의 두 가지 안전장치** — mattpocock 자신의 유지보수용 스크립트(README가 "지원 대상 아님"이라고 명시)를 로컬 플러그인 캐시에서 직접 읽고 확인했다. ① 설치 대상이 이미 이 레포 자신을 가리키는 symlink면 순환 방지를 위해 에러를 내고 중단하는 가드 — 우리 `scripts/link-skills.sh`에도 2026-07-19에 동일하게 추가했다. ② `~/.claude/skills`뿐 아니라 `~/.agents/skills`에도 동시에 symlink하는 관례도 참고했다. 현재 스크립트는 Claude Code에는 `~/.claude/skills`, Codex에는 `~/.agents/skills`를 대상으로 하며, 이는 각 제품의 현재 스킬 설치 경로에 맞춘다.
+- **ADR-0001의 hard/soft 의존성 구분** — 처음에는 이 구분을 근거로 kickoff·promote의 결정 ID와 align의 트래커 설정을 setup hard dependency로 삼았다. P-0021·P-0022에서 두 스킬과 전역 연번을 없애고 align이 현재 레포의 실제 원천을 읽도록 바꾸면서 hard dependency도 함께 제거했다. 구분 자체는 유용했지만, 설정을 요구하는 기능을 없애는 편이 더 깊은 단순화였다.
+- **`scripts/link-skills.sh`(비공식 dev-script)의 안전장치** — mattpocock 자신의 유지보수용 스크립트에서 순환 symlink를 거부하는 가드를 참고했다. 우리 현재 배포 스크립트는 직접 도구 경로를 소유하지 않고 dotfiles snapshot을 만든 뒤 dotfiles 설치·검증에 위임한다. 과거 직접 링크 흔적만 안전하게 정리한다.
 - **vercel-labs/skills(`npx skills`, skills.sh 레지스트리 엔진)의 갱신 메커니즘 비교** — mattpocock/skills 자체가 아니라 그걸 배포하는 별도 오픈소스 CLI다. `.skill-lock.json`에 설치 시점 GitHub tree SHA를 저장해뒀다가 `skills update` 실행 시 최신 해시와 비교하는데, **로컬에서 사용자가 그 스킬을 고쳤는지는 전혀 추적하지 않아 업데이트가 있으면 그냥 조용히 덮어쓴다.** 이 반면교사가, 우리 마커 블록·전역 라우팅 마커 양쪽에 `agent-workflow-protocol-hash`(사용자 직접 수정 감지용) 라인을 추가하는 결정의 직접 근거가 됐다 — spec-kit의 자기 콘텐츠 SHA-256 추적과 같은 목적.
 
 **가져오지 않은 것 / 기각**
@@ -60,9 +63,9 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 - **brainstorming의 접근안 벌리기** — "본격적으로 설계하기 전에 접근안 2~3개를 트레이드오프와 함께 제시하라"는 한 조각만 2026-07-08 세션에서 채택해 `align`①로 삼았다. 같은 스킬의 YAGNI 심문·설계문서 작성 등 나머지 절차는 가져오지 않았다 — 우리 grill 루프(②)가 그 역할을 이미 하고 있어 중복이었다.
 - **Spec Review(adversarial)** — "완성된 plan을 대화 맥락이 없는 다른 subagent에게 감사시킨다"는 개념을 `cold-read`의 베이스로 가져왔다. 단, superpowers는 감사 결과로 plan을 subagent가 직접 고치게 하지만, 우리는 질문 목록만 받아서 맥락을 가진 align 세션이 처리를 판단하게 했다 — 문서를 고치는 손과 맥락을 아는 손을 분리하는 쪽이 더 안전하다고 봤다.
 - **컨텍스트 격리를 검증 도구로 쓰는 발상** — superpowers는 "세션 히스토리를 상속하지 않는다"를 오염 방지 특성으로만 취급하지만, `cold-read`는 그 격리 자체를 검증 메커니즘의 핵심으로 삼았다(대화에 참여한 사람은 초안의 구멍이 안 보이기 때문에, 안 보인 적 없는 fresh 에이전트를 일부러 쓴다).
-- **verification-before-completion의 "주장보다 증거"** — 원칙 자체는 그대로 가져왔지만 적용 위치를 바꿨다. superpowers는 이걸 상시 규칙으로 두지만, 우리는 상시 규칙은 AGENTS.md의 몫으로 남기고 `promote`의 입구 게이트(완료 처리 직전 마지막 방어선)에 배치했다.
-- **using-git-worktrees의 명명 관례** — worktree 이름을 slug 기반으로 짓는 관례 정도만 가져왔다. superpowers는 worktree 생성·정리에 전용 스킬을 따로 두지만, 우리는 그 필요가 조건부가 아니라 kickoff/promote 어디서든 무조건 거치는 단계라고 봐서 별도 스킬 없이 인라인으로 흡수했다(조건부만 위성 스킬로 분리하는 저작 규율).
-- **에스컬레이션 패턴** — "3~4회 수정에도 실패하면 그건 수정의 문제가 아니라 아키텍처의 문제다"라는 패턴을 `cold-read`의 재감사 상한(2회 감사 후에도 시작 불가 질문이 남으면 문서가 아니라 합의 문제로 간주하고 align으로 되돌린다)에 이식했다.
+- **verification-before-completion의 "주장보다 증거"** — 처음에는 `promote` 입구 게이트에 배치했지만, P-0021에서 별도 완료 의식을 없애며 Act의 상시 완료 조건으로 옮겼다. 검증은 유지하고 전이 절차만 제거한 것이다.
+- **작업 규모에 따른 ceremony 축소** — v6.3.0이 작은 작업에서 두 문서 절차를 생략하고 controller가 비치명적인 모호함을 근거와 함께 처리하도록 바꾼 흐름을 참고했다. 새 크기 분류표를 만들지는 않고, 맥락 이동이 없으면 작업 계약을 만들지 않는 단일 조건으로 단순화했다. [v6.3.0](https://github.com/obra/superpowers/releases/tag/v6.3.0)
+- **에스컬레이션 패턴** — 반복 수정에도 같은 문제가 남으면 문구가 아니라 합의나 아키텍처 문제로 보라는 원칙을 가져왔다. 처음에는 cold-read 2회 상한으로 구현했지만 현재는 횟수를 고정하지 않는다. 사용자 합의가 필요한 질문은 즉시 Align으로, 실제 시스템만 답할 질문은 unknown·fallback·관찰 계획으로 넘긴다.
 
 **가져오지 않은 것 / 기각**
 
@@ -78,7 +81,7 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 **가져온 것**
 
 - **User Challenge 규격** — "사용자의 원래 방향이 기본값이고, agent가 방향 전환을 제안하려면 '놓쳤을 수 있는 맥락'과 '틀렸을 때의 비용'을 명시해서 입증해야 한다"는 규격을 거의 그대로 가져와 align의 전제 도전과 upstream-scout의 검토 세션 양쪽에 적용했다(같은 규격을 "사용자의 방향" 대신 "기존 프로토콜"에 대상만 바꿔 재사용). 같은 스킬의 decision brief 서식(ELI10 설명, Completeness 점수 등 정량화 장치)은 과한 기계장치로 판단해 가져오지 않았다.
-- **learn(관찰→학습 승격 루프)** — 관찰을 모아뒀다가 반복 확인되면 규칙으로 승격하는 발상을, `docs/LEARNINGS.md`(1회성 교훈 버퍼) → 반복 확인 시 `AGENTS.md` 승격이라는 형태로 가져왔다.
+- **learn(관찰→학습 승격 루프)** — 처음에는 `docs/LEARNINGS.md` 버퍼에서 반복 규칙을 AGENTS로 승격하는 형태로 가져왔다. P-0020에서 기본 버퍼를 없애고, 운영 마찰은 이 레포의 friction log처럼 명확한 수신처가 있을 때만 capture하며 반복이 확인된 상시 규칙만 AGENTS에 남기도록 더 좁혔다.
 - **ship의 백로그 대조** — "완료 항목을 TODOS와 diff 대조해 자동으로 정리한다"는 개념은 참조했지만, 자동 이동이 아니라 "제안만 하고 실제 삭제는 사용자가 결정"하는 쪽으로 약화시켰다 — User Sovereignty(사용자가 최종 결정)와 우리 쪽의 "강제 대신 가이드" 선호가 둘 다 같은 방향을 가리켜서, 이 지점에서는 원문보다 약하게 가져오는 게 오히려 두 철학 모두에 더 충실했다.
 
 **가져오지 않은 것 / 기각**
@@ -90,7 +93,7 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 ### aihero.dev
 
-추적 표에는 2026-07-05 비교 분석 시점부터 있었지만, 지금까지 구체적으로 "이 항목은 aihero.dev에서 가져왔다"고 지목할 수 있는 흡수 기록은 없다. 초기 조사가 mattpocock/superpowers/gstack 세 레포 중심으로 진행됐고, 블로그는 참고 맥락으로만 훑은 상태로 보인다. 다음 upstream-scout 리뷰에서 구체적으로 무엇을 봤는지 다시 확인이 필요하다 — 추적만 하고 실질 흡수 기록이 없는 유일한 소스라는 점을 그대로 남겨둔다.
+Matt Pocock 스킬의 공식 설명과 변경 의도를 확인하는 1차 저자 채널로 쓴다. 2026-09 리뷰에서 v1.2의 round-based grilling, wayfinder를 한 세션에 담기 어려운 문제로 제한한 점, handoff를 실제 맥락 이동에만 쓰는 점을 확인했다. 질문 묶음과 조건부 작업 계약은 채택했고, 별도 결정 티켓 체계와 모든 결정 가지 소진은 우리 규모에 과해 가져오지 않았다. 설명이 전달되지 않았을 때 배경과 익숙한 용어로 다시 설명하는 `wait-what`은 문서 감량과 설명 감량이 다르다는 근거로 참고했다.
 
 ---
 
@@ -100,14 +103,43 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 **가져온 것**
 
-- **이해의 목적 재정의** — 문서화의 목적에 retrieval(재개·유지)과 participation(사람이 살아있는 멘탈 모델을 유지해 다음 판단에 참여)을 동등하게 두었다. agent가 코드를 탐색해 알 수 있다는 사실만으로, 사람이 빠르게 판단할 수 있는 설명의 가치를 부정하지 않도록 했다(P-0012).
+- **이해의 목적 재정의** — P-0012에서는 문서화의 목적에 retrieval과 participation을 동등하게 뒀다. P-0020에서 participation이라는 목적은 유지하되 저장 책임은 분리했다. 코드·live source·보존된 의도를 조합한 설명은 agent와 도구가 판단 시점에 생성하고, 영속 문서는 복원 불가능한 공유 진실만 맡는다.
 - **교육적 이해 도구** — 배경·직관을 먼저 제시하고, 필요할 때 코드 설명·확인 질문·조작 가능한 작은 예시로 내려가는 흐름을 Change Brief·이해 확인·micro-world로 흡수했다. 질문은 사용자 평가가 아니라 agent 설명의 빈틈을 찾는 장치로 변형했다.
-- **소비성 설명물** — explainer와 micro-world는 대개 읽거나 써서 멘탈 모델을 만들면 임무가 끝나는 도구다. 매 변경마다 파일로 남기지 않고, 장기 판단 가치가 확인된 모델만 기존 기준 문서로 승격하도록 했다. Align의 일회성 프로토타입 착지 규칙을 같은 방식으로 일반화했다.
+- **소비성 설명물** — explainer와 micro-world는 대개 읽거나 써서 멘탈 모델을 만들면 임무가 끝나는 도구다. P-0020에서는 reorientation과 Change Brief도 같은 범주로 명확히 두고, AI 없이 반복 사용해야 하는 설명만 장기 보존하도록 좁혔다.
 
 **가져오지 않은 것 / 보류**
 
 - **전용 explain 스킬** — 코드 설명의 서사 순서와 확인 질문을 자동화하는 스킬은 후보지만, 실제로 어떤 요청·산출물·수명 규칙이 반복되는지 관찰하기 전에는 새 스킬을 만들지 않는다. P-0012의 `explain` 횡단 규칙으로 먼저 운영한다.
 - **shared space** — 팀 단위 공유 이해 도구는 현재 1인-다중 agent 중심의 프로토콜에서 실사용 마찰이 아직 관찰되지 않아 도입하지 않는다. 협업 규모에서 같은 문제가 반복되면 friction log에 capture한다.
+
+---
+
+### Anthropic Engineering
+
+장기 실행 agent harness가 모델 능력 변화에 따라 어떻게 단순화됐는지를 비교하는 근거로 사용했다.
+
+**가져온 것**
+
+- 2025년 실험의 세션 간 진행 기록과 실제 앱을 사용하는 평가에서, 맥락 이동 시 열린 의도와 검증 증거가 필요하다는 결론을 확인했다. [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
+- 2026년 후속 실험이 강제 context reset·고정 sprint 구조를 제거하고 평가 빈도를 낮춘 사례에서, 과거 모델의 한계를 보충하던 절차는 영구 불변식이 아니라 제거 실험 대상이라는 원칙을 강화했다. 실제 산출물 기반 독립 평가는 유지했다. [Harness design for long-running application work](https://www.anthropic.com/engineering/harness-design-long-running-apps)
+
+**가져오지 않은 것 / 경계**
+
+- 특정 benchmark harness의 구조를 일반 개발 프로토콜로 복제하지 않았다. 목표·경계·증거는 유지하되 세션·sprint·평가 횟수를 고정하지 않는다.
+
+---
+
+### Anthropic·OpenAI prompting guidance
+
+2026-07-24 공식 문서 비교에서 최신 모델은 이전 모델용 세부 절차를 그대로 유지할 때 품질이 떨어질 수 있고, 목표·이유·hard constraint·승인 경계·성공 조건을 명시한 뒤 구현 절차는 모델에 맡기는 방향으로 두 회사의 지침이 수렴한다고 판단했다. 이 결론을 `skills/README.md`의 저작 규율로 채택했다. reasoning depth는 프롬프트 문구가 아니라 runtime 설정으로 취급한다. [Anthropic prompt engineering](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview), [OpenAI reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices)
+
+당시 모델별 이름·가격·effort 권장표는 빠르게 낡지만, 그 결론을 만든 공식 문서의 정확한 표현은 이후 워크플로우 단순화를 재평가할 evidence다. P-0024에 따라 조사 synthesis와 참조 원문 목록을 장기 보존하고, 당시 snapshot은 기본 읽기 경로 밖의 evidence archive로 재분류한다. 다음 모델 세대에서는 과거 snapshot을 현재 사실로 갱신하지 않고 새 원천을 별도 시점의 evidence로 더한다.
+
+---
+
+### Microsoft Research
+
+CHI 2025의 지식노동자 319명 설문은 생성형 AI에 대한 높은 신뢰와 낮은 자기보고 비판적 사고 사이의 연관성을 보고했다. 자기보고 상관 연구이므로 AI가 인지 능력을 영구 저하시킨다는 인과 근거로 사용하지 않는다. 매 단계 승인 횟수보다 사람이 의미 있는 비교·반례·다음 방향을 제시할 수 있게 하는 Align과 Reorient가 중요하다는 보조 근거로만 사용했다. [논문 안내](https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/)
 
 ---
 
@@ -140,9 +172,10 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 **가져오지 않은 것 / 기각**
 
-- **index.yml 카탈로그** — 스크립트가 구조를, 에이전트가 의미를 관리하는 문서 카탈로그. 우리 `docs/`는 문서 수가 한 자릿수라 프로토콜의 Document Index 표 하나로 충분해서 별도 카탈로그 메커니즘을 안 들였다.
+- **index.yml 카탈로그** — 스크립트가 구조를, 에이전트가 의미를 관리하는 문서 카탈로그는 기각했다. 처음에는 프로토콜의 작은 Document Index면 충분하다고 봤고, P-0020 이후에는 고정 카탈로그도 두지 않고 필요 시 파일과 live source를 탐색한다.
 - **sync-to-profile.sh(역방향 동기화)** — "대상 레포에서 다듬은 규칙을 유저 레벨로 회수한다"는 개념은 참고했지만 새로 구현하지 않았다 — 이미 있는 `protocol-friction-log.md`("마찰:" 캡처)가 사실상 같은 역할을 하고 있어서, 새 메커니즘을 만들 이유가 없었다.
-- **v2의 1,000줄 bash 조건부 컴파일러({{IF}}/{{PHASE}})** — v3에서 통째로 폐기된 전례. "도구가 진화하면 직접 구현한 기능이 애물단지가 된다"는 반면교사로 삼아, 우리 스크립트 규모를 pre-flight 감지 스크립트 1개 + 선택적 lint 스크립트 1개로 최소화하는 근거가 됐다.
+- **v2의 1,000줄 bash 조건부 컴파일러({{IF}}/{{PHASE}})** — v3에서 통째로 폐기된 전례. "도구가 진화하면 직접 구현한 기능이 애물단지가 된다"는 반면교사로 삼아 setup의 자동화 범위를 감지와 마커 무결성처럼 결정적인 작은 스크립트로 제한했다. P-0021에서는 전역 결정 연번과 함께 선택적 lint 스크립트도 제거했다.
+- **v3의 축소** — 모델과 도구가 직접 수행할 수 있게 된 spec 작성·task breakdown·구현 orchestration 구조를 걷어낸 이행을 재검토했다. 이를 개별 기능 모방이 아니라, 모델 결핍을 보충하던 kickoff·promote·수기 상태 전이를 제거 실험할 근거로 사용했다. [v3 migration](https://buildermethods.com/agent-os/migration)
 
 ---
 
@@ -150,7 +183,7 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 
 처음 조사한 `gsd-build/get-shit-done`은 아카이브되었고, 현재 추적 대상은 `open-gsd/gsd-core`다. 아래의 마커 렌더링·갱신 모드·결정적 pre-flight 평가는 이 활성 계보와 2026-07-18 이식 서베이를 기준으로 유지한다.
 
-마커 블록 렌더링·갱신 모드 설계에서 가장 구체적으로 참고한 소스. `.planning/`이라는 레포 내 상태 저장소를 두는 전체 철학이 우리 `docs/PROJECT_STATE.md` + `workstreams/`와 개념적으로 닮았다.
+마커 블록 렌더링·갱신 모드 설계에서 가장 구체적으로 참고한 소스다. `.planning/` 상태 저장소는 예전 `PROJECT_STATE` + workstreams 설계와 닮았지만, P-0020 이후에는 상태 저장 철학은 따르지 않고 결정적 감지와 마커 갱신 기법만 유지한다.
 
 **가져온 것**
 
@@ -175,5 +208,5 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 **가져오지 않은 것 / 기각**
 
 - **해시 매니페스트 기반 3분류 재설치** — 미변경 stock 파일은 덮어쓰고, 사용자 추가 파일은 보존하고, 사용자가 수정한 stock 파일은 새 버전 설치 + 기존본을 `.bak`으로 백업하는 정교한 3분류 시스템. "마커 경계 + '존재하는 파일은 불가침'만으로 충분한 규모"라고 판단해 완전히 기각했다 — 코드 유지비가 얻는 이득을 초과한다고 봤다.
-- **config.toml(팀, 커밋) / config.user.toml(개인, gitignore) 2스코프 설정** — 팀·개인 설정을 분리하는 아이디어는 참고했지만 최종 설계에 넣지 않았다. 우리는 마커 블록 안의 "이 레포의 설정" 한 섹션으로 충분하다고 판단했다 — 개인/팀 스코프를 나눌 만큼 설정 항목이 많지 않다.
+- **config.toml(팀, 커밋) / config.user.toml(개인, gitignore) 2스코프 설정** — 팀·개인 설정을 분리하는 아이디어는 참고했지만 도입하지 않았다. 예전에는 마커 안의 작은 레포 설정으로 충분하다고 봤고, P-0022 이후 마커 자체도 실행 원칙과 라우팅만 가지므로 별도 설정 계층이 필요 없다.
 - **모놀리식 대량 이식(스킬 수십 개 + `_bmad/` 트리, installer 1,745줄)** — 가장 강력한 반면교사. "setup이 이 규모를 흉내내면 유지보수가 본업(워크플로우 자체를 다듬는 일)을 잡아먹는다"는 판단 그대로 `setup-workflow`의 기각 기록에 남겼다.

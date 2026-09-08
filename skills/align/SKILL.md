@@ -1,27 +1,38 @@
 ---
 name: align
-description: Shape a backlog item or new work into an agreed, implementation-ready workstream. Use when the user asks to align, shape, grill, clarify scope, or choose an approach before starting work.
+description: Reach shared understanding about an intended change before acting. Use when the user asks to align, shape, grill, clarify direction, or choose an approach.
 ---
 
 # Align
 
-Turn an ambiguous request into a decision the user can understand and act on. Do not implement before the user selects an exit.
+Align until the user can delegate the next action with clear outcome, boundaries, and reasons to return. Alignment is the agreement itself; a document is optional.
 
-1. Offer two or three materially different approaches with their trade-offs when the direction is not already clear.
-2. Grill one decision at a time, routing each question to where its answer lives. Discover codebase facts directly. Ask the user about preferences — unless they explicitly delegated the decision, in which case decide it on stated grounds and record it in a decision log so they can overturn it. Always ask about authority: an irreversible external effect, a spend, or an access only the user holds. Delegation never covers that; when approval cannot be obtained, stop and record what blocked. Hand external facts to `workflow-research` with a three-line brief (question, decision affected, finding that would change the decision). Use a prototype only when the answer requires seeing or trying an interaction — and treat a prototype that needs an irreversible external effect as an authority question, not a time cost.
-3. Check claims about current behavior against the codebase. Use concrete edge-case scenarios when a domain boundary is at stake.
-4. Explain important behavior, rules, and trade-offs in plain language before asking for a representative scenario, choice, or concern. This checks the explanation, not the user.
+Inspect the environment and current behavior before asking about facts you can discover. When direction is open, show two or three materially different approaches and their trade-offs.
 
-## After research
+Map the decisions and ask them in rounds. Group questions when seeing them together helps the user compare choices or notice a missing perspective. Give a recommended answer for each. State dependencies when an answer rests on an unsettled premise, and rebuild the next round after the user responds.
 
-Run one precondition challenge before integrating findings: identify whether the problem can be avoided, whether the approach is unusually different from established practice and why, and whether others tried and abandoned it. The user's current direction remains the default. Propose a change only with the missing context and the cost of being wrong.
+Route each unknown to its best source:
 
-## Write the agreement
+- inspect code, history, configuration, and live state for local facts;
+- ask the user about goals and preferences, unless they explicitly delegated the choice;
+- always ask immediately before an irreversible external effect, spend, or access only the user can grant;
+- research external facts after narrowing the question with available local evidence;
+- prototype when the answer requires seeing or trying an interaction.
 
-Draft the agreement in the repository's workstream format: Goal, Mental Model, Key Trade-off, Current Scope, Behavior Notes, and Out of Scope. Split scope into independently complete vertical slices. Draft a decision log when a decision is durable or expensive to reverse.
+Before proposing a material direction change, challenge the premise once: can the problem be avoided, is the approach unusually different from established practice, and did others abandon it? The user's current direction remains the default. Name the missing context and cost of being wrong when recommending a change.
 
-Ask for approval, and run `cold-read` on every draft you write. Do not gate that audit on how large the work looks — writing a draft already means the work was shaped, and re-measuring its size is a second gate on the same fact. Separately, when the change bears on a decision the user will make next, give them an opportunity to correct or extend their mental model; that one spends their time, so let the need decide it.
+Finish when these five parts are shared:
 
-End with one explicit exit: start now (`kickoff`), defer (promote the accepted item to the configured issue tracker or condense it into BACKLOG), or stop. If issue-tracker configuration is absent, ask rather than guessing. If the grill shows the work needs none of these documents, say so and let the user start directly — that is a finding, not a gate you failed.
+1. observable outcome;
+2. example or evidence that will show success;
+3. boundaries to preserve;
+4. decisions delegated to the agent;
+5. findings that require alignment again.
 
-Record that the approval happened and where the item now lives. A deferred item carries both in its issue or BACKLOG entry; `kickoff` copies them into the workstream document's `Source` and `Approved` fields. A later session cannot infer approval from the existence of a draft — an unapproved draft looks exactly the same.
+Do not exhaust every design branch. Leave reversible implementation choices and questions answerable by execution to the agent.
+
+Keep the agreement in the conversation when the same context will act on it. Write a short issue or `docs/workstreams/<slug>.md` only when the agreement must cross to another session, agent, person, or worktree. Include the five parts above; omit file lists, task progress, commands, and facts derivable from git or code.
+
+Use `cold-read` only when another executor must start from the agreement alone, ambiguity is expensive, self-review is risky, prior handoffs failed in this area, or the user requests it.
+
+End with one explicit choice: act now, defer to the project's single backlog source, or stop. Do not act until the user chooses.

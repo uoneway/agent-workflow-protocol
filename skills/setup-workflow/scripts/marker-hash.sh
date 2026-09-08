@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# P-0012
+# P-0023
 #
 # Compute, verify, and stamp the integrity hash of an agent-workflow-protocol
 # marker block. The update mode of setup-workflow compares the recorded hash
@@ -7,7 +7,7 @@
 #
 # Usage:
 #   marker-hash.sh compute <file> [marker-name]   # print the hash of the block
-#   marker-hash.sh check   <file> [marker-name]   # 0 = intact, 1 = hand-edited, 2 = no marker
+#   marker-hash.sh check   <file> [marker-name]   # 0 = intact, 1 = unsafe, 2 = absent, 3 = malformed
 #   marker-hash.sh stamp   <file> [marker-name]   # rewrite the hash line in place
 #
 # marker-name defaults to `agent-workflow-protocol`; pass
@@ -45,22 +45,44 @@ sha256() {
   fi
 }
 
-# Line numbers of the start and end markers. `agent-workflow-protocol ` also
-# prefixes `agent-workflow-protocol-global `, so the plain marker must not match
-# the global block: require the next token to be a P-stamp.
+# Resolve one exact start/end pair. Duplicate, orphaned, nested, or reversed
+# markers are malformed; never guess which managed region the user intended.
 start_line() {
-  grep -n "^${START}P-[0-9]\{4\} start -->" "$FILE" 2>/dev/null | head -1 | cut -d: -f1
+  grep -n "^${START}P-[0-9]\{4\} start -->$" "$FILE" 2>/dev/null | cut -d: -f1
 }
 end_line() {
-  grep -nF "$END" "$FILE" 2>/dev/null | head -1 | cut -d: -f1
+  grep -nFx "$END" "$FILE" 2>/dev/null | cut -d: -f1
+}
+
+validate_structure() {
+  local starts ends sc ec s e hc
+  starts="$(start_line)"; ends="$(end_line)"
+  sc="$(printf '%s\n' "$starts" | grep -c '[0-9]' || true)"
+  ec="$(printf '%s\n' "$ends" | grep -c '[0-9]' || true)"
+  if [ "$sc" -eq 0 ] && [ "$ec" -eq 0 ]; then
+    echo "marker-hash: marker block '$MARKER' not found in $FILE" >&2
+    return 2
+  fi
+  if [ "$sc" -ne 1 ] || [ "$ec" -ne 1 ]; then
+    echo "marker-hash: malformed marker block '$MARKER' (starts=$sc, ends=$ec)" >&2
+    return 3
+  fi
+  s="$starts"; e="$ends"
+  if [ "$e" -le "$s" ]; then
+    echo "marker-hash: malformed marker order for '$MARKER'" >&2
+    return 3
+  fi
+  hc="$(sed -n "$((s + 1)),$((e - 1))p" "$FILE" | grep -cF "$HASH_PREFIX" || true)"
+  if [ "$hc" -gt 1 ]; then
+    echo "marker-hash: multiple hash lines inside '$MARKER'" >&2
+    return 3
+  fi
 }
 
 body() {
   local s e
+  validate_structure || return $?
   s="$(start_line)"; e="$(end_line)"
-  if [ -z "$s" ] || [ -z "$e" ] || [ "$e" -le "$s" ]; then
-    return 1
-  fi
   sed -n "$((s + 1)),$((e - 1))p" "$FILE" | grep -vF "$HASH_PREFIX"
 }
 
@@ -68,16 +90,22 @@ body() {
 # cannot be used directly: a pipeline reports only the last command's status, so
 # a missing block would silently hash empty input.
 actual_hash() {
-  local content
-  if ! content="$(body)"; then
-    echo "marker-hash: marker block '$MARKER' not found in $FILE" >&2
-    exit 2
+  local content status
+  if content="$(body)"; then
+    :
+  else
+    status=$?
+    exit "$status"
   fi
   printf '%s\n' "$content" | sha256
 }
 
 recorded_hash() {
-  sed -n "s|^${HASH_PREFIX} *\([a-f0-9]\{64\}\).*|\1|p" "$FILE" | head -1
+  local s e
+  validate_structure || return $?
+  s="$(start_line)"; e="$(end_line)"
+  sed -n "$((s + 1)),$((e - 1))p" "$FILE" \
+    | sed -n "s|^${HASH_PREFIX} *\([a-f0-9]\{64\}\) -->$|\1|p"
 }
 
 case "$CMD" in
@@ -89,8 +117,8 @@ case "$CMD" in
     ACTUAL="$(actual_hash)"
     RECORDED="$(recorded_hash)"
     if [ -z "$RECORDED" ]; then
-      echo "marker-hash: no hash recorded yet (first stamp pending)"
-      exit 0
+      echo "marker-hash: UNSAFE — no valid hash is recorded inside '$MARKER'" >&2
+      exit 1
     fi
     if [ "$ACTUAL" = "$RECORDED" ]; then
       echo "marker-hash: intact"
@@ -105,11 +133,11 @@ case "$CMD" in
   stamp)
     ACTUAL="$(actual_hash)"
     TMP="$FILE.marker-hash.tmp"
-    if grep -qF "$HASH_PREFIX" "$FILE"; then
-      sed "s|^${HASH_PREFIX}.*|${HASH_PREFIX} ${ACTUAL} -->|" "$FILE" > "$TMP"
+    S="$(start_line)"; E="$(end_line)"
+    if sed -n "$((S + 1)),$((E - 1))p" "$FILE" | grep -qF "$HASH_PREFIX"; then
+      sed "${S},${E}s|^${HASH_PREFIX}.*|${HASH_PREFIX} ${ACTUAL} -->|" "$FILE" > "$TMP"
     else
       # Insert the hash line right after the start marker.
-      S="$(start_line)"
       { sed -n "1,${S}p" "$FILE"
         printf '%s %s -->\n' "$HASH_PREFIX" "$ACTUAL"
         sed -n "$((S + 1)),\$p" "$FILE"
