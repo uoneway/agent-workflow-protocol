@@ -10,6 +10,6 @@ Write for a capable model, not a compliant one. State the goal, the constraints,
 
 Publish confirmed skills with `scripts/link-skills.sh`. This repository remains the source of truth; the script copies each confirmed skill into `~/dotfiles/config/ai/skills`, records which names it owns, and delegates local installation and verification to dotfiles. Dotfiles then links the shared deployment snapshot into `~/.claude/skills/<name>` for Claude Code and `~/.codex/skills/<name>` for Codex. Do not edit the dotfiles copy directly. Use `--config-dir PATH` for another config checkout or `--publish-only` when only the deployment snapshot should change. Plugin packaging is deferred until the workflow needs to distribute a stable bundle of skills, MCP, or hooks.
 
-Confirmed skills: `orient`, `align`, `workflow-research`, `cold-read`, and `upstream-scout`. `setup-workflow` remains a Korean draft and is being redesigned for the minimal-document protocol adopted in P-0020 through P-0024.
+Confirmed skills: `setup-workflow`, `orient`, `align`, `workflow-research`, `cold-read`, and `upstream-scout`.
 
 Skills are not a stage-for-stage implementation of the protocol. `orient` and `align` are callable transitions; Act and Reorient are normal agent behavior. `workflow-research`, `cold-read`, and `upstream-scout` are conditional tools. Retired `kickoff`, `resume`, and `promote` rationales remain under `skill-rationales/` as decision history.

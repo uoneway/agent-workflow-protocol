@@ -5,14 +5,12 @@
 ## 규칙
 
 - 프로토콜 본문은 리뷰 세션에서 확정된 변경만 수정한다. 운영 중 마찰은 `protocol-friction-log.md`에 한 줄 append만 하고, 그 자리에서 원인 분석이나 수정을 시도하지 않는다 (park, don't chase).
-- `field-notes/`와 `digests/`는 진행 중인 프로토콜 리뷰의 입력이다. 결론은 프로토콜 변경 이력·스킬 rationale·`upstream-sources.md`에 직접 남기고, 처리한 마찰 행과 review packet은 삭제한다. 다만 결정형 조사 synthesis와 재해석 가치가 큰 원본 evidence는 P-0024에 따라 `research/`로 재분류해 보존한다.
 - 확정된 변경은 프로토콜의 변경 이력 테이블에 사유와 함께 남긴다. 기각된 제안도 남긴다 — 조용한 재론 방지.
 - 이전 결정을 뒤집거나 책임을 옮길 때는 새 변경 이력에서 대체되는 결정 ID와 달라진 전제를 명시한다. 현재 실행 문서에는 최신 규칙만 두고, 폐기된 스킬의 rationale은 방향 변화 기록으로 보존한다.
-- `skill-drafts/`는 합의용 초안이다. 확정되면 `skills/<name>/SKILL.md`로 재작성하고 초안은 삭제한다. 설치는 `scripts/link-skills.sh`.
 - 업스트림(타 스킬 레포·블로그) 텍스트를 프로토콜이나 스킬에 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다. 원문 evidence 보존은 출처·시점·권리 범위를 기록하고 기본 읽기 경로 밖에 둔다.
 - 수기 `PROJECT_STATE`나 코드·git에서 즉시 복원 가능한 설명을 새로 만들지 않는다. 현재 상태와 사람용 설명은 live source에서 파생하고, 코드 밖에 남겨야 할 의도·경계·근거만 기록한다.
 
-<!-- agent-workflow-protocol P-0024 start -->
+<!-- agent-workflow-protocol P-0026 start -->
 <!-- agent-workflow-protocol-hash: 7bcdbbab6296eeba5560cd86ad733e7d5b9100721af69867d0480fd7dde8de7d -->
 ## Agent Workflow
 

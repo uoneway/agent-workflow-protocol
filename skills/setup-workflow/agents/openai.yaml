@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Workflow"
+  short_description: "Apply or update the workflow without overwriting project truth"
+  default_prompt: "Use $setup-workflow to apply the Agent Workflow Protocol to this repository."
