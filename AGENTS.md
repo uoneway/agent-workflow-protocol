@@ -10,11 +10,11 @@
 - 업스트림(타 스킬 레포·블로그) 텍스트를 프로토콜이나 스킬에 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다. 원문 evidence 보존은 출처·시점·권리 범위를 기록하고 기본 읽기 경로 밖에 둔다.
 - 수기 `PROJECT_STATE`나 코드·git에서 즉시 복원 가능한 설명을 새로 만들지 않는다. 현재 상태와 사람용 설명은 live source에서 파생하고, 코드 밖에 남겨야 할 의도·경계·근거만 기록한다.
 
-<!-- agent-workflow-protocol P-0026 start -->
-<!-- agent-workflow-protocol-hash: 7bcdbbab6296eeba5560cd86ad733e7d5b9100721af69867d0480fd7dde8de7d -->
+<!-- agent-workflow-protocol P-0027 start -->
+<!-- agent-workflow-protocol-hash: c7df0e7ffcbae5c90447457e71fd3779618fad0f9d270b1dd31e62d7002ee756 -->
 ## Agent Workflow
 
-원문: https://github.com/uoneway/link-workflow/blob/main/AGENT_WORKFLOW_PROTOCOL.md
+원문: https://github.com/uoneway/agent-workflow-protocol/blob/main/AGENT_WORKFLOW_PROTOCOL.md
 
 - 흐름은 Orient → Align → Act → Reorient다. 열린 가지의 capture는 어느 단계에서나 한다.
 - 현재 사실은 코드·테스트·git·worktree·PR·issue·session 같은 live source에서 읽는다. 수기 상태표에 복제하지 않는다.

@@ -17,7 +17,7 @@ cd "$ROOT"
 
 MARKER_START_RE='^<!-- agent-workflow-protocol P-[0-9][0-9][0-9][0-9] start -->$'
 MARKER_END='<!-- agent-workflow-protocol end -->'
-STATE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/link-workflow/setup-state.json"
+STATE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/agent-workflow-protocol/setup-state.json"
 
 # --- helpers ---------------------------------------------------------------
 

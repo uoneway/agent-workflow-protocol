@@ -7,5 +7,5 @@
 - 사용자가 `orient`, `align`, `workflow-research`, `cold-read`, `upstream-scout`를 요청하면 setup 여부와 무관하게 해당 스킬을 실행한다.
 - 그 외 레포와 요청에 이 워크플로우를 자동으로 강제하지 않는다.
 
-원문: https://github.com/uoneway/link-workflow/blob/main/AGENT_WORKFLOW_PROTOCOL.md
+원문: https://github.com/uoneway/agent-workflow-protocol/blob/main/AGENT_WORKFLOW_PROTOCOL.md
 <!-- agent-workflow-protocol-global end -->

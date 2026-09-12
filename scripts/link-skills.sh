@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Publish confirmed skills to dotfiles, then install them for Claude Code and Codex.
-# link-workflow is the source of truth; dotfiles/config is the deployment snapshot.
+# agent-workflow-protocol is the source of truth; dotfiles/config is the deployment snapshot.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 CONFIG_DIR="${DOTFILES_CONFIG_DIR:-$HOME/dotfiles/config}"
@@ -63,7 +63,7 @@ command -v rsync >/dev/null 2>&1 || {
 CONFIG_DIR="$(cd "$CONFIG_DIR" && pwd)"
 DOTFILES_ROOT="$(cd "$CONFIG_DIR/.." && pwd)"
 DEST_ROOT="$CONFIG_DIR/ai/skills"
-MANIFEST="$DEST_ROOT/.link-workflow-managed"
+MANIFEST="$DEST_ROOT/.agent-workflow-protocol-managed"
 SETUP_SCRIPTS="$DOTFILES_ROOT/.claude/skills/setup/scripts"
 
 if [ "$PUBLISH_ONLY" -eq 0 ]; then
@@ -87,7 +87,7 @@ is_managed() {
   [ -f "$MANIFEST" ] && grep -Fqx "$1" "$MANIFEST"
 }
 
-STAGE="$(mktemp -d "$DEST_ROOT/.link-workflow-publish.XXXXXX")"
+STAGE="$(mktemp -d "$DEST_ROOT/.agent-workflow-protocol-publish.XXXXXX")"
 trap 'rm -rf "$STAGE"' EXIT
 NEW_MANIFEST="$STAGE/managed-skills"
 : > "$NEW_MANIFEST"

@@ -16,7 +16,7 @@ Infer answers from the repository when reliable, and group only the remaining ch
 - For each existing document, recommend keeping it, moving unique durable truth to the appropriate authority, turning it into a generated view, or treating it as a deletion candidate. Deletion always requires explicit approval.
 - Create or designate one `VISION.md`-equivalent only when product purpose, audience, boundaries, or kill conditions exist outside the code and need a durable authority.
 - Create [`templates/BACKLOG.md`](templates/BACKLOG.md) only when real deferred candidates need preservation and the project has no issue tracker. Never use it for active status or session notes.
-- If machine routing has not been decided, ask once whether to add global routing or remain repository-local. Record `{"placement":"global"}` or `{"placement":"local-only"}` in `${XDG_CONFIG_HOME:-$HOME/.config}/link-workflow/setup-state.json`. Respect a valid saved choice unless the user asks to reconfigure it.
+- If machine routing has not been decided, ask once whether to add global routing or remain repository-local. Record `{"placement":"global"}` or `{"placement":"local-only"}` in `${XDG_CONFIG_HOME:-$HOME/.config}/agent-workflow-protocol/setup-state.json`. Respect a valid saved choice unless the user asks to reconfigure it.
 
 Do not create `ARCHITECTURE.md`, `GLOSSARY.md`, decision records, research notes, workstreams, or other placeholders during setup. Those belong to the work that first proves they are needed.
 

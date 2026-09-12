@@ -59,15 +59,15 @@ render_block "$SKILL/templates/global-routing.md" "$PROTOCOL_STAMP" "$TMP_ROOT/g
 # Brownfield detection reports structural facts and remembers machine placement.
 BROWN="$TMP_ROOT/brown"
 MACHINE="$TMP_ROOT/machine"
-mkdir -p "$BROWN/docs" "$MACHINE/config/link-workflow" "$MACHINE/home/.codex"
+mkdir -p "$BROWN/docs" "$MACHINE/config/agent-workflow-protocol" "$MACHINE/home/.codex"
 git init -q "$BROWN"
 cp "$GREEN/AGENTS.md" "$BROWN/AGENTS.md"
 printf '%s\n' '@AGENTS.md' > "$BROWN/CLAUDE.md"
 printf '%s\n' '# Product direction' > "$BROWN/VISION.md"
 printf '%s\n' '# Existing design' > "$BROWN/docs/design.md"
-printf '%s\n' '{"placement":"local-only"}' > "$MACHINE/config/link-workflow/setup-state.json"
+printf '%s\n' '{"placement":"local-only"}' > "$MACHINE/config/agent-workflow-protocol/setup-state.json"
 HOME="$MACHINE/home" XDG_CONFIG_HOME="$MACHINE/config" "$DETECT" "$BROWN" > "$TMP_ROOT/state.json"
-python3 - "$TMP_ROOT/state.json" <<'PY'
+python3 - "$TMP_ROOT/state.json" "$PROTOCOL_STAMP" <<'PY'
 import json
 import sys
 
@@ -78,7 +78,7 @@ assert state["has_git"] is True
 assert state["already_setup"] is True
 assert state["marker_start_count"] == 1
 assert state["marker_end_count"] == 1
-assert state["protocol_stamp"] == "P-0026"
+assert state["protocol_stamp"] == sys.argv[2]
 assert state["claude_md"] == "pointer"
 assert "VISION.md" in state["doc_candidates"]
 assert "design.md" in state["docs_dir"]
@@ -100,7 +100,7 @@ mkdir -p "$PUBLISH_CONFIG/ai/skills"
 [ -f "$PUBLISH_CONFIG/ai/skills/setup-workflow/agents/openai.yaml" ] || fail "published skill is missing UI metadata"
 [ -f "$PUBLISH_CONFIG/ai/skills/setup-workflow/PROTOCOL_STAMP" ] || fail "published skill is missing protocol stamp"
 [ ! -e "$PUBLISH_CONFIG/ai/skills/setup-workflow/DRAFT.md" ] || fail "draft leaked into published skill"
-[ "$(wc -l < "$PUBLISH_CONFIG/ai/skills/.link-workflow-managed" | tr -d ' ')" -eq 6 ] \
+[ "$(wc -l < "$PUBLISH_CONFIG/ai/skills/.agent-workflow-protocol-managed" | tr -d ' ')" -eq 6 ] \
   || fail "managed manifest does not contain six confirmed skills"
 
 echo "setup-workflow tests: PASS"

@@ -2,7 +2,7 @@
 <!-- agent-workflow-protocol-hash: {{BLOCK_HASH}} -->
 ## Agent Workflow
 
-원문: https://github.com/uoneway/link-workflow/blob/main/AGENT_WORKFLOW_PROTOCOL.md
+원문: https://github.com/uoneway/agent-workflow-protocol/blob/main/AGENT_WORKFLOW_PROTOCOL.md
 
 - 흐름은 Orient → Align → Act → Reorient다. 열린 가지의 capture는 어느 단계에서나 한다.
 - 현재 사실은 코드·테스트·git·worktree·PR·issue·session 같은 live source에서 읽는다. 수기 상태표에 복제하지 않는다.
