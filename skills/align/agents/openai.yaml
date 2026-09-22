@@ -1,4 +1,4 @@
 interface:
   display_name: "Align Work"
   short_description: "Align outcomes, boundaries, delegation, and evidence"
-  default_prompt: "Use $align to shape this request before implementation."
+  default_prompt: "Use $align to resolve material decisions for this request using our existing agreement."

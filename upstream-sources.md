@@ -135,6 +135,8 @@ Matt Pocock 스킬의 공식 설명과 변경 의도를 확인하는 1차 저자
 
 당시 모델별 이름·가격·effort 권장표는 빠르게 낡지만, 그 결론을 만든 공식 문서의 정확한 표현은 이후 워크플로우 단순화를 재평가할 evidence다. P-0024에 따라 조사 synthesis와 참조 원문 목록을 장기 보존하고, 당시 snapshot은 기본 읽기 경로 밖의 evidence archive로 재분류한다. 다음 모델 세대에서는 과거 snapshot을 현재 사실로 갱신하지 않고 새 원천을 별도 시점의 evidence로 더한다.
 
+2026-09-15에는 OpenAI의 [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)를 현재 실행본과 대조해 P-0028~P-0030으로 반영했다. 기존 실행 위임 인정, 읽기·검증의 충분 조건, setup·research의 조건부 참고 경로, scout의 지정 검토 범위를 채택했다. 특정 모델에 대한 신뢰만으로 보호 장치를 제거하거나 짧은 스킬까지 일괄 분할하는 안은 기각했다. 당시 관찰·해석·한계는 [조사 기록](research/2026-09-15-gpt-6-astra-skills-source-review.md)에 보존한다. 실제 모델 간 성능 개선 폭을 측정한 결과는 아니다.
+
 ---
 
 ### Microsoft Research

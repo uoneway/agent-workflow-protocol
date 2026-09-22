@@ -1,6 +1,6 @@
 ---
 name: workflow-research
-description: Research external facts that affect a workflow decision. Use from Align or when the user wants primary-source evidence for a decision.
+description: Investigate external evidence for a decision and preserve decision-relevant findings.
 ---
 
 # Workflow Research
@@ -18,8 +18,8 @@ The synthesis must let a later reader retrace and reinterpret the evidence. Incl
 - decision impact plus dated later additions or interpretation changes;
 - a source inventory with title and owner, exact URL or path, access date, known publication date/version/commit, the claim each source supported, and any preserved-evidence path and integrity identifier.
 
-Preserve evidence close to its original form when the source may change or disappear, reacquisition is costly, exact wording/schema/measurements matter, or multiple interpretations are plausible. Keep it outside default context, using `docs/_research/evidence/<slug>/` when the repository has no convention, and link it from the synthesis. Subject to license, security, and privacy, prefer original exports, measurements, responses, or snapshots over rewritten copies. When full preservation is unsafe or not permitted, retain a stable locator, version and access date, minimal necessary excerpts, and a hash or archive identifier when useful. Keep private transcripts and sensitive data out of public git; record their access class and storage location or preserve redacted/synthetic evidence instead.
+When source volatility, reacquisition cost, exact wording/schema/measurements, or reinterpretation value makes original evidence worth preserving, read [evidence preservation](references/evidence-preservation.md). Keep preserved evidence outside default context and link it from the synthesis.
 
 Do not silently overwrite old evidence or interpretation. Append a dated update or state what earlier interpretation is replaced and why. A source-less copy or a rewrite that could be mistaken for the original is not evidence.
 
-Before changing direction, remind the caller to challenge the premise once. Do not copy upstream prose into the workflow or link raw evidence as a substitute for placing the adopted durable fact in its authoritative document.
+Before proposing a material direction change, challenge its premise if that has not already been done for this decision. Do not copy upstream prose into the workflow or link raw evidence as a substitute for placing the adopted durable fact in its authoritative document.

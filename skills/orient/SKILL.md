@@ -1,16 +1,15 @@
 ---
 name: orient
-description: Reconstruct a project's current direction and actual state before choosing or resuming work. Use when the user asks what to do next, returns to a project, or needs the current picture across active work.
+description: Recover current direction and relevant live state when resuming work or choosing what to do next.
 ---
 
 # Orient
 
-Reconstruct the current picture from authoritative sources instead of relying on chat memory or a manual status summary.
+Use the conversation and work agreement for established intent and delegation; verify claims about current state against authoritative sources.
 
-1. Read `AGENTS.md` and, when present, `VISION.md`.
-2. Inspect relevant live state: git history and status, branches, worktrees, issues or pull requests, sessions, and current verification evidence available in the environment.
-3. Read only the work agreement and decision records relevant to the likely next action.
-4. Inspect the necessary code and recent changes.
+Read applicable `AGENTS.md` instructions. Consult `VISION.md` or its equivalent when product direction affects the next choice, and relevant decision records when their boundaries matter. Inspect the live sources that could change that choice: code, recent changes, git status and history, branches, worktrees, issues, pull requests, sessions, or verification evidence. This is a source menu, not a required inventory.
+
+Stop gathering context when the next action can be recommended with its material uncertainties identified. A narrow resumption does not require reconstructing the entire project.
 
 Do not assume the default branch has the latest active-work state. Distinguish observed facts, inaccessible sources, and inferences. A missing source is `unverified`, not an empty or successful state.
 

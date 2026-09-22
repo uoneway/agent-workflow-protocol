@@ -1,17 +1,17 @@
 ---
 name: upstream-scout
-description: Detect whether tracked upstream skill repositories or blogs have a new minor-or-major release or another meaningful change, then present the changes for a decision. Use when the user asks to inspect upstreams or during the recurring workflow review.
+description: Check tracked upstream changes during scheduled detection or an explicit upstream review.
 ---
 
 # Upstream Scout
 
-Read `upstream-sources.md` for the tracked sources and their saved review points. Compare each source with that point.
+Read `upstream-sources.md` for the tracked sources and their saved review points. For an explicit review request, investigate the named source, version, or question even when it falls below the scheduled-detection thresholds. Otherwise compare each tracked source with its saved point using these thresholds:
 
 - For versioned sources, start substantive review only when the minor or major version changed.
 - For unversioned repositories or blogs, start only for a meaningful new post, commit, or feature.
 - If nothing qualifies, report `No material upstream change` and do not modify the protocol or the tracking table.
 
-For each changed source, collect the delta since its saved point. Use one background agent per source when useful. Require: factual changes, the underlying idea shift, possible contact points with this workflow, and the three highest-value new ideas with brief evidence. Fetch local clones only; do not merge or pull them.
+For each source under review, collect the requested scope or the delta since its saved point. Use one background agent per source when useful. Report factual changes, the underlying idea shift, possible contact points with this workflow, and up to three worthwhile adoption candidates with brief evidence. Report no candidates when none merit adoption. Fetch local clones only; do not merge or pull them.
 
 Present a concise synthesis with an adoption-candidates summary and per-source evidence. Review related candidates together when comparison improves the decision. The current protocol is the default; justify a proposed change with what it misses and the cost of keeping it unchanged. If the review must cross a context boundary, use the protocol's ordinary work-contract rule instead of creating a dedicated review packet.
 
