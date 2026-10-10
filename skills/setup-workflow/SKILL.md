@@ -26,7 +26,7 @@ A setup or update request authorizes the relevant local managed block within tha
 
 Do not create `ARCHITECTURE.md`, `GLOSSARY.md`, decision records, research notes, workstreams, or other placeholders during setup. Those belong to the work that first proves they are needed.
 
-A repository-local marker takes precedence over global routing. The absence of setup never blocks direct use of `orient`, `align`, `workflow-research`, `cold-read`, or `upstream-scout`.
+A repository-local marker takes precedence over global routing. The absence of setup never blocks direct use of `orient`, `align`, `workflow-research`, or `cold-read`.
 
 ## Verify and report
 

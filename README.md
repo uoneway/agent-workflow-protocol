@@ -4,7 +4,7 @@ AI agent와 함께 개발할 때 사람이 방향과 경계를 결정하고, age
 
 ## 지금 할 수 있는 일
 
-이 레포는 프로토콜과 **6개의 확정 스킬**을 관리합니다.
+이 레포는 프로토콜과 **5개의 배포 스킬**, 그리고 이 레포 안에서만 쓰는 유지보수 스킬 `upstream-scout`를 관리합니다.
 
 - 워크플로우 자체를 이해하려면 [AGENT_WORKFLOW_PROTOCOL.md](./AGENT_WORKFLOW_PROTOCOL.md)를 읽습니다.
 - 운영 중 어색함·공백·반복 지시·위반을 발견하면 `마찰: …`로 남깁니다. agent는 [protocol-friction-log.md](./protocol-friction-log.md)에 한 줄만 기록하고, 그 자리에서 프로토콜을 고치지 않습니다.
@@ -37,7 +37,8 @@ AI agent와 함께 개발할 때 사람이 방향과 경계를 결정하고, age
 | 원칙과 전체 절차 확인 | [AGENT_WORKFLOW_PROTOCOL.md](./AGENT_WORKFLOW_PROTOCOL.md) |
 | 운영 중 마찰 남기기·리뷰 대상 확인 | [protocol-friction-log.md](./protocol-friction-log.md) |
 | 확정 스킬의 한국어 의도·업그레이드 판단 확인 | [skill-rationales/](./skill-rationales/) |
-| 확정 스킬 확인·배포 | [skills/](./skills/) · `setup-workflow`, `orient`, `align`, `workflow-research`, `cold-read`, `upstream-scout` |
+| 배포 스킬 확인·배포 | [skills/](./skills/) · `setup-workflow`, `orient`, `align`, `workflow-research`, `cold-read` |
+| 레포 유지보수 스킬 | [.agents/skills/](./.agents/skills/) · `upstream-scout` (Claude Code는 `.claude/skills/` symlink로 읽음) |
 | 외부 사례와 현재 흡수 판단 | [upstream-sources.md](./upstream-sources.md) |
 | 결정형 리서치와 재해석용 원본 evidence | [research/](./research/) — synthesis는 읽기 경로, `evidence/`는 필요할 때만 여는 cold archive |
 

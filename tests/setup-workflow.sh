@@ -100,7 +100,21 @@ mkdir -p "$PUBLISH_CONFIG/ai/skills"
 [ -f "$PUBLISH_CONFIG/ai/skills/setup-workflow/agents/openai.yaml" ] || fail "published skill is missing UI metadata"
 [ -f "$PUBLISH_CONFIG/ai/skills/setup-workflow/PROTOCOL_STAMP" ] || fail "published skill is missing protocol stamp"
 [ ! -e "$PUBLISH_CONFIG/ai/skills/setup-workflow/DRAFT.md" ] || fail "draft leaked into published skill"
-[ "$(wc -l < "$PUBLISH_CONFIG/ai/skills/.agent-workflow-protocol-managed" | tr -d ' ')" -eq 6 ] \
-  || fail "managed manifest does not contain six confirmed skills"
+[ "$(wc -l < "$PUBLISH_CONFIG/ai/skills/.agent-workflow-protocol-managed" | tr -d ' ')" -eq 5 ] \
+  || fail "managed manifest does not contain five published skills"
+[ ! -e "$PUBLISH_CONFIG/ai/skills/upstream-scout" ] || fail "repository-local skill was published"
+
+# A manifest written before the P-0027 rename is adopted once: retired skills are removed
+# and differing managed copies are replaced instead of being treated as unmanaged.
+LEGACY_CONFIG="$TMP_ROOT/legacy/config"
+mkdir -p "$LEGACY_CONFIG/ai/skills/kickoff" "$LEGACY_CONFIG/ai/skills/align"
+echo stale > "$LEGACY_CONFIG/ai/skills/kickoff/SKILL.md"
+echo stale > "$LEGACY_CONFIG/ai/skills/align/SKILL.md"
+printf 'align\nkickoff\n' > "$LEGACY_CONFIG/ai/skills/.link-workflow-managed"
+"$REPO/scripts/link-skills.sh" --config-dir "$LEGACY_CONFIG" --publish-only >/dev/null \
+  || fail "legacy manifest was not adopted"
+[ ! -e "$LEGACY_CONFIG/ai/skills/kickoff" ] || fail "retired skill from legacy manifest was kept"
+diff -qr "$REPO/skills/align" "$LEGACY_CONFIG/ai/skills/align" >/dev/null || fail "legacy managed skill was not replaced"
+[ ! -e "$LEGACY_CONFIG/ai/skills/.link-workflow-managed" ] || fail "legacy manifest was not removed"
 
 echo "setup-workflow tests: PASS"

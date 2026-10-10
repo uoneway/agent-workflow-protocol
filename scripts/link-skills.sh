@@ -64,6 +64,13 @@ CONFIG_DIR="$(cd "$CONFIG_DIR" && pwd)"
 DOTFILES_ROOT="$(cd "$CONFIG_DIR/.." && pwd)"
 DEST_ROOT="$CONFIG_DIR/ai/skills"
 MANIFEST="$DEST_ROOT/.agent-workflow-protocol-managed"
+# Manifest written before the repository rename (P-0027). Read once, then removed.
+LEGACY_MANIFEST="$DEST_ROOT/.link-workflow-managed"
+if [ ! -f "$MANIFEST" ] && [ -f "$LEGACY_MANIFEST" ]; then
+  READ_MANIFEST="$LEGACY_MANIFEST"
+else
+  READ_MANIFEST="$MANIFEST"
+fi
 SETUP_SCRIPTS="$DOTFILES_ROOT/.claude/skills/setup/scripts"
 
 if [ "$PUBLISH_ONLY" -eq 0 ]; then
@@ -84,7 +91,7 @@ is_valid_name() {
 }
 
 is_managed() {
-  [ -f "$MANIFEST" ] && grep -Fqx "$1" "$MANIFEST"
+  [ -f "$READ_MANIFEST" ] && grep -Fqx "$1" "$READ_MANIFEST"
 }
 
 STAGE="$(mktemp -d "$DEST_ROOT/.agent-workflow-protocol-publish.XXXXXX")"
@@ -127,7 +134,7 @@ while IFS= read -r skill_name; do
   fi
 done < "$NEW_MANIFEST"
 
-if [ -f "$MANIFEST" ]; then
+if [ -f "$READ_MANIFEST" ]; then
   while IFS= read -r old_name; do
     [ -n "$old_name" ] || continue
     is_valid_name "$old_name" || {
@@ -140,7 +147,7 @@ if [ -f "$MANIFEST" ]; then
       echo "error: refusing to remove stale symlink from dotfiles: $stale_dir" >&2
       exit 1
     fi
-  done < "$MANIFEST"
+  done < "$READ_MANIFEST"
 fi
 
 while IFS= read -r skill_name; do
@@ -154,7 +161,7 @@ while IFS= read -r skill_name; do
   echo "published $skill_name -> $dest_dir"
 done < "$NEW_MANIFEST"
 
-if [ -f "$MANIFEST" ]; then
+if [ -f "$READ_MANIFEST" ]; then
   while IFS= read -r old_name; do
     [ -n "$old_name" ] || continue
     grep -Fqx "$old_name" "$NEW_MANIFEST" && continue
@@ -162,10 +169,11 @@ if [ -f "$MANIFEST" ]; then
     [ -e "$stale_dir" ] || continue
     rm -rf "$stale_dir"
     echo "removed retired skill $old_name from $DEST_ROOT"
-  done < "$MANIFEST"
+  done < "$READ_MANIFEST"
 fi
 
 mv "$NEW_MANIFEST" "$MANIFEST"
+[ "$READ_MANIFEST" = "$MANIFEST" ] || rm -f "$LEGACY_MANIFEST"
 echo "managed skill list -> $MANIFEST"
 
 if [ "$PUBLISH_ONLY" -eq 1 ]; then

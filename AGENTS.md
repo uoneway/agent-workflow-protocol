@@ -10,7 +10,7 @@
 - 업스트림(타 스킬 레포·블로그) 텍스트를 프로토콜이나 스킬에 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다. 원문 evidence 보존은 출처·시점·권리 범위를 기록하고 기본 읽기 경로 밖에 둔다.
 - 수기 `PROJECT_STATE`나 코드·git에서 즉시 복원 가능한 설명을 새로 만들지 않는다. 현재 상태와 사람용 설명은 live source에서 파생하고, 코드 밖에 남겨야 할 의도·경계·근거만 기록한다.
 
-<!-- agent-workflow-protocol P-0031 start -->
+<!-- agent-workflow-protocol P-0032 start -->
 <!-- agent-workflow-protocol-hash: 7e9e0c140d6d23e15cc42864c40d88d0acef437c91096e65df71b9eee6f8e7eb -->
 ## Agent Workflow
 

@@ -10,4 +10,4 @@
 
 실행 행동이 바뀌면 `skill-rationales/<name>.md`와 `skills/<name>/SKILL.md`를 같은 변경에서 갱신한다. 실행과 무관한 조사 근거는 `upstream-sources.md`에, 현재 사용자가 읽는 설치·운영 안내는 루트 `README.md`에 둔다.
 
-현재 실행 스킬은 `setup-workflow`, `orient`, `align`, `workflow-research`, `cold-read`, `upstream-scout`다. `kickoff`, `resume`, `promote` 기록은 현재 실행 명세가 아니라 P-0021·P-0022에서 폐기·대체된 방향의 이유를 보존한다. 이렇게 해야 같은 필요가 다시 나타났을 때 예전 장치를 조용히 복원하지 않고, 달라진 전제와 비용을 비교할 수 있다.
+현재 배포 스킬은 `setup-workflow`, `orient`, `align`, `workflow-research`, `cold-read`이고, 이 레포 유지보수 전용 스킬은 `upstream-scout`다. `kickoff`, `resume`, `promote` 기록은 현재 실행 명세가 아니라 P-0021·P-0022에서 폐기·대체된 방향의 이유를 보존한다. 이렇게 해야 같은 필요가 다시 나타났을 때 예전 장치를 조용히 복원하지 않고, 달라진 전제와 비용을 비교할 수 있다.

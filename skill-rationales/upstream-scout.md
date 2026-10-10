@@ -1,6 +1,6 @@
 # upstream-scout — 한국어 의사결정 기록
 
-> **상태:** 확정됨. 실행 기준은 [`skills/upstream-scout/SKILL.md`](../skills/upstream-scout/SKILL.md)다.
+> **상태:** 확정됨. 실행 기준은 [`.agents/skills/upstream-scout/SKILL.md`](../.agents/skills/upstream-scout/SKILL.md)다.
 
 ## 현재 결정
 
