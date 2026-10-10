@@ -10,8 +10,8 @@
 - 업스트림(타 스킬 레포·블로그) 텍스트를 프로토콜이나 스킬에 복붙하지 않는다. 흡수 대상은 사상이지 텍스트가 아니다. 원문 evidence 보존은 출처·시점·권리 범위를 기록하고 기본 읽기 경로 밖에 둔다.
 - 수기 `PROJECT_STATE`나 코드·git에서 즉시 복원 가능한 설명을 새로 만들지 않는다. 현재 상태와 사람용 설명은 live source에서 파생하고, 코드 밖에 남겨야 할 의도·경계·근거만 기록한다.
 
-<!-- agent-workflow-protocol P-0032 start -->
-<!-- agent-workflow-protocol-hash: 7e9e0c140d6d23e15cc42864c40d88d0acef437c91096e65df71b9eee6f8e7eb -->
+<!-- agent-workflow-protocol P-0033 start -->
+<!-- agent-workflow-protocol-hash: 7f50ef288daee48e7546f0c48a127cd6d4919651e9ec5b10b2b0c28585b24660 -->
 ## Agent Workflow
 
 원문: https://github.com/uoneway/agent-workflow-protocol/blob/main/AGENT_WORKFLOW_PROTOCOL.md
@@ -27,5 +27,5 @@
 - 지침 때문에 멈출 때는 근거 문서·문구와 필요한 판단을 밝히고, 명시적 요구와 자신의 해석을 구분한다.
 - `orient`는 상황 파악, `align`은 다음 행동의 합의에 쓴다. 외부 사실 조사는 `workflow-research`, 독립 감사가 실제로 필요할 때는 `cold-read`를 쓴다.
 - 작업 중 새 가지는 쫓지 않는다(park). 코드 밖에 남지 않으면 사라질 비싼 정보만 기록한다(mark). 사람의 판단 시점에는 현재 원천에서 설명한다(explain).
-- 결과와 실제 검증부터 설명하고, 다음 판단에 필요하면 선택 이유·경계·추천 방향을 더한다. 목표·동작·중요 경계가 바뀌면 해당 부분만 다시 Align한다.
+- 사람이 내릴 판단이 남았으면 그것부터, 없으면 결과와 실제 검증부터 설명한다. 판단을 바꾸는 주장은 원천과 확인 방식(실행·읽기·추정)을 밝힌다. 텍스트로 판단하기 어려울 때만 표·다이어그램·HTML 같은 매체를 쓴다. 목표·동작·중요 경계가 바뀌면 해당 부분만 다시 Align한다.
 <!-- agent-workflow-protocol end -->

@@ -11,22 +11,25 @@
 
 | 소스 | 종류 | 마지막 리뷰 | 지점 |
 |---|---|---|---|
-| mattpocock/skills | repo | 2026-09-06 | main `3cca18b` (2026-09-04) |
-| obra/superpowers | repo | 2026-09-06 | v6.3.0 |
-| garrytan/gstack | repo (로컬 클론 — fetch만, merge/pull 금지) | 2026-07-07 | v1.58.5 |
-| aihero.dev | blog | 2026-09-06 | Skills v1.2 변경 안내·grilling 문서(2026-08-24) |
-| github/spec-kit | repo | 2026-07-12 | 이식 서베이 조사 시점 (커밋 해시 미기록) |
-| buildermethods/agent-os | repo | 2026-09-06 | v3 migration 재검토 |
-| open-gsd/gsd-core (GSD, 활성 계보) | repo | 2026-07-24 | 원조 `gsd-build/get-shit-done`은 아카이브됨; 활성 계보 검증 |
-| bmad-method (BMAD-METHOD) | repo | 2026-07-12 | 이식 서베이 조사 시점 |
-| Geoffrey Litt | blog | 2026-09-06 | "Understanding is the new bottleneck" 재해석 |
+| mattpocock/skills | repo | 2026-10-11 | v1.3.1 `49dd158` |
+| obra/superpowers | repo | 2026-10-11 | v7.0.0 `bb92a77` |
+| garrytan/gstack | repo (로컬 클론 — fetch만, merge/pull 금지) | 2026-10-11 | 1.91.68.0 `20eb620` (GitHub API로 확인, 로컬 클론 미사용) |
+| aihero.dev | blog | 2026-10-11 | Skills v1.3 변경 안내(2026-10-05) |
+| github/spec-kit | repo | 2026-10-11 | v1.1.3 `0443760` |
+| buildermethods/agent-os | repo | 2026-10-11 | v3.0.0, main `e892e61` |
+| open-gsd/gsd-core (GSD, 활성 계보) | repo | 2026-10-11 | v1.16.0, `next` `651bd2f` |
+| bmad-method (BMAD-METHOD) | repo | 2026-10-11 | v6.12.1 `bda3c59` |
+| Geoffrey Litt | blog | 2026-10-11 | 2026-07-02 이후 새 글 없음 |
 | Anthropic Engineering | blog | 2026-09-06 | 2025 장기 실행 harness·2026 후속 단순화 |
 | Microsoft Research | paper | 2026-09-06 | CHI 2025 지식노동자 설문 |
-| Anthropic·OpenAI prompting guidance | official docs | 2026-07-24 | 목표·제약·경계 중심 저작 원칙 |
+| Anthropic·OpenAI prompting guidance | official docs | 2026-10-11 | Claude Fable 5.1·Opus 5.5·Sonnet 5.5, GPT-6 가이드 |
+| 사람의 이해 연구 (Willison·Osmani·Storey·Kaufman 외) | blog·paper | 2026-10-11 | [조사 기록](research/2026-10-11-human-understanding-review.md) |
 
 spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서베이에서 `setup-workflow` 설계를 위해 처음 조사됐다. 이 문서가 갱신되기 전까지는 추적 표에 등록되지 않은 채 검토 packet에만 있었다.
 
 ## 소스별 흡수 기록
+
+2026-10-11 리뷰의 공통 판단은 [조사 기록](research/2026-10-11-human-understanding-review.md)에 있고 P-0032·P-0033으로 반영했다. 아래 각 소스에는 그 리뷰에서 가져온 것과 가져오지 않은 것만 덧붙인다.
 
 ### mattpocock/skills
 
@@ -47,6 +50,8 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 - **`scripts/link-skills.sh`(비공식 dev-script)의 안전장치** — mattpocock 자신의 유지보수용 스크립트에서 순환 symlink를 거부하는 가드를 참고했다. 우리 현재 배포 스크립트는 직접 도구 경로를 소유하지 않고 dotfiles snapshot을 만든 뒤 dotfiles 설치·검증에 위임한다. 과거 직접 링크 흔적만 안전하게 정리한다.
 - **vercel-labs/skills(`npx skills`, skills.sh 레지스트리 엔진)의 갱신 메커니즘 비교** — mattpocock/skills 자체가 아니라 그걸 배포하는 별도 오픈소스 CLI다. `.skill-lock.json`에 설치 시점 GitHub tree SHA를 저장해뒀다가 `skills update` 실행 시 최신 해시와 비교하는데, **로컬에서 사용자가 그 스킬을 고쳤는지는 전혀 추적하지 않아 업데이트가 있으면 그냥 조용히 덮어쓴다.** 이 반면교사가, 우리 마커 블록·전역 라우팅 마커 양쪽에 `agent-workflow-protocol-hash`(사용자 직접 수정 감지용) 라인을 추가하는 결정의 직접 근거가 됐다 — spec-kit의 자기 콘텐츠 SHA-256 추적과 같은 목적.
 
+- **2026-10 v1.3** — `pr` 스킬의 "되돌릴 수 있는가와 영향 범위"를 Reorient의 판단 우선 순서에 흡수했다(P-0033). 레포 유지보수 자료를 배포 스킬과 분리하는 배치는 `upstream-scout`의 레포 로컬화 근거 중 하나다(P-0032). `implement-spec`·`retro`는 가져오지 않았다. 전자는 이 프로토콜이 Act를 상시 동작으로 두는 방향과 맞지 않고, 후자는 friction log 리뷰가 같은 역할을 한다.
+
 **가져오지 않은 것 / 기각**
 
 - **CONTEXT.md(domain-modeling)** — DDD Bounded Context에서 유래한 용어집 파일. 도입 자체를 보류했다. 명분상 문제가 아니라 실효성 문제였다: 이 워크플로우가 다루는 레포 대부분이 single-context(경계가 여러 개로 안 갈라짐)라 "Bounded Context별 CONTEXT.md"라는 구조 자체가 성립하지 않고, 파일명도 "용어집"이라는 실제 역할과 안 맞았다(원문 정의: "It is a glossary and nothing else"). 프로토콜의 `GLOSSARY.md`가 그 자리를 대신 채웠다.
@@ -65,6 +70,7 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 - **컨텍스트 격리를 검증 도구로 쓰는 발상** — superpowers는 "세션 히스토리를 상속하지 않는다"를 오염 방지 특성으로만 취급하지만, `cold-read`는 그 격리 자체를 검증 메커니즘의 핵심으로 삼았다(대화에 참여한 사람은 초안의 구멍이 안 보이기 때문에, 안 보인 적 없는 fresh 에이전트를 일부러 쓴다).
 - **verification-before-completion의 "주장보다 증거"** — 처음에는 `promote` 입구 게이트에 배치했지만, P-0021에서 별도 완료 의식을 없애며 Act의 상시 완료 조건으로 옮겼다. 검증은 유지하고 전이 절차만 제거한 것이다.
 - **작업 규모에 따른 ceremony 축소** — v6.3.0이 작은 작업에서 두 문서 절차를 생략하고 controller가 비치명적인 모호함을 근거와 함께 처리하도록 바꾼 흐름을 참고했다. 새 크기 분류표를 만들지는 않고, 맥락 이동이 없으면 작업 계약을 만들지 않는 단일 조건으로 단순화했다. [v6.3.0](https://github.com/obra/superpowers/releases/tag/v6.3.0)
+- **v7.0 의도 되말하기** — 이해한 의도를 되말하며 추측을 표시하는 방식을 Align의 선택적 전달 방식으로 가져왔다(P-0033). fresh subagent의 builder check로 cold-read를 대체하는 안은 감사 목적이 달라 기각했다.
 - **에스컬레이션 패턴** — 반복 수정에도 같은 문제가 남으면 문구가 아니라 합의나 아키텍처 문제로 보라는 원칙을 가져왔다. 처음에는 cold-read 2회 상한으로 구현했지만 현재는 횟수를 고정하지 않는다. 사용자 합의가 필요한 질문은 즉시 Align으로, 실제 시스템만 답할 질문은 unknown·fallback·관찰 계획으로 넘긴다.
 
 **가져오지 않은 것 / 기각**
@@ -83,6 +89,8 @@ spec-kit·Agent OS·GSD·BMAD-METHOD 4개는 2026-07-12 이식 메커니즘 서�
 - **User Challenge 규격** — "사용자의 원래 방향이 기본값이고, agent가 방향 전환을 제안하려면 '놓쳤을 수 있는 맥락'과 '틀렸을 때의 비용'을 명시해서 입증해야 한다"는 규격을 거의 그대로 가져와 align의 전제 도전과 upstream-scout의 검토 세션 양쪽에 적용했다(같은 규격을 "사용자의 방향" 대신 "기존 프로토콜"에 대상만 바꿔 재사용). 같은 스킬의 decision brief 서식(ELI10 설명, Completeness 점수 등 정량화 장치)은 과한 기계장치로 판단해 가져오지 않았다.
 - **learn(관찰→학습 승격 루프)** — 처음에는 `docs/LEARNINGS.md` 버퍼에서 반복 규칙을 AGENTS로 승격하는 형태로 가져왔다. P-0020에서 기본 버퍼를 없애고, 운영 마찰은 이 레포의 friction log처럼 명확한 수신처가 있을 때만 capture하며 반복이 확인된 상시 규칙만 AGENTS에 남기도록 더 좁혔다.
 - **ship의 백로그 대조** — "완료 항목을 TODOS와 diff 대조해 자동으로 정리한다"는 개념은 참조했지만, 자동 이동이 아니라 "제안만 하고 실제 삭제는 사용자가 결정"하는 쪽으로 약화시켰다 — User Sovereignty(사용자가 최종 결정)와 우리 쪽의 "강제 대신 가이드" 선호가 둘 다 같은 방향을 가리켜서, 이 지점에서는 원문보다 약하게 가져오는 게 오히려 두 철학 모두에 더 충실했다.
+
+- **2026-10 run·read·assumed 구분** — checkpoint 항목의 확인 방식 표시를 판단을 바꾸는 주장에만 적용하는 형태로 가져왔다(P-0033). 모델 출시마다 프롬프트를 재감사하는 관행은 AGENTS 블록 축소 보류의 비교 조건과 같은 방향이다.
 
 **가져오지 않은 것 / 기각**
 
@@ -109,7 +117,7 @@ Matt Pocock 스킬의 공식 설명과 변경 의도를 확인하는 1차 저자
 
 **가져오지 않은 것 / 보류**
 
-- **전용 explain 스킬** — 코드 설명의 서사 순서와 확인 질문을 자동화하는 스킬은 후보지만, 실제로 어떤 요청·산출물·수명 규칙이 반복되는지 관찰하기 전에는 새 스킬을 만들지 않는다. P-0012의 `explain` 횡단 규칙으로 먼저 운영한다.
+- **전용 explain 스킬** — 코드 설명의 서사 순서와 확인 질문을 자동화하는 스킬은 후보지만, 실제로 어떤 요청·산출물·수명 규칙이 반복되는지 관찰하기 전에는 새 스킬을 만들지 않는다. 2026-10 리뷰에서 mattpocock `pr`, BMAD walkthrough와 수렴하는 것을 확인했지만, P-0033은 이를 Reorient의 설명 기준·매체 기준·선택적 이해 유지 영역으로 먼저 운영한다. quiz는 완료·승인 조건으로 가져오지 않았다.
 - **shared space** — 팀 단위 공유 이해 도구는 현재 1인-다중 agent 중심의 프로토콜에서 실사용 마찰이 아직 관찰되지 않아 도입하지 않는다. 협업 규모에서 같은 문제가 반복되면 friction log에 capture한다.
 
 ---
@@ -134,6 +142,8 @@ Matt Pocock 스킬의 공식 설명과 변경 의도를 확인하는 1차 저자
 2026-07-24 공식 문서 비교에서 최신 모델은 이전 모델용 세부 절차를 그대로 유지할 때 품질이 떨어질 수 있고, 목표·이유·hard constraint·승인 경계·성공 조건을 명시한 뒤 구현 절차는 모델에 맡기는 방향으로 두 회사의 지침이 수렴한다고 판단했다. 이 결론을 `skills/README.md`의 저작 규율로 채택했다. reasoning depth는 프롬프트 문구가 아니라 runtime 설정으로 취급한다. [Anthropic prompt engineering](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview), [OpenAI reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices)
 
 당시 모델별 이름·가격·effort 권장표는 빠르게 낡지만, 그 결론을 만든 공식 문서의 정확한 표현은 이후 워크플로우 단순화를 재평가할 evidence다. P-0024에 따라 조사 synthesis와 참조 원문 목록을 장기 보존하고, 당시 snapshot은 기본 읽기 경로 밖의 evidence archive로 재분류한다. 다음 모델 세대에서는 과거 snapshot을 현재 사실로 갱신하지 않고 새 원천을 별도 시점의 evidence로 더한다.
+
+2026-10-11에는 Claude Fable 5.1·Opus 5.5·Sonnet 5.5와 GPT-6 가이드를 확인했다. 결과 우선과 단독으로 읽히는 마지막 메시지, 검토 가능한 결과와 함께 하는 승인 요청을 P-0033에 반영했다. 내부 추론 재현 요청을 피하고 사용자 지시 우선 범위를 밝히는 저작 규율은 `skills/README.md`에 넣었다. 지시 민감도가 높아졌다는 이유만으로 AGENTS 블록을 줄이는 안은 같은 사례의 모델별 비교 전까지 보류했다.
 
 2026-09-15에는 OpenAI의 [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)를 현재 실행본과 대조해 P-0028~P-0030으로 반영했다. 기존 실행 위임 인정, 읽기·검증의 충분 조건, setup·research의 조건부 참고 경로, scout의 지정 검토 범위를 채택했다. 특정 모델에 대한 신뢰만으로 보호 장치를 제거하거나 짧은 스킬까지 일괄 분할하는 안은 기각했다. 당시 관찰·해석·한계는 [조사 기록](research/2026-09-15-gpt-6-astra-skills-source-review.md)에 보존한다. 실제 모델 간 성능 개선 폭을 측정한 결과는 아니다.
 
@@ -202,6 +212,8 @@ CHI 2025의 지식노동자 319명 설문은 생성형 AI에 대한 높은 신�
 ### bmad-method (BMAD-METHOD)
 
 가장 많이 조사하고 가장 적게 가져온 소스. "이 정도 규모의 장치는 우리한테 과하다"는 판단 기준을 세우는 데 반면교사로 크게 기여했다.
+
+2026-10 v6.11~6.12에서 스스로 핵심 스킬을 14개에서 8개로 줄이고, 효과 없던 reviewer 페르소나를 제거하고, 사람이 변경을 블록 단위로 이해하는 walkthrough를 추가했다. 축소 방향과 "사람의 주의는 희소하다"는 전제를 P-0033의 근거로 썼고, walkthrough는 이해 유지 영역의 선택적 도구로만 반영했다.
 
 **가져온 것**
 

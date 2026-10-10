@@ -21,4 +21,6 @@ Give the user a concise reorientation:
 - unresolved facts and decisions requiring the user;
 - the recommended next action and why.
 
+Lead with any decision the user must make. Link each claim that could change that decision to its source and to how it was established: run, read, or inferred. Do not tag every sentence. The reorientation must make sense without rereading the earlier conversation.
+
 Adjust depth to the return distance and decision at hand. Offer deeper evidence, scenarios, or code when useful. Keep the reorientation in the conversation or product surface; do not store it as another status document.
