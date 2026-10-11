@@ -50,7 +50,7 @@ AI agent와 함께 개발할 때 사람이 방향과 경계를 결정하고, age
 scripts/link-skills.sh
 ```
 
-이 명령은 확정 스킬을 `~/dotfiles/config/ai/skills`에 배포한 뒤, dotfiles 설치 스크립트로 Claude Code의 `~/.claude/skills`와 Codex의 `~/.codex/skills`에 연결하고 결과를 검증합니다. dotfiles 사본은 배포용 스냅샷이므로 직접 수정하지 않습니다. 다른 config 경로에 배포하려면 `--config-dir PATH`, 로컬 도구에 설치하지 않으려면 `--publish-only`를 사용합니다.
+이 명령은 확정 스킬을 `~/dotfiles/config/ai/skills`에 배포한 뒤, dotfiles 설치 스크립트로 Claude Code의 `~/.claude/skills`와 Codex의 `~/.agents/skills`에 연결하고 결과를 검증합니다. dotfiles 사본은 배포용 스냅샷이므로 직접 수정하지 않습니다. 다른 config 경로에 배포하려면 `--config-dir PATH`, 로컬 도구에 설치하지 않으려면 `--publish-only`를 사용합니다.
 
 같은 이름의 비관리 스킬이 dotfiles에 있고 내용이 다르면 스크립트는 덮어쓰지 않고 중단합니다. 이 레포가 이전에 배포한 스킬은 `config/ai/skills/.agent-workflow-protocol-managed`로 구분하므로, 확정 스킬을 삭제하거나 이름을 바꾸면 다음 실행에서 배포 사본도 정리됩니다. 플러그인 패키징은 여러 스킬·MCP·훅을 함께 배포해야 할 때까지 보류합니다.
 
